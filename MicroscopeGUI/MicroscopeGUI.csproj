@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net5.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="uEyeDotNet">
+      <HintPath>..\..\..\..\..\..\Program Files\IDS\uEye\Develop\DotNet\uEyeDotNet.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
