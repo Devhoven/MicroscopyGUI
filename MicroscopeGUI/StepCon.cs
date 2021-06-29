@@ -8,14 +8,13 @@ using System.Windows.Forms;
 
 namespace MicroscopeGUI
 {
-    class ToolCon : TableLayoutPanel
+    class StepCon : TableLayoutPanel
     {
         public string Name;
 
-        public ToolCon(string Name)
+        public StepCon(string Name)
         {
             this.Name = Name;
-
         }
     }
 }

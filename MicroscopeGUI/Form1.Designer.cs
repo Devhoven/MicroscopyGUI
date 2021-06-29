@@ -37,13 +37,15 @@ namespace MicroscopeGUI
             this.NavigationBtnCon = new System.Windows.Forms.TableLayoutPanel();
             this.BackBtn = new System.Windows.Forms.Button();
             this.NextBtn = new System.Windows.Forms.Button();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.StepLabelCon = new System.Windows.Forms.TableLayoutPanel();
             this.StepLabel = new System.Windows.Forms.Label();
+            this.PreviousStepLabel = new System.Windows.Forms.Label();
+            this.NextStepLabel = new System.Windows.Forms.Label();
             this.ImgGalleryCon.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.LiveImgCon)).BeginInit();
             this.CurrentToolCon.SuspendLayout();
             this.NavigationBtnCon.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
+            this.StepLabelCon.SuspendLayout();
             this.SuspendLayout();
             // 
             // ImgGalleryCon
@@ -69,7 +71,7 @@ namespace MicroscopeGUI
             resources.ApplyResources(this.CurrentToolCon, "CurrentToolCon");
             this.CurrentToolCon.BackColor = System.Drawing.Color.OrangeRed;
             this.CurrentToolCon.Controls.Add(this.NavigationBtnCon, 0, 1);
-            this.CurrentToolCon.Controls.Add(this.tableLayoutPanel1, 0, 0);
+            this.CurrentToolCon.Controls.Add(this.StepLabelCon, 0, 0);
             this.CurrentToolCon.Name = "CurrentToolCon";
             // 
             // NavigationBtnCon
@@ -93,16 +95,28 @@ namespace MicroscopeGUI
             this.NextBtn.UseVisualStyleBackColor = true;
             this.NextBtn.Click += new System.EventHandler(this.NextBtnClick);
             // 
-            // tableLayoutPanel1
+            // StepLabelCon
             // 
-            resources.ApplyResources(this.tableLayoutPanel1, "tableLayoutPanel1");
-            this.tableLayoutPanel1.Controls.Add(this.StepLabel, 0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            resources.ApplyResources(this.StepLabelCon, "StepLabelCon");
+            this.StepLabelCon.Controls.Add(this.StepLabel, 1, 0);
+            this.StepLabelCon.Controls.Add(this.PreviousStepLabel, 0, 0);
+            this.StepLabelCon.Controls.Add(this.NextStepLabel, 2, 0);
+            this.StepLabelCon.Name = "StepLabelCon";
             // 
             // StepLabel
             // 
             resources.ApplyResources(this.StepLabel, "StepLabel");
             this.StepLabel.Name = "StepLabel";
+            // 
+            // PreviousStepLabel
+            // 
+            resources.ApplyResources(this.PreviousStepLabel, "PreviousStepLabel");
+            this.PreviousStepLabel.Name = "PreviousStepLabel";
+            // 
+            // NextStepLabel
+            // 
+            resources.ApplyResources(this.NextStepLabel, "NextStepLabel");
+            this.NextStepLabel.Name = "NextStepLabel";
             // 
             // GUI
             // 
@@ -119,8 +133,8 @@ namespace MicroscopeGUI
             ((System.ComponentModel.ISupportInitialize)(this.LiveImgCon)).EndInit();
             this.CurrentToolCon.ResumeLayout(false);
             this.NavigationBtnCon.ResumeLayout(false);
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.tableLayoutPanel1.PerformLayout();
+            this.StepLabelCon.ResumeLayout(false);
+            this.StepLabelCon.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -133,8 +147,10 @@ namespace MicroscopeGUI
         private System.Windows.Forms.TableLayoutPanel NavigationBtnCon;
         private System.Windows.Forms.Button BackBtn;
         private System.Windows.Forms.Button NextBtn;
-        private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
+        private System.Windows.Forms.TableLayoutPanel StepLabelCon;
         private System.Windows.Forms.Label StepLabel;
+        private System.Windows.Forms.Label PreviousStepLabel;
+        private System.Windows.Forms.Label NextStepLabel;
     }
 }
 
