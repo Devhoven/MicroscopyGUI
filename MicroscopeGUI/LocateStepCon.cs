@@ -19,9 +19,8 @@ namespace MicroscopeGUI
             SnapButton.Text = "Snap";
             SnapButton.Click += SnapButtonClick;
             SnapButton.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
-            
 
-            Controls.Add(SnapButton, 0, 0);
+            Controls.Add(SnapButton, 0, 2);
         }
 
         private void SnapButtonClick(object sender, EventArgs e)

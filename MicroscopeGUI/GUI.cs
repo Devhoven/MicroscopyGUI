@@ -1,21 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using uEye;
 using uEye.Defines;
+using System.Drawing;
+using System.Windows.Forms;
+using System.Threading;
+
 
 namespace MicroscopeGUI
 {
     public partial class GUI : Form
     {
         public static Camera Camera = new Camera();
-        IntPtr DisplayHandle = IntPtr.Zero;
+        public static IntPtr DisplayHandle = IntPtr.Zero;
+
+        Thread WorkerThread;
 
         StepCon[] Tools;
         int CurrentTool;
@@ -24,30 +22,37 @@ namespace MicroscopeGUI
         {
             InitializeComponent();
 
-            Camera.Init();
+            Status StatusRet;
+
+            // Camera initialization
+            StatusRet = Camera.Init();
+
+            // Setting the maximum size of the display, so the image won't get stretched
             DisplayHandle = LiveImgCon.Handle;
             Camera.Size.AOI.Get(out Rectangle CameraRect);
             LiveImgCon.MaximumSize = CameraRect.Size;
+            
+            // Initializing the thread, which runs the image queue
+            WorkerThread = new Thread(ImageQueue.Run);
 
-            Camera.Memory.Allocate();
+            // Allocating image buffers for 1 second of an image queue
+            Camera.Timing.Framerate.Get(out double Framerate);
+            for (int i = 0; i < (int)Framerate; i++)
+            {
+                StatusRet = Camera.Memory.Allocate(out int MemID, false);
+                if (StatusRet == Status.Success)
+                    Camera.Memory.Sequence.Add(MemID);
+            }
+            StatusRet = Camera.Memory.Sequence.InitImageQueue();
 
-            Camera.EventFrame += CameraEventFrame;
 
-            Camera.Acquisition.Capture();
-
-            Tools = new StepCon[] { new ConfigStepCon(), new LocateStepCon() };
+            // Starting the live feed and the image queue thread
+            StatusRet = Camera.Acquisition.Capture();
+            WorkerThread.Start();
+            
+            Tools = new StepCon[] { new ConfigStepCon(), new LocateStepCon(), new AnalysisStepCon() };
             CurrentToolCon.Controls.Add(Tools[0]);
             SetLabelText();
-        }
-
-        private void CameraEventFrame(object sender, EventArgs e)
-        {
-            Camera.Display.Render(DisplayHandle, DisplayRenderMode.FitToWindow);
-        }
-
-        private void GUIClosing(object sender, FormClosingEventArgs e)
-        {
-            Camera.Exit();
         }
 
         private void NextBtnClick(object sender, EventArgs e)
@@ -81,6 +86,13 @@ namespace MicroscopeGUI
             CurrentToolCon.Controls.Add(Tools[CurrentTool], 0, 2);
 
             SetLabelText();
+        }
+
+        private void GUIClosing(object sender, FormClosingEventArgs e)
+        {
+            ImageQueue.StopRunning = true;
+            WorkerThread.Join();
+            Camera.Exit();
         }
     }
 }
