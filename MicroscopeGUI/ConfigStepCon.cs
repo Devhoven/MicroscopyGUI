@@ -17,9 +17,14 @@ namespace MicroscopeGUI
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 
             GUI.Camera.Gamma.Software.GetRange(out int GammaMin, out int GammaMax, out int GammaInc);
-            new SliderControl("Gamma", GammaMin, GammaMax, GammaMin, new EventHandler(delegate (object o, EventArgs a)
+            new SliderControl("Gamma", -1, GammaMax, -1, new EventHandler(delegate (object o, EventArgs a)
             {
-                GUI.Camera.Gamma.Software.Set(((TrackBar)o).Value);
+                int Val = ((TrackBar)o).Value;
+                if (Val == -1)
+                {
+                    GUI.Camera.Gamma.Software.GetDefault(out Val);
+                }
+                GUI.Camera.Gamma.Software.Set(Val);
             }),
             Controls, 0, 1);
 

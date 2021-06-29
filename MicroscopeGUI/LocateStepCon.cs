@@ -25,22 +25,16 @@ namespace MicroscopeGUI
 
         private void SnapButtonClick(object sender, EventArgs e)
         {
-            GUI.Camera.Memory.GetLast(out int s32LastMemId);
-            GUI.Camera.Memory.Lock(s32LastMemId);
-            GUI.Camera.Memory.GetSize(s32LastMemId, out int s32Width, out int s32Height);
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
 
-            Bitmap MyBitmap;
-            GUI.Camera.Memory.ToBitmap(s32LastMemId, out MyBitmap);
+            saveFileDialog1.Filter = "Image|*.png";
+            saveFileDialog1.FilterIndex = 2;
+            saveFileDialog1.RestoreDirectory = true;
 
-            // clone bitmap
-            Rectangle cloneRect = new Rectangle(0, 0, s32Width, s32Height);
-            System.Drawing.Imaging.PixelFormat format = System.Drawing.Imaging.PixelFormat.Format32bppArgb;
-            Bitmap cloneBitmap = MyBitmap.Clone(cloneRect, format);
-
-            // unlock image buffer
-            GUI.Camera.Memory.Unlock(s32LastMemId);
-
-            cloneBitmap.Save("C:/Users/Vincent/Desktop/Test.png");
+            if (saveFileDialog1.ShowDialog() == DialogResult.OK)
+            {
+                ImageQueue.CurrentBitmap.Save(saveFileDialog1.FileName);
+            }
         }
     }
 }

@@ -13,6 +13,9 @@
     <Compile Update="LocateStepCon.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Update="ProcessStepCon.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Update="StepCon.cs">
       <SubType>Component</SubType>
     </Compile>

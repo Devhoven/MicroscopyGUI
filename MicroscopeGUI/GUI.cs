@@ -10,8 +10,8 @@ namespace MicroscopeGUI
 {
     public partial class GUI : Form
     {
-        public static Camera Camera = new Camera();
-        public static IntPtr DisplayHandle = IntPtr.Zero;
+        public static Camera Camera;
+        public static PictureBox Display;
 
         Thread WorkerThread;
 
@@ -25,10 +25,11 @@ namespace MicroscopeGUI
             Status StatusRet;
 
             // Camera initialization
+            Camera = new Camera();
             StatusRet = Camera.Init();
 
             // Setting the maximum size of the display, so the image won't get stretched
-            DisplayHandle = LiveImgCon.Handle;
+            Display = LiveImgCon;
             Camera.Size.AOI.Get(out Rectangle CameraRect);
             LiveImgCon.MaximumSize = CameraRect.Size;
             
@@ -50,7 +51,7 @@ namespace MicroscopeGUI
             StatusRet = Camera.Acquisition.Capture();
             WorkerThread.Start();
             
-            Tools = new StepCon[] { new ConfigStepCon(), new LocateStepCon(), new AnalysisStepCon() };
+            Tools = new StepCon[] { new ConfigStepCon(), new LocateStepCon(), new ProcessStepCon(), new AnalysisStepCon() };
             CurrentToolCon.Controls.Add(Tools[0]);
             SetLabelText();
         }
