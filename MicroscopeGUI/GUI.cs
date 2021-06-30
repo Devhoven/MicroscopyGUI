@@ -11,7 +11,7 @@ namespace MicroscopeGUI
     public partial class GUI : Form
     {
         public static Camera Camera;
-        public static PictureBox Display;
+        public static PictureViewer Display;
 
         Thread WorkerThread;
 
@@ -28,10 +28,16 @@ namespace MicroscopeGUI
             Camera = new Camera();
             StatusRet = Camera.Init();
 
-            // Setting the maximum size of the display, so the image won't get stretched
-            Display = LiveImgCon;
-            Camera.Size.AOI.Get(out Rectangle CameraRect);
-            LiveImgCon.MaximumSize = CameraRect.Size;
+            // GUI Setup
+            Display = new PictureViewer();
+            MainLayout.Controls.Add(Display, 1, 0);
+            
+            //Display = LiveImgCon;
+            ExitMenuItem.Click += new EventHandler(delegate (object o, EventArgs a)
+            {
+                Close();
+            });
+
             
             // Initializing the thread, which runs the image queue
             WorkerThread = new Thread(ImageQueue.Run);

@@ -10,29 +10,31 @@ namespace MicroscopeGUI
 {
     static class ImageQueue
     {
+        // Is set to true at the end of the program, so the thread won't be running in the background
         public static volatile bool StopRunning = false;
+        // Always holds the newest frame of the camera
         public static Bitmap CurrentBitmap;
 
         public static void Run()
         {
-            uint Timeout = 100;
             while (!StopRunning)
             {
-                Status StatusRet = GUI.Camera.Memory.Sequence.WaitForNextImage(Timeout, out int MemID, out _);
+                // Waits for the next image and returns the memory ID if a new image was sent by the cam
+                Status StatusRet = GUI.Camera.Memory.Sequence.WaitForNextImage(100, out int MemID, out _);
                 if (StatusRet == Status.Success)
                 {
+                    // Conversion to a bitmap
                     GUI.Camera.Memory.ToIntPtr(MemID, out _);
 
                     GUI.Camera.Memory.Lock(MemID);
-                    GUI.Camera.Memory.GetSize(MemID, out int s32Width, out int s32Height);
+                    GUI.Camera.Memory.GetSize(MemID, out _, out _);
 
                     GUI.Camera.Memory.ToBitmap(MemID, out CurrentBitmap);
 
-                    // unlock image buffer
+                    // Unlocking the image buffer
                     GUI.Camera.Memory.Unlock(MemID);
 
-                    CurrentBitmap.SetPixel(640, 512, Color.Black);
-
+                    // Setting the current image on the picture panel
                     GUI.Display.Image = CurrentBitmap;
                 }
             }

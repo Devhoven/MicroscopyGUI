@@ -38,3 +38,4 @@ C:\Users\Vincent\Documents\GitHub\MicrosopyGUI\MicroscopeGUI\obj\Debug\net5.0-wi
 C:\Users\Vincent\Documents\GitHub\MicrosopyGUI\MicroscopeGUI\obj\Debug\net5.0-windows\ref\MicroscopeGUI.dll
 C:\Users\Vincent\Documents\GitHub\MicrosopyGUI\MicroscopeGUI\obj\Debug\net5.0-windows\MicroscopeGUI.pdb
 C:\Users\Vincent\Documents\GitHub\MicrosopyGUI\MicroscopeGUI\obj\Debug\net5.0-windows\MicroscopeGUI.genruntimeconfig.cache
+C:\Users\Vincent\Documents\GitHub\MicrosopyGUI\MicroscopeGUI\obj\Debug\net5.0-windows\MicroscopeGUI.Properties.Resources.resources

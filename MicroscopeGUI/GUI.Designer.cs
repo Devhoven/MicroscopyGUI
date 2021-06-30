@@ -32,7 +32,6 @@ namespace MicroscopeGUI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GUI));
             this.ImgGalleryCon = new System.Windows.Forms.TableLayoutPanel();
             this.ImgGalleryLabel = new System.Windows.Forms.Label();
-            this.LiveImgCon = new System.Windows.Forms.PictureBox();
             this.CurrentToolCon = new System.Windows.Forms.TableLayoutPanel();
             this.NavigationBtnCon = new System.Windows.Forms.TableLayoutPanel();
             this.BackBtn = new System.Windows.Forms.Button();
@@ -41,11 +40,16 @@ namespace MicroscopeGUI
             this.StepLabel = new System.Windows.Forms.Label();
             this.PreviousStepLabel = new System.Windows.Forms.Label();
             this.NextStepLabel = new System.Windows.Forms.Label();
+            this.MenuBar = new System.Windows.Forms.MenuStrip();
+            this.FilesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.MainLayout = new System.Windows.Forms.TableLayoutPanel();
             this.ImgGalleryCon.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LiveImgCon)).BeginInit();
             this.CurrentToolCon.SuspendLayout();
             this.NavigationBtnCon.SuspendLayout();
             this.StepLabelCon.SuspendLayout();
+            this.MenuBar.SuspendLayout();
+            this.MainLayout.SuspendLayout();
             this.SuspendLayout();
             // 
             // ImgGalleryCon
@@ -59,12 +63,6 @@ namespace MicroscopeGUI
             // 
             resources.ApplyResources(this.ImgGalleryLabel, "ImgGalleryLabel");
             this.ImgGalleryLabel.Name = "ImgGalleryLabel";
-            // 
-            // LiveImgCon
-            // 
-            resources.ApplyResources(this.LiveImgCon, "LiveImgCon");
-            this.LiveImgCon.Name = "LiveImgCon";
-            this.LiveImgCon.TabStop = false;
             // 
             // CurrentToolCon
             // 
@@ -118,31 +116,60 @@ namespace MicroscopeGUI
             resources.ApplyResources(this.NextStepLabel, "NextStepLabel");
             this.NextStepLabel.Name = "NextStepLabel";
             // 
+            // MenuBar
+            // 
+            this.MenuBar.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.FilesMenuItem});
+            resources.ApplyResources(this.MenuBar, "MenuBar");
+            this.MenuBar.Name = "MenuBar";
+            // 
+            // FilesMenuItem
+            // 
+            this.FilesMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ExitMenuItem});
+            this.FilesMenuItem.Name = "FilesMenuItem";
+            resources.ApplyResources(this.FilesMenuItem, "FilesMenuItem");
+            // 
+            // ExitMenuItem
+            // 
+            this.ExitMenuItem.Name = "ExitMenuItem";
+            resources.ApplyResources(this.ExitMenuItem, "ExitMenuItem");
+            // 
+            // MainLayout
+            // 
+            resources.ApplyResources(this.MainLayout, "MainLayout");
+            this.MainLayout.Controls.Add(this.ImgGalleryCon, 2, 0);
+            this.MainLayout.Controls.Add(this.CurrentToolCon, 0, 0);
+            this.MainLayout.Name = "MainLayout";
+            // 
             // GUI
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
             this.BackColor = System.Drawing.SystemColors.ButtonHighlight;
             resources.ApplyResources(this, "$this");
-            this.Controls.Add(this.CurrentToolCon);
-            this.Controls.Add(this.LiveImgCon);
-            this.Controls.Add(this.ImgGalleryCon);
+            this.Controls.Add(this.MainLayout);
+            this.Controls.Add(this.MenuBar);
+            this.MainMenuStrip = this.MenuBar;
             this.Name = "GUI";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.GUIClosing);
             this.ImgGalleryCon.ResumeLayout(false);
             this.ImgGalleryCon.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.LiveImgCon)).EndInit();
             this.CurrentToolCon.ResumeLayout(false);
             this.NavigationBtnCon.ResumeLayout(false);
             this.StepLabelCon.ResumeLayout(false);
             this.StepLabelCon.PerformLayout();
+            this.MenuBar.ResumeLayout(false);
+            this.MenuBar.PerformLayout();
+            this.MainLayout.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
         private System.Windows.Forms.TableLayoutPanel ImgGalleryCon;
         private System.Windows.Forms.Label ImgGalleryLabel;
-        private System.Windows.Forms.PictureBox LiveImgCon;
         private System.Windows.Forms.TableLayoutPanel CurrentToolCon;
         private System.Windows.Forms.TableLayoutPanel NavigationBtnCon;
         private System.Windows.Forms.Button BackBtn;
@@ -151,6 +178,11 @@ namespace MicroscopeGUI
         private System.Windows.Forms.Label StepLabel;
         private System.Windows.Forms.Label PreviousStepLabel;
         private System.Windows.Forms.Label NextStepLabel;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.MenuStrip MenuBar;
+        private System.Windows.Forms.ToolStripMenuItem FilesMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
+        private System.Windows.Forms.TableLayoutPanel MainLayout;
     }
 }
 
