@@ -71,6 +71,9 @@
   <data name="ImgGalleryLabel.AutoSize" type="System.Boolean, System.Private.CoreLib">
     <value>True</value>
   </data>
+  <data name="ImgGalleryLabel.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
   <assembly alias="System.Drawing.Primitives" name="System.Drawing.Primitives, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="ImgGalleryLabel.Location" type="System.Drawing.Point, System.Drawing.Primitives">
     <value>3, 5</value>
@@ -80,7 +83,7 @@
     <value>3, 5, 3, 0</value>
   </data>
   <data name="ImgGalleryLabel.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>214, 15</value>
+    <value>194, 15</value>
   </data>
   <data name="ImgGalleryLabel.TabIndex" type="System.Int32, System.Private.CoreLib">
     <value>0</value>
@@ -105,13 +108,10 @@
     <value>0</value>
   </data>
   <data name="ImgGalleryCon.Location" type="System.Drawing.Point, System.Drawing.Primitives">
-    <value>1020, 3</value>
-  </data>
-  <data name="ImgGalleryCon.RowCount" type="System.Int32, System.Private.CoreLib">
-    <value>2</value>
+    <value>1040, 3</value>
   </data>
   <data name="ImgGalleryCon.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>220, 635</value>
+    <value>200, 635</value>
   </data>
   <data name="ImgGalleryCon.TabIndex" type="System.Int32, System.Private.CoreLib">
     <value>0</value>
@@ -129,7 +129,7 @@
     <value>0</value>
   </data>
   <data name="ImgGalleryCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ImgGalleryLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50" /&gt;&lt;Rows Styles="Percent,50,Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ImgGalleryLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,20" /&gt;&lt;Rows Styles="Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="CurrentToolCon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -137,224 +137,146 @@
   <data name="CurrentToolCon.ColumnCount" type="System.Int32, System.Private.CoreLib">
     <value>1</value>
   </data>
-  <data name="NavigationBtnCon.ColumnCount" type="System.Int32, System.Private.CoreLib">
-    <value>2</value>
-  </data>
-  <data name="BackBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="BackBtn.Location" type="System.Drawing.Point, System.Drawing.Primitives">
-    <value>3, 3</value>
-  </data>
-  <data name="BackBtn.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>101, 30</value>
-  </data>
-  <data name="BackBtn.TabIndex" type="System.Int32, System.Private.CoreLib">
-    <value>0</value>
-  </data>
-  <data name="BackBtn.Text" xml:space="preserve">
-    <value>Back</value>
-  </data>
-  <data name="&gt;&gt;BackBtn.Name" xml:space="preserve">
-    <value>BackBtn</value>
-  </data>
-  <data name="&gt;&gt;BackBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;BackBtn.Parent" xml:space="preserve">
-    <value>NavigationBtnCon</value>
-  </data>
-  <data name="&gt;&gt;BackBtn.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="NextBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
-    <value>Top, Bottom, Left, Right</value>
-  </data>
-  <data name="NextBtn.Location" type="System.Drawing.Point, System.Drawing.Primitives">
-    <value>110, 3</value>
-  </data>
-  <data name="NextBtn.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>101, 30</value>
-  </data>
-  <data name="NextBtn.TabIndex" type="System.Int32, System.Private.CoreLib">
-    <value>1</value>
-  </data>
-  <data name="NextBtn.Text" xml:space="preserve">
-    <value>Next</value>
-  </data>
-  <data name="&gt;&gt;NextBtn.Name" xml:space="preserve">
-    <value>NextBtn</value>
-  </data>
-  <data name="&gt;&gt;NextBtn.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;NextBtn.Parent" xml:space="preserve">
-    <value>NavigationBtnCon</value>
-  </data>
-  <data name="&gt;&gt;NextBtn.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="NavigationBtnCon.Location" type="System.Drawing.Point, System.Drawing.Primitives">
-    <value>3, 41</value>
-  </data>
-  <data name="NavigationBtnCon.RowCount" type="System.Int32, System.Private.CoreLib">
-    <value>1</value>
-  </data>
-  <data name="NavigationBtnCon.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>214, 36</value>
-  </data>
-  <data name="NavigationBtnCon.TabIndex" type="System.Int32, System.Private.CoreLib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;NavigationBtnCon.Name" xml:space="preserve">
-    <value>NavigationBtnCon</value>
-  </data>
-  <data name="&gt;&gt;NavigationBtnCon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;NavigationBtnCon.Parent" xml:space="preserve">
-    <value>CurrentToolCon</value>
-  </data>
-  <data name="&gt;&gt;NavigationBtnCon.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="NavigationBtnCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="BackBtn" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="NextBtn" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="StepLabelCon.ColumnCount" type="System.Int32, System.Private.CoreLib">
+  <data name="StepCon.ColumnCount" type="System.Int32, System.Private.CoreLib">
     <value>3</value>
   </data>
-  <data name="StepLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="LocateStepLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="StepLabel.AutoSize" type="System.Boolean, System.Private.CoreLib">
+  <data name="LocateStepLabel.AutoSize" type="System.Boolean, System.Private.CoreLib">
     <value>True</value>
   </data>
-  <data name="StepLabel.Location" type="System.Drawing.Point, System.Drawing.Primitives">
-    <value>59, 0</value>
+  <data name="LocateStepLabel.Location" type="System.Drawing.Point, System.Drawing.Primitives">
+    <value>67, 0</value>
   </data>
-  <data name="StepLabel.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>94, 32</value>
+  <data name="LocateStepLabel.Size" type="System.Drawing.Size, System.Drawing.Primitives">
+    <value>58, 37</value>
   </data>
-  <data name="StepLabel.TabIndex" type="System.Int32, System.Private.CoreLib">
+  <data name="LocateStepLabel.TabIndex" type="System.Int32, System.Private.CoreLib">
     <value>0</value>
   </data>
-  <data name="StepLabel.Text" xml:space="preserve">
-    <value>Config</value>
+  <data name="LocateStepLabel.Text" xml:space="preserve">
+    <value>Locate</value>
   </data>
-  <data name="StepLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing.Common">
-    <value>MiddleCenter</value>
+  <data name="LocateStepLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing.Common">
+    <value>BottomCenter</value>
   </data>
-  <data name="&gt;&gt;StepLabel.Name" xml:space="preserve">
-    <value>StepLabel</value>
+  <data name="&gt;&gt;LocateStepLabel.Name" xml:space="preserve">
+    <value>LocateStepLabel</value>
   </data>
-  <data name="&gt;&gt;StepLabel.Type" xml:space="preserve">
+  <data name="&gt;&gt;LocateStepLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;StepLabel.Parent" xml:space="preserve">
-    <value>StepLabelCon</value>
+  <data name="&gt;&gt;LocateStepLabel.Parent" xml:space="preserve">
+    <value>StepCon</value>
   </data>
-  <data name="&gt;&gt;StepLabel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;LocateStepLabel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
-  <data name="PreviousStepLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="ConfigStepLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="PreviousStepLabel.AutoSize" type="System.Boolean, System.Private.CoreLib">
+  <data name="ConfigStepLabel.AutoSize" type="System.Boolean, System.Private.CoreLib">
     <value>True</value>
   </data>
-  <data name="PreviousStepLabel.Location" type="System.Drawing.Point, System.Drawing.Primitives">
+  <data name="ConfigStepLabel.Location" type="System.Drawing.Point, System.Drawing.Primitives">
     <value>3, 0</value>
   </data>
-  <data name="PreviousStepLabel.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>50, 32</value>
+  <data name="ConfigStepLabel.Size" type="System.Drawing.Size, System.Drawing.Primitives">
+    <value>58, 37</value>
   </data>
-  <data name="PreviousStepLabel.TabIndex" type="System.Int32, System.Private.CoreLib">
+  <data name="ConfigStepLabel.TabIndex" type="System.Int32, System.Private.CoreLib">
     <value>1</value>
   </data>
-  <data name="PreviousStepLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing.Common">
-    <value>BottomCenter</value>
+  <data name="ConfigStepLabel.Text" xml:space="preserve">
+    <value>Config</value>
   </data>
-  <data name="&gt;&gt;PreviousStepLabel.Name" xml:space="preserve">
-    <value>PreviousStepLabel</value>
+  <data name="ConfigStepLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing.Common">
+    <value>MiddleCenter</value>
   </data>
-  <data name="&gt;&gt;PreviousStepLabel.Type" xml:space="preserve">
+  <data name="&gt;&gt;ConfigStepLabel.Name" xml:space="preserve">
+    <value>ConfigStepLabel</value>
+  </data>
+  <data name="&gt;&gt;ConfigStepLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;PreviousStepLabel.Parent" xml:space="preserve">
-    <value>StepLabelCon</value>
+  <data name="&gt;&gt;ConfigStepLabel.Parent" xml:space="preserve">
+    <value>StepCon</value>
   </data>
-  <data name="&gt;&gt;PreviousStepLabel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;ConfigStepLabel.ZOrder" xml:space="preserve">
     <value>1</value>
   </data>
-  <data name="NextStepLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+  <data name="AnalysisStepLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
-  <data name="NextStepLabel.AutoSize" type="System.Boolean, System.Private.CoreLib">
+  <data name="AnalysisStepLabel.AutoSize" type="System.Boolean, System.Private.CoreLib">
     <value>True</value>
   </data>
-  <data name="NextStepLabel.Location" type="System.Drawing.Point, System.Drawing.Primitives">
-    <value>159, 0</value>
+  <data name="AnalysisStepLabel.Location" type="System.Drawing.Point, System.Drawing.Primitives">
+    <value>131, 0</value>
   </data>
-  <data name="NextStepLabel.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>50, 32</value>
+  <data name="AnalysisStepLabel.Size" type="System.Drawing.Size, System.Drawing.Primitives">
+    <value>60, 37</value>
   </data>
-  <data name="NextStepLabel.TabIndex" type="System.Int32, System.Private.CoreLib">
+  <data name="AnalysisStepLabel.TabIndex" type="System.Int32, System.Private.CoreLib">
     <value>2</value>
   </data>
-  <data name="NextStepLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing.Common">
+  <data name="AnalysisStepLabel.Text" xml:space="preserve">
+    <value>Analysis</value>
+  </data>
+  <data name="AnalysisStepLabel.TextAlign" type="System.Drawing.ContentAlignment, System.Drawing.Common">
     <value>BottomCenter</value>
   </data>
-  <data name="&gt;&gt;NextStepLabel.Name" xml:space="preserve">
-    <value>NextStepLabel</value>
+  <data name="&gt;&gt;AnalysisStepLabel.Name" xml:space="preserve">
+    <value>AnalysisStepLabel</value>
   </data>
-  <data name="&gt;&gt;NextStepLabel.Type" xml:space="preserve">
+  <data name="&gt;&gt;AnalysisStepLabel.Type" xml:space="preserve">
     <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;NextStepLabel.Parent" xml:space="preserve">
-    <value>StepLabelCon</value>
+  <data name="&gt;&gt;AnalysisStepLabel.Parent" xml:space="preserve">
+    <value>StepCon</value>
   </data>
-  <data name="&gt;&gt;NextStepLabel.ZOrder" xml:space="preserve">
+  <data name="&gt;&gt;AnalysisStepLabel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <data name="StepLabelCon.Location" type="System.Drawing.Point, System.Drawing.Primitives">
+  <data name="StepCon.Location" type="System.Drawing.Point, System.Drawing.Primitives">
     <value>3, 3</value>
   </data>
-  <data name="StepLabelCon.RowCount" type="System.Int32, System.Private.CoreLib">
+  <data name="StepCon.RowCount" type="System.Int32, System.Private.CoreLib">
     <value>1</value>
   </data>
-  <data name="StepLabelCon.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>212, 32</value>
+  <data name="StepCon.Size" type="System.Drawing.Size, System.Drawing.Primitives">
+    <value>194, 37</value>
   </data>
-  <data name="StepLabelCon.TabIndex" type="System.Int32, System.Private.CoreLib">
-    <value>2</value>
+  <data name="StepCon.TabIndex" type="System.Int32, System.Private.CoreLib">
+    <value>0</value>
   </data>
-  <data name="&gt;&gt;StepLabelCon.Name" xml:space="preserve">
-    <value>StepLabelCon</value>
+  <data name="&gt;&gt;StepCon.Name" xml:space="preserve">
+    <value>StepCon</value>
   </data>
-  <data name="&gt;&gt;StepLabelCon.Type" xml:space="preserve">
+  <data name="&gt;&gt;StepCon.Type" xml:space="preserve">
     <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;StepLabelCon.Parent" xml:space="preserve">
+  <data name="&gt;&gt;StepCon.Parent" xml:space="preserve">
     <value>CurrentToolCon</value>
   </data>
-  <data name="&gt;&gt;StepLabelCon.ZOrder" xml:space="preserve">
-    <value>1</value>
+  <data name="&gt;&gt;StepCon.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
-  <data name="StepLabelCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="StepLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="PreviousStepLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="NextStepLabel" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50,Absolute,100,Absolute,56,Absolute,20" /&gt;&lt;Rows Styles="Percent,50,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  <data name="StepCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="LocateStepLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ConfigStepLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AnalysisStepLabel" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,333332,Percent,33,333332,Percent,33,333332" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="CurrentToolCon.Location" type="System.Drawing.Point, System.Drawing.Primitives">
     <value>3, 3</value>
   </data>
   <data name="CurrentToolCon.RowCount" type="System.Int32, System.Private.CoreLib">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="CurrentToolCon.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>220, 635</value>
+    <value>200, 635</value>
   </data>
   <data name="CurrentToolCon.TabIndex" type="System.Int32, System.Private.CoreLib">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="&gt;&gt;CurrentToolCon.Name" xml:space="preserve">
     <value>CurrentToolCon</value>
@@ -369,7 +291,7 @@
     <value>1</value>
   </data>
   <data name="CurrentToolCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="NavigationBtnCon" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="StepLabelCon" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,50" /&gt;&lt;Rows Styles="Absolute,38,Absolute,42,Absolute,10" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="StepCon" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,56,Absolute,8,Absolute,38,Absolute,10,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="ExitMenuItem.Size" type="System.Drawing.Size, System.Drawing.Primitives">
     <value>93, 22</value>

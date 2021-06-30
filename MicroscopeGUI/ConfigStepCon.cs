@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using uEye.Types;
 
+
 namespace MicroscopeGUI
 {
     class ConfigStepCon : StepCon
@@ -15,6 +16,39 @@ namespace MicroscopeGUI
         public ConfigStepCon() : base("Config")
         {
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+
+            int RowCount = 1;
+
+            SliderControl BrightnessSlider = null;
+
+            GUI.Camera.AutoFeatures.Software.Shutter.GetEnable(out bool ShutterEnabled);
+            new CheckBoxControl("Auto Shutter:", ShutterEnabled, new EventHandler(delegate (object o, EventArgs a)
+            {
+                GUI.Camera.AutoFeatures.Software.Shutter.SetEnable(((CheckBox)o).Checked);
+            }),
+            Controls, 0, RowCount++);
+
+            GUI.Camera.AutoFeatures.Software.WhiteBalance.GetEnable(out bool WhiteBalanceEnabled);
+            new CheckBoxControl("Auto Whitebalance:", WhiteBalanceEnabled, new EventHandler(delegate (object o, EventArgs a)
+            {
+                GUI.Camera.AutoFeatures.Software.WhiteBalance.SetEnable(((CheckBox)o).Checked);
+            }),
+            Controls, 0, RowCount++);
+
+            GUI.Camera.AutoFeatures.Software.Gain.GetEnable(out bool GainEnabled);
+            new CheckBoxControl("Auto Gain:", GainEnabled, new EventHandler(delegate (object o, EventArgs a)
+            {
+                GUI.Camera.AutoFeatures.Software.Gain.SetEnable(((CheckBox)o).Checked);
+                BrightnessSlider.Enable = ((CheckBox)o).Checked;
+            }),
+            Controls, 0, RowCount++);
+
+            GUI.Camera.Timing.Framerate.GetFrameRateRange(out double FPSMin, out double FPSMax, out _);
+            new SliderControl("FPS", (int)FPSMin, (int)FPSMax, (int)FPSMax, new EventHandler(delegate (object o, EventArgs a)
+            {
+                GUI.Camera.Timing.Framerate.Set(((TrackBar)o).Value);
+            }),
+            Controls, 0, RowCount++);
 
             GUI.Camera.Gamma.Software.GetRange(out int GammaMin, out int GammaMax, out int GammaInc);
             new SliderControl("Gamma", -1, GammaMax, -1, new EventHandler(delegate (object o, EventArgs a)
@@ -26,36 +60,38 @@ namespace MicroscopeGUI
                 }
                 GUI.Camera.Gamma.Software.Set(Val);
             }),
-            Controls, 0, 1);
+            Controls, 0, RowCount++);
 
-            GUI.Camera.Timing.Framerate.GetFrameRateRange(out double FPSMin, out double FPSMax, out _);
-            new SliderControl("FPS", (int)FPSMin, (int)FPSMax, (int)FPSMax, new EventHandler(delegate (object o, EventArgs a)
+            // Only works if Auto Gain is enabled
+            BrightnessSlider = new SliderControl("Brightness", 0, 255, 128,
+            new EventHandler(delegate (object o, EventArgs a)
             {
-                GUI.Camera.Timing.Framerate.Set(((TrackBar)o).Value);
+                GUI.Camera.AutoFeatures.Software.Reference.Set((uint)((TrackBar)o).Value);
             }),
-            Controls, 0, 2);
+            Controls, 0, RowCount++);
+            BrightnessSlider.Enable = false;
 
-            GUI.Camera.AutoFeatures.Software.Shutter.GetEnable(out bool ShutterEnabled);
-            new CheckBoxControl("Auto Shutter:", ShutterEnabled, new EventHandler(delegate (object o, EventArgs a)
+            GUI.Camera.Color.Temperature.GetRange(out uint MinTemp, out uint MaxTemp, out _);
+            GUI.Camera.Color.Temperature.GetDefault(out uint DefaultTemp);
+            new SliderControl("Color Temperature", (int)MinTemp, (int)MaxTemp, (int)DefaultTemp, new EventHandler(delegate (object o, EventArgs e)
             {
-                GUI.Camera.AutoFeatures.Software.Shutter.SetEnable(((CheckBox)o).Checked);
+                GUI.Camera.Color.Temperature.Set((uint)((TrackBar)o).Value);
             }),
-            Controls, 0, 3);
+            Controls, 0, RowCount++);
 
-            GUI.Camera.AutoFeatures.Software.WhiteBalance.GetEnable(out bool WhiteBalanceEnabled);
-            new CheckBoxControl("Auto Whitebalance:", WhiteBalanceEnabled, new EventHandler(delegate (object o, EventArgs a)
+            new SliderControl("Master Gain", 0, 100, 0, new EventHandler(delegate (object o, EventArgs a)
             {
-                GUI.Camera.AutoFeatures.Software.WhiteBalance.SetEnable(((CheckBox)o).Checked);
+                GUI.Camera.AutoFeatures.Software.Gain.SetEnable(false);
+                GUI.Camera.Gain.Hardware.ConvertScaledToFactor.Master(((TrackBar)o).Value, out int factor);
+                GUI.Camera.Gain.Hardware.Factor.SetMaster(factor, out int newaaaa);
             }),
-            Controls, 0, 4);
+            Controls, 0, RowCount++);
 
-            GUI.Camera.AutoFeatures.Software.Gain.GetEnable(out bool GainEnabled);
-            new CheckBoxControl("Auto Gain:", GainEnabled, new EventHandler(delegate (object o, EventArgs a)
+            new SliderControl("Saturation", 0, 200, 100, new EventHandler(delegate (object o, EventArgs a)
             {
-                GUI.Camera.AutoFeatures.Software.Gain.SetEnable(((CheckBox)o).Checked);
+                GUI.Camera.Saturation.Set(((TrackBar)o).Value, ((TrackBar)o).Value);
             }),
-            Controls, 0, 5);
-
+            Controls, 0, RowCount++);
         }
     }
 }

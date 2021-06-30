@@ -11,6 +11,14 @@ namespace MicroscopeGUI
     {
         public Label Label;
 
+        protected bool _Enable;
+
+        public virtual bool Enable
+        {
+            get { return _Enable; }
+            set { _Enable = value; }
+        }
+
         public Control(string Name)
         {
             Label = new Label();
@@ -40,6 +48,16 @@ namespace MicroscopeGUI
     {
         string OriginalName;
         public TrackBar Slider;
+
+        public override bool Enable
+        {
+            get { return _Enable; }
+            set
+            {
+                Slider.Enabled = value;
+                _Enable = value;
+            }
+        }
 
         public SliderControl(string Name, int Min, int Max, int StartVal, EventHandler ValueChangedEvent, 
             TableLayoutControlCollection Control, int Row, int Column) : base(Name + " (" + StartVal + "):")

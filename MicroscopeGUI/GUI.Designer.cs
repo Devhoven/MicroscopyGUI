@@ -33,21 +33,17 @@ namespace MicroscopeGUI
             this.ImgGalleryCon = new System.Windows.Forms.TableLayoutPanel();
             this.ImgGalleryLabel = new System.Windows.Forms.Label();
             this.CurrentToolCon = new System.Windows.Forms.TableLayoutPanel();
-            this.NavigationBtnCon = new System.Windows.Forms.TableLayoutPanel();
-            this.BackBtn = new System.Windows.Forms.Button();
-            this.NextBtn = new System.Windows.Forms.Button();
-            this.StepLabelCon = new System.Windows.Forms.TableLayoutPanel();
-            this.StepLabel = new System.Windows.Forms.Label();
-            this.PreviousStepLabel = new System.Windows.Forms.Label();
-            this.NextStepLabel = new System.Windows.Forms.Label();
+            this.StepCon = new System.Windows.Forms.TableLayoutPanel();
+            this.LocateStepLabel = new System.Windows.Forms.Label();
+            this.ConfigStepLabel = new System.Windows.Forms.Label();
+            this.AnalysisStepLabel = new System.Windows.Forms.Label();
             this.MenuBar = new System.Windows.Forms.MenuStrip();
             this.FilesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainLayout = new System.Windows.Forms.TableLayoutPanel();
             this.ImgGalleryCon.SuspendLayout();
             this.CurrentToolCon.SuspendLayout();
-            this.NavigationBtnCon.SuspendLayout();
-            this.StepLabelCon.SuspendLayout();
+            this.StepCon.SuspendLayout();
             this.MenuBar.SuspendLayout();
             this.MainLayout.SuspendLayout();
             this.SuspendLayout();
@@ -68,53 +64,34 @@ namespace MicroscopeGUI
             // 
             resources.ApplyResources(this.CurrentToolCon, "CurrentToolCon");
             this.CurrentToolCon.BackColor = System.Drawing.Color.OrangeRed;
-            this.CurrentToolCon.Controls.Add(this.NavigationBtnCon, 0, 1);
-            this.CurrentToolCon.Controls.Add(this.StepLabelCon, 0, 0);
+            this.CurrentToolCon.Controls.Add(this.StepCon, 0, 0);
             this.CurrentToolCon.Name = "CurrentToolCon";
             // 
-            // NavigationBtnCon
+            // StepCon
             // 
-            resources.ApplyResources(this.NavigationBtnCon, "NavigationBtnCon");
-            this.NavigationBtnCon.Controls.Add(this.BackBtn, 0, 0);
-            this.NavigationBtnCon.Controls.Add(this.NextBtn, 1, 0);
-            this.NavigationBtnCon.Name = "NavigationBtnCon";
+            resources.ApplyResources(this.StepCon, "StepCon");
+            this.StepCon.Controls.Add(this.LocateStepLabel, 1, 0);
+            this.StepCon.Controls.Add(this.ConfigStepLabel, 0, 0);
+            this.StepCon.Controls.Add(this.AnalysisStepLabel, 2, 0);
+            this.StepCon.Name = "StepCon";
             // 
-            // BackBtn
+            // LocateStepLabel
             // 
-            resources.ApplyResources(this.BackBtn, "BackBtn");
-            this.BackBtn.Name = "BackBtn";
-            this.BackBtn.UseVisualStyleBackColor = true;
-            this.BackBtn.Click += new System.EventHandler(this.BackBtnClick);
+            resources.ApplyResources(this.LocateStepLabel, "LocateStepLabel");
+            this.LocateStepLabel.Name = "LocateStepLabel";
+            this.LocateStepLabel.Click += new System.EventHandler(this.LocateStepLabel_Click);
             // 
-            // NextBtn
+            // ConfigStepLabel
             // 
-            resources.ApplyResources(this.NextBtn, "NextBtn");
-            this.NextBtn.Name = "NextBtn";
-            this.NextBtn.UseVisualStyleBackColor = true;
-            this.NextBtn.Click += new System.EventHandler(this.NextBtnClick);
+            resources.ApplyResources(this.ConfigStepLabel, "ConfigStepLabel");
+            this.ConfigStepLabel.Name = "ConfigStepLabel";
+            this.ConfigStepLabel.Click += new System.EventHandler(this.ConfigStepLabel_Click);
             // 
-            // StepLabelCon
+            // AnalysisStepLabel
             // 
-            resources.ApplyResources(this.StepLabelCon, "StepLabelCon");
-            this.StepLabelCon.Controls.Add(this.StepLabel, 1, 0);
-            this.StepLabelCon.Controls.Add(this.PreviousStepLabel, 0, 0);
-            this.StepLabelCon.Controls.Add(this.NextStepLabel, 2, 0);
-            this.StepLabelCon.Name = "StepLabelCon";
-            // 
-            // StepLabel
-            // 
-            resources.ApplyResources(this.StepLabel, "StepLabel");
-            this.StepLabel.Name = "StepLabel";
-            // 
-            // PreviousStepLabel
-            // 
-            resources.ApplyResources(this.PreviousStepLabel, "PreviousStepLabel");
-            this.PreviousStepLabel.Name = "PreviousStepLabel";
-            // 
-            // NextStepLabel
-            // 
-            resources.ApplyResources(this.NextStepLabel, "NextStepLabel");
-            this.NextStepLabel.Name = "NextStepLabel";
+            resources.ApplyResources(this.AnalysisStepLabel, "AnalysisStepLabel");
+            this.AnalysisStepLabel.Name = "AnalysisStepLabel";
+            this.AnalysisStepLabel.Click += new System.EventHandler(this.AnalysisStepLabel_Click);
             // 
             // MenuBar
             // 
@@ -156,9 +133,8 @@ namespace MicroscopeGUI
             this.ImgGalleryCon.ResumeLayout(false);
             this.ImgGalleryCon.PerformLayout();
             this.CurrentToolCon.ResumeLayout(false);
-            this.NavigationBtnCon.ResumeLayout(false);
-            this.StepLabelCon.ResumeLayout(false);
-            this.StepLabelCon.PerformLayout();
+            this.StepCon.ResumeLayout(false);
+            this.StepCon.PerformLayout();
             this.MenuBar.ResumeLayout(false);
             this.MenuBar.PerformLayout();
             this.MainLayout.ResumeLayout(false);
@@ -171,18 +147,15 @@ namespace MicroscopeGUI
         private System.Windows.Forms.TableLayoutPanel ImgGalleryCon;
         private System.Windows.Forms.Label ImgGalleryLabel;
         private System.Windows.Forms.TableLayoutPanel CurrentToolCon;
-        private System.Windows.Forms.TableLayoutPanel NavigationBtnCon;
-        private System.Windows.Forms.Button BackBtn;
-        private System.Windows.Forms.Button NextBtn;
-        private System.Windows.Forms.TableLayoutPanel StepLabelCon;
-        private System.Windows.Forms.Label StepLabel;
-        private System.Windows.Forms.Label PreviousStepLabel;
-        private System.Windows.Forms.Label NextStepLabel;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.MenuStrip MenuBar;
         private System.Windows.Forms.ToolStripMenuItem FilesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
         private System.Windows.Forms.TableLayoutPanel MainLayout;
+        private System.Windows.Forms.TableLayoutPanel StepCon;
+        private System.Windows.Forms.Label LocateStepLabel;
+        private System.Windows.Forms.Label ConfigStepLabel;
+        private System.Windows.Forms.Label AnalysisStepLabel;
     }
 }
 
