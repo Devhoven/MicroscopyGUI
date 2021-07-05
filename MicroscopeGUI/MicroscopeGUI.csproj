@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Maikebing.System.Windows.Forms.DataVisualization" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="uEyeDotNet">
       <HintPath>..\..\..\..\..\..\Program Files\IDS\uEye\Develop\DotNet\uEyeDotNet.dll</HintPath>
     </Reference>

@@ -14,8 +14,11 @@ namespace MicroscopeGUI
         public static volatile bool StopRunning = false;
         // Always holds the newest frame of the camera
         public static Bitmap CurrentBitmap;
-
+        // Fires if the frame has changed
         public static event EventHandler OnFrameChange;
+        // Contains all of the values of the histogram of the current image
+        // 3 * 256, since there is a value for every 8 bit value of one channel
+        public static uint[] Histogram = new uint[3 * 256];
 
         public static void Run()
         {
@@ -25,6 +28,9 @@ namespace MicroscopeGUI
                 Status StatusRet = GUI.Camera.Memory.Sequence.WaitForNextImage(100, out int MemID, out _);
                 if (StatusRet == Status.Success)
                 {
+                    // Getting the values of the histogram
+                    GUI.Camera.Image.GetHistogram(MemID, ColorMode.BGR8Packed, out Histogram);
+
                     // Conversion to a bitmap
                     GUI.Camera.Memory.ToIntPtr(MemID, out _);
 

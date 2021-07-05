@@ -31,7 +31,6 @@ namespace MicroscopeGUI
         {
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
             MouseWheel += PictureViewer_MouseWheel;
-            MouseHover += PictureViewer_MouseHover;
 
             MouseDown += PictureViewer_MouseDown;
             MouseUp += PictureViewer_MouseUp;
@@ -55,11 +54,6 @@ namespace MicroscopeGUI
         {
             Panning = true;
             OldMousePos = new Point(e.Location.X - Offset.X, e.Location.Y - Offset.Y);
-        }
-
-        private void PictureViewer_MouseHover(object sender, EventArgs e)
-        {
-            Focus();
         }
 
         private void PictureViewer_MouseWheel(object sender, MouseEventArgs e)

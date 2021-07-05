@@ -4,7 +4,7 @@ using uEye.Defines;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
-
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace MicroscopeGUI
 {
@@ -17,7 +17,7 @@ namespace MicroscopeGUI
 
         StepCon[] Tools;
         int CurrentTool;
-
+        
         public GUI()
         {
             InitializeComponent();
@@ -63,6 +63,9 @@ namespace MicroscopeGUI
         private void ConfigStepLabel_Click(object sender, EventArgs e)
         {
             HighlightLabel(ConfigStepLabel, 0);
+
+            HistogramForm form = new HistogramForm();
+            form.Show();
         }
         private void LocateStepLabel_Click(object sender, EventArgs e)
         {
