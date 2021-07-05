@@ -38,7 +38,6 @@ namespace MicroscopeGUI
                 Close();
             });
 
-            
             // Initializing the thread, which runs the image queue
             WorkerThread = new Thread(ImageQueue.Run);
 
@@ -52,27 +51,12 @@ namespace MicroscopeGUI
             }
             StatusRet = Camera.Memory.Sequence.InitImageQueue();
 
-
             // Starting the live feed and the image queue thread
             StatusRet = Camera.Acquisition.Capture();
             WorkerThread.Start();
             
             Tools = new StepCon[] { new ConfigStepCon(), new LocateStepCon(), new AnalysisStepCon() };
             CurrentToolCon.Controls.Add(Tools[0]);
-        }
-
-        private void NextBtnClick(object sender, EventArgs e)
-        {
-            CurrentToolCon.Controls.Remove(Tools[CurrentTool]);
-            CurrentTool = Math.Min(CurrentTool + 1, Tools.Length - 1);
-            CurrentToolCon.Controls.Add(Tools[CurrentTool], 0, 2);
-        }
-
-        private void BackBtnClick(object sender, EventArgs e)
-        {
-            CurrentToolCon.Controls.Remove(Tools[CurrentTool]);
-            CurrentTool = Math.Max(CurrentTool - 1, 0);
-            CurrentToolCon.Controls.Add(Tools[CurrentTool], 0, 2);
         }
 
         // Highlighting the different labels 

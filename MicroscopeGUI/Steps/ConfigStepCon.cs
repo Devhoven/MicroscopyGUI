@@ -105,6 +105,16 @@ namespace MicroscopeGUI
                 GUI.Camera.Saturation.Set(((TrackBar)o).Value, ((TrackBar)o).Value);
             }),
             Controls, 0, RowCount++);
+
+
+            GUI.Camera.Timing.Exposure.Get(out double CurrentExposure);
+            GUI.Camera.Timing.Exposure.GetRange(out double MinExposure, out double MaxExposure, out _);
+            new SliderControl("Exposure", (int)MinExposure, (int)MaxExposure, (int)CurrentExposure, 
+                new EventHandler(delegate (object o, EventArgs a)
+            {
+                GUI.Camera.Timing.Exposure.Set(((TrackBar)o).Value);
+            }),
+            Controls, 0, RowCount++);
         }
     }
 }
