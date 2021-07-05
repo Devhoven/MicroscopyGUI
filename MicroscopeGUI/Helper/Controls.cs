@@ -49,6 +49,8 @@ namespace MicroscopeGUI
         string OriginalName;
         public TrackBar Slider;
 
+        delegate void SetValueCallback(int Value);
+
         public override bool Enable
         {
             get { return _Enable; }
@@ -60,7 +62,7 @@ namespace MicroscopeGUI
         }
 
         public SliderControl(string Name, int Min, int Max, int StartVal, EventHandler ValueChangedEvent, 
-            TableLayoutControlCollection Control, int Row, int Column) : base(Name + " (" + StartVal + "):")
+            TableLayoutControlCollection Control, int Row, int Column, bool EnabledByDefault = true) : base(Name + " (" + StartVal + "):")
         {
             Slider = new TrackBar();
             Slider.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
@@ -75,11 +77,39 @@ namespace MicroscopeGUI
 
             Control.Add(Slider, Row, Column);
             Control.Add(Label, Row, Column);
+
+            Enable = EnabledByDefault;
+        }
+
+        public void SetValue(int Value)
+        {
+            if (ImageQueue.StopRunning)
+                return;
+
+            if (Slider.InvokeRequired)
+            {
+                SetValueCallback Callback = new SetValueCallback(SetValue);
+                Slider.BeginInvoke(Callback, new object[] { Value });
+            }
+            else
+            {
+                Slider.Value = Value;
+            }
         }
 
         private void ChangeLabel(object sender, EventArgs e)
         {
             Label.Text = OriginalName + " (" + Slider.Value + "): ";
+        }
+    }
+
+    class UpdatingSliderControl : SliderControl
+    {
+        public UpdatingSliderControl(string Name, int Min, int Max, int StartVal, EventHandler ValueChangedEvent,
+            EventHandler OnFrameChange, TableLayoutControlCollection Control, int Row, int Column) : 
+            base(Name, Min, Max, StartVal, ValueChangedEvent, Control, Row, Column)
+        {
+            ImageQueue.OnFrameChange += OnFrameChange;
         }
     }
 }

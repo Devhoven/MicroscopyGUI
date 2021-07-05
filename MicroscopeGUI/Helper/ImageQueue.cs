@@ -15,6 +15,8 @@ namespace MicroscopeGUI
         // Always holds the newest frame of the camera
         public static Bitmap CurrentBitmap;
 
+        public static event EventHandler OnFrameChange;
+
         public static void Run()
         {
             while (!StopRunning)
@@ -36,6 +38,8 @@ namespace MicroscopeGUI
 
                     // Setting the current image on the picture panel
                     GUI.Display.Image = CurrentBitmap;
+
+                    OnFrameChange(null, null);
                 }
             }
         }

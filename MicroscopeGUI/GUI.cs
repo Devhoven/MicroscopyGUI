@@ -57,7 +57,7 @@ namespace MicroscopeGUI
             StatusRet = Camera.Acquisition.Capture();
             WorkerThread.Start();
             
-            Tools = new StepCon[] { new ConfigStepCon(), new LocateStepCon(), new ProcessStepCon(), new AnalysisStepCon() };
+            Tools = new StepCon[] { new ConfigStepCon(), new LocateStepCon(), new AnalysisStepCon() };
             CurrentToolCon.Controls.Add(Tools[0]);
         }
 
@@ -75,42 +75,36 @@ namespace MicroscopeGUI
             CurrentToolCon.Controls.Add(Tools[CurrentTool], 0, 2);
         }
 
+        // Highlighting the different labels 
+        private void ConfigStepLabel_Click(object sender, EventArgs e)
+        {
+            HighlightLabel(ConfigStepLabel, 0);
+        }
+        private void LocateStepLabel_Click(object sender, EventArgs e)
+        {
+            HighlightLabel(LocateStepLabel, 1);
+        }
+        private void AnalysisStepLabel_Click(object sender, EventArgs e)
+        {
+            HighlightLabel(AnalysisStepLabel, 2);
+        }
+
+        void HighlightLabel(Label CurrentLabel, int NextTool)
+        {
+            ConfigStepLabel.TextAlign = ContentAlignment.BottomCenter;
+            LocateStepLabel.TextAlign = ContentAlignment.BottomCenter;
+            AnalysisStepLabel.TextAlign = ContentAlignment.BottomCenter;
+            CurrentLabel.TextAlign = ContentAlignment.MiddleCenter;
+            CurrentToolCon.Controls.Remove(Tools[CurrentTool]);
+            CurrentTool = NextTool;
+            CurrentToolCon.Controls.Add(Tools[CurrentTool]);
+        }
+
         private void GUIClosing(object sender, FormClosingEventArgs e)
         {
             ImageQueue.StopRunning = true;
             WorkerThread.Join();
             Camera.Exit();
-        }
-
-        // Highlighting the different labels 
-        private void ConfigStepLabel_Click(object sender, EventArgs e)
-        {
-            ConfigStepLabel.TextAlign = ContentAlignment.MiddleCenter;
-            LocateStepLabel.TextAlign = ContentAlignment.BottomCenter;
-            AnalysisStepLabel.TextAlign = ContentAlignment.BottomCenter;
-            CurrentToolCon.Controls.Remove(Tools[CurrentTool]);
-            CurrentTool = 0;
-            CurrentToolCon.Controls.Add(Tools[CurrentTool]);
-        }
-
-        private void LocateStepLabel_Click(object sender, EventArgs e)
-        {
-            ConfigStepLabel.TextAlign = ContentAlignment.BottomCenter;
-            LocateStepLabel.TextAlign = ContentAlignment.MiddleCenter;
-            AnalysisStepLabel.TextAlign = ContentAlignment.BottomCenter;
-            CurrentToolCon.Controls.Remove(Tools[CurrentTool]);
-            CurrentTool = 1;
-            CurrentToolCon.Controls.Add(Tools[CurrentTool]);
-        }
-
-        private void AnalysisStepLabel_Click(object sender, EventArgs e)
-        {
-            ConfigStepLabel.TextAlign = ContentAlignment.BottomCenter;
-            LocateStepLabel.TextAlign = ContentAlignment.BottomCenter;
-            AnalysisStepLabel.TextAlign = ContentAlignment.MiddleCenter;
-            CurrentToolCon.Controls.Remove(Tools[CurrentTool]);
-            CurrentTool = 2;
-            CurrentToolCon.Controls.Add(Tools[CurrentTool]);
         }
     }
 }
