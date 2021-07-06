@@ -44,12 +44,13 @@ namespace MicroscopeGUI
         {
             if (Panning)
                 Offset = new Point(e.Location.X - OldMousePos.X, e.Location.Y - OldMousePos.Y);
-            int ZoomedWidth = (int)(Width * ZoomFactor);
-            int ZoomedHeight = (int)(Height * ZoomFactor);
-            int OffsetX = (base.Width - ZoomedWidth) / 2 + Offset.X;
-            int OffsetY = (base.Height - ZoomedHeight) / 2 + Offset.Y;
+            //int ZoomedWidth = (int)(Width * ZoomFactor);
+            //int ZoomedHeight = (int)(Height * ZoomFactor);
+            //int OffsetX = (base.Width - ZoomedWidth) / 2 + Offset.X;
+            //int OffsetY = (base.Height - ZoomedHeight) / 2 + Offset.Y;
 
-            CurrentMousePos = new Point(OffsetX + Width / 2, OffsetY + Height / 2);
+            //CurrentMousePos = new Point(OffsetX + ZoomedWidth / 2, OffsetY + ZoomedHeight / 2);
+            CurrentMousePos = Offset;
         }
 
         private void PictureViewer_MouseUp(object sender, MouseEventArgs e)

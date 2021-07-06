@@ -65,18 +65,12 @@ namespace MicroscopeGUI
         }
 
         // Highlighting the different labels 
-        private void ConfigStepLabel_Click(object sender, EventArgs e)
-        {
+        private void ConfigStepLabel_Click(object sender, EventArgs e) =>
             HighlightLabel(ConfigStepLabel, 0);
-        }
-        private void LocateStepLabel_Click(object sender, EventArgs e)
-        {
+        private void LocateStepLabel_Click(object sender, EventArgs e) =>
             HighlightLabel(LocateStepLabel, 1);
-        }
-        private void AnalysisStepLabel_Click(object sender, EventArgs e)
-        {
+        private void AnalysisStepLabel_Click(object sender, EventArgs e) =>
             HighlightLabel(AnalysisStepLabel, 2);
-        }
 
         void HighlightLabel(Label CurrentLabel, int NextTool)
         {
@@ -87,6 +81,60 @@ namespace MicroscopeGUI
             CurrentToolCon.Controls.Remove(Tools[CurrentTool]);
             CurrentTool = NextTool;
             CurrentToolCon.Controls.Add(Tools[CurrentTool]);
+        }
+
+        private void ChangeDirBtnClick(object sender, EventArgs e)
+        {
+            FolderBrowserDialog BrowserDialog = new FolderBrowserDialog();
+            if (BrowserDialog.ShowDialog() == DialogResult.OK)
+            {
+                // The selected directory
+                string SelectedDir = BrowserDialog.SelectedPath;
+                // The file paths from the selected directory
+                string[] FilePaths = System.IO.Directory.GetFiles(SelectedDir);
+                // Filtering and loading the images from the paths
+                LoadImagesFromFolder(FilePaths);
+            }
+        }
+
+        private void InitializeImgGallery()
+        {
+            ImgListCon.Controls.Clear();
+            ImgListCon.RowStyles.Clear();
+            ImgListCon.AutoScroll = true;
+        }
+
+        private void LoadImagesFromFolder(string[] Paths)
+        {
+            InitializeImgGallery();
+
+            int TablePos = 1;
+            foreach(string Path in Paths)
+            {
+                if (Path.EndsWith(".jpg") | Path.EndsWith(".png"))
+                {
+                    // Creating a new PictureBox for each row of the tableLayoutPanel
+                    PictureBox NewImgCon = new PictureBox
+                    {
+                        Image = new Bitmap(Path),
+                        SizeMode = PictureBoxSizeMode.Zoom,
+                        Anchor = AnchorStyles.Left | AnchorStyles.Top,
+                        Name = Path.Substring(Path.LastIndexOf("\\")).Remove(0, 1),
+                        Margin = new Padding(4, 0, 0, 4),
+                        Size = new System.Drawing.Size(160, 160)
+                    };
+
+                    // Binding the doubleclick event
+                    NewImgCon.MouseDoubleClick += PicBoxClicked;
+
+                    ImgListCon.Controls.Add(NewImgCon, 0, TablePos++);
+                }
+            }
+        }
+
+        private void PicBoxClicked(object sender, EventArgs e)
+        {
+            // TODO: actions when img is double clicked
         }
 
         // Closes the ImageQueue Thread and the camera correctly

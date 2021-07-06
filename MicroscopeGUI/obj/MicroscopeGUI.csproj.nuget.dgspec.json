@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Vincent\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj": {}
+    "C:\\Users\\MEINS\\Desktop\\Arduino\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Vincent\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj": {
+    "C:\\Users\\MEINS\\Desktop\\Arduino\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Vincent\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
+        "projectUniqueName": "C:\\Users\\MEINS\\Desktop\\Arduino\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
         "projectName": "MicroscopeGUI",
-        "projectPath": "C:\\Users\\Vincent\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
-        "packagesPath": "C:\\Users\\Vincent\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Vincent\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\obj\\",
+        "projectPath": "C:\\Users\\MEINS\\Desktop\\Arduino\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
+        "packagesPath": "C:\\Users\\MEINS\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\MEINS\\Desktop\\Arduino\\MicrosopyGUI\\MicroscopeGUI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\Vincent\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\MEINS\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -63,7 +63,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.202\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\5.0.203\\RuntimeIdentifierGraph.json"
         }
       }
     }

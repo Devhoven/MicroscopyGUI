@@ -32,6 +32,8 @@ namespace MicroscopeGUI
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GUI));
             this.ImgGalleryCon = new System.Windows.Forms.TableLayoutPanel();
             this.ImgGalleryLabel = new System.Windows.Forms.Label();
+            this.ChangeDirBtn = new System.Windows.Forms.Button();
+            this.ImgListCon = new System.Windows.Forms.TableLayoutPanel();
             this.CurrentToolCon = new System.Windows.Forms.TableLayoutPanel();
             this.StepCon = new System.Windows.Forms.TableLayoutPanel();
             this.LocateStepLabel = new System.Windows.Forms.Label();
@@ -39,8 +41,8 @@ namespace MicroscopeGUI
             this.AnalysisStepLabel = new System.Windows.Forms.Label();
             this.MenuBar = new System.Windows.Forms.MenuStrip();
             this.FilesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.HistogramMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainLayout = new System.Windows.Forms.TableLayoutPanel();
             this.ImgGalleryCon.SuspendLayout();
             this.CurrentToolCon.SuspendLayout();
@@ -53,13 +55,27 @@ namespace MicroscopeGUI
             // 
             resources.ApplyResources(this.ImgGalleryCon, "ImgGalleryCon");
             this.ImgGalleryCon.BackColor = System.Drawing.SystemColors.ActiveCaption;
-            this.ImgGalleryCon.Controls.Add(this.ImgGalleryLabel, 0, 0);
+            this.ImgGalleryCon.Controls.Add(this.ImgGalleryLabel, 0, 1);
+            this.ImgGalleryCon.Controls.Add(this.ChangeDirBtn, 0, 2);
+            this.ImgGalleryCon.Controls.Add(this.ImgListCon, 0, 3);
             this.ImgGalleryCon.Name = "ImgGalleryCon";
             // 
             // ImgGalleryLabel
             // 
             resources.ApplyResources(this.ImgGalleryLabel, "ImgGalleryLabel");
             this.ImgGalleryLabel.Name = "ImgGalleryLabel";
+            // 
+            // ChangeDirBtn
+            // 
+            resources.ApplyResources(this.ChangeDirBtn, "ChangeDirBtn");
+            this.ChangeDirBtn.Name = "ChangeDirBtn";
+            this.ChangeDirBtn.UseVisualStyleBackColor = true;
+            this.ChangeDirBtn.Click += new System.EventHandler(this.ChangeDirBtnClick);
+            // 
+            // ImgListCon
+            // 
+            resources.ApplyResources(this.ImgListCon, "ImgListCon");
+            this.ImgListCon.Name = "ImgListCon";
             // 
             // CurrentToolCon
             // 
@@ -109,15 +125,15 @@ namespace MicroscopeGUI
             this.FilesMenuItem.Name = "FilesMenuItem";
             resources.ApplyResources(this.FilesMenuItem, "FilesMenuItem");
             // 
-            // ExitMenuItem
-            // 
-            this.ExitMenuItem.Name = "ExitMenuItem";
-            resources.ApplyResources(this.ExitMenuItem, "ExitMenuItem");
-            // 
             // HistogramMenuItem
             // 
             this.HistogramMenuItem.Name = "HistogramMenuItem";
             resources.ApplyResources(this.HistogramMenuItem, "HistogramMenuItem");
+            // 
+            // ExitMenuItem
+            // 
+            this.ExitMenuItem.Name = "ExitMenuItem";
+            resources.ApplyResources(this.ExitMenuItem, "ExitMenuItem");
             // 
             // MainLayout
             // 
@@ -154,7 +170,6 @@ namespace MicroscopeGUI
         private System.Windows.Forms.TableLayoutPanel ImgGalleryCon;
         private System.Windows.Forms.Label ImgGalleryLabel;
         private System.Windows.Forms.TableLayoutPanel CurrentToolCon;
-        private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.MenuStrip MenuBar;
         private System.Windows.Forms.ToolStripMenuItem FilesMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ExitMenuItem;
@@ -164,6 +179,8 @@ namespace MicroscopeGUI
         private System.Windows.Forms.Label ConfigStepLabel;
         private System.Windows.Forms.Label AnalysisStepLabel;
         private System.Windows.Forms.ToolStripMenuItem HistogramMenuItem;
+        private System.Windows.Forms.Button ChangeDirBtn;
+        private System.Windows.Forms.TableLayoutPanel ImgListCon;
     }
 }
 

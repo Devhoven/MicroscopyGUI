@@ -57,7 +57,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ImgGalleryCon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Right</value>
   </data>
@@ -78,12 +78,12 @@
   <data name="ImgGalleryLabel.Location" type="System.Drawing.Point, System.Drawing.Primitives">
     <value>3, 5</value>
   </data>
-  <assembly alias="System.Windows.Forms.Primitives" name="System.Windows.Forms.Primitives, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms.Primitives" name="System.Windows.Forms.Primitives, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ImgGalleryLabel.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms.Primitives">
     <value>3, 5, 3, 0</value>
   </data>
   <data name="ImgGalleryLabel.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>194, 15</value>
+    <value>179, 15</value>
   </data>
   <data name="ImgGalleryLabel.TabIndex" type="System.Int32, System.Private.CoreLib">
     <value>0</value>
@@ -99,7 +99,7 @@
     <value>ImgGalleryLabel</value>
   </data>
   <data name="&gt;&gt;ImgGalleryLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ImgGalleryLabel.Parent" xml:space="preserve">
     <value>ImgGalleryCon</value>
@@ -107,11 +107,80 @@
   <data name="&gt;&gt;ImgGalleryLabel.ZOrder" xml:space="preserve">
     <value>0</value>
   </data>
+  <data name="ChangeDirBtn.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom</value>
+  </data>
+  <data name="ChangeDirBtn.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
+    <value>NoControl</value>
+  </data>
+  <data name="ChangeDirBtn.Location" type="System.Drawing.Point, System.Drawing.Primitives">
+    <value>5, 23</value>
+  </data>
+  <data name="ChangeDirBtn.Size" type="System.Drawing.Size, System.Drawing.Primitives">
+    <value>174, 30</value>
+  </data>
+  <data name="ChangeDirBtn.TabIndex" type="System.Int32, System.Private.CoreLib">
+    <value>1</value>
+  </data>
+  <data name="ChangeDirBtn.Text" xml:space="preserve">
+    <value>Change Directory</value>
+  </data>
+  <data name="&gt;&gt;ChangeDirBtn.Name" xml:space="preserve">
+    <value>ChangeDirBtn</value>
+  </data>
+  <data name="&gt;&gt;ChangeDirBtn.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ChangeDirBtn.Parent" xml:space="preserve">
+    <value>ImgGalleryCon</value>
+  </data>
+  <data name="&gt;&gt;ChangeDirBtn.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="ImgListCon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
+    <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="ImgListCon.ColumnCount" type="System.Int32, System.Private.CoreLib">
+    <value>1</value>
+  </data>
+  <data name="ImgListCon.Location" type="System.Drawing.Point, System.Drawing.Primitives">
+    <value>0, 56</value>
+  </data>
+  <data name="ImgListCon.Margin" type="System.Windows.Forms.Padding, System.Windows.Forms.Primitives">
+    <value>0, 0, 0, 0</value>
+  </data>
+  <data name="ImgListCon.RowCount" type="System.Int32, System.Private.CoreLib">
+    <value>1</value>
+  </data>
+  <data name="ImgListCon.Size" type="System.Drawing.Size, System.Drawing.Primitives">
+    <value>185, 579</value>
+  </data>
+  <data name="ImgListCon.TabIndex" type="System.Int32, System.Private.CoreLib">
+    <value>2</value>
+  </data>
+  <data name="&gt;&gt;ImgListCon.Name" xml:space="preserve">
+    <value>ImgListCon</value>
+  </data>
+  <data name="&gt;&gt;ImgListCon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ImgListCon.Parent" xml:space="preserve">
+    <value>ImgGalleryCon</value>
+  </data>
+  <data name="&gt;&gt;ImgListCon.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="ImgListCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls /&gt;&lt;Columns Styles="Percent,50" /&gt;&lt;Rows Styles="Percent,50" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
   <data name="ImgGalleryCon.Location" type="System.Drawing.Point, System.Drawing.Primitives">
-    <value>1040, 3</value>
+    <value>1055, 3</value>
+  </data>
+  <data name="ImgGalleryCon.RowCount" type="System.Int32, System.Private.CoreLib">
+    <value>4</value>
   </data>
   <data name="ImgGalleryCon.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>200, 635</value>
+    <value>185, 635</value>
   </data>
   <data name="ImgGalleryCon.TabIndex" type="System.Int32, System.Private.CoreLib">
     <value>0</value>
@@ -120,7 +189,7 @@
     <value>ImgGalleryCon</value>
   </data>
   <data name="&gt;&gt;ImgGalleryCon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ImgGalleryCon.Parent" xml:space="preserve">
     <value>MainLayout</value>
@@ -129,7 +198,7 @@
     <value>0</value>
   </data>
   <data name="ImgGalleryCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ImgGalleryLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,20" /&gt;&lt;Rows Styles="Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="ImgGalleryLabel" Row="1" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ChangeDirBtn" Row="2" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="ImgListCon" Row="3" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Absolute,20" /&gt;&lt;Rows Styles="AutoSize,0,AutoSize,0,Absolute,36,Absolute,15" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="CurrentToolCon.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left</value>
@@ -137,8 +206,113 @@
   <data name="CurrentToolCon.ColumnCount" type="System.Int32, System.Private.CoreLib">
     <value>1</value>
   </data>
+  <data name="&gt;&gt;StepCon.Name" xml:space="preserve">
+    <value>StepCon</value>
+  </data>
+  <data name="&gt;&gt;StepCon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;StepCon.Parent" xml:space="preserve">
+    <value>CurrentToolCon</value>
+  </data>
+  <data name="&gt;&gt;StepCon.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="StepCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="LocateStepLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ConfigStepLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AnalysisStepLabel" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.333332,Percent,33.333332,Percent,33.333332" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
+  <data name="CurrentToolCon.Location" type="System.Drawing.Point, System.Drawing.Primitives">
+    <value>3, 3</value>
+  </data>
+  <data name="CurrentToolCon.RowCount" type="System.Int32, System.Private.CoreLib">
+    <value>2</value>
+  </data>
+  <data name="CurrentToolCon.Size" type="System.Drawing.Size, System.Drawing.Primitives">
+    <value>200, 635</value>
+  </data>
+  <data name="CurrentToolCon.TabIndex" type="System.Int32, System.Private.CoreLib">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;CurrentToolCon.Name" xml:space="preserve">
+    <value>CurrentToolCon</value>
+  </data>
+  <data name="&gt;&gt;CurrentToolCon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;CurrentToolCon.Parent" xml:space="preserve">
+    <value>MainLayout</value>
+  </data>
+  <data name="&gt;&gt;CurrentToolCon.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="CurrentToolCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="StepCon" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,56,Absolute,8,Absolute,38,Absolute,10,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
+  </data>
   <data name="StepCon.ColumnCount" type="System.Int32, System.Private.CoreLib">
     <value>3</value>
+  </data>
+  <data name="&gt;&gt;LocateStepLabel.Name" xml:space="preserve">
+    <value>LocateStepLabel</value>
+  </data>
+  <data name="&gt;&gt;LocateStepLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;LocateStepLabel.Parent" xml:space="preserve">
+    <value>StepCon</value>
+  </data>
+  <data name="&gt;&gt;LocateStepLabel.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;ConfigStepLabel.Name" xml:space="preserve">
+    <value>ConfigStepLabel</value>
+  </data>
+  <data name="&gt;&gt;ConfigStepLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ConfigStepLabel.Parent" xml:space="preserve">
+    <value>StepCon</value>
+  </data>
+  <data name="&gt;&gt;ConfigStepLabel.ZOrder" xml:space="preserve">
+    <value>1</value>
+  </data>
+  <data name="&gt;&gt;AnalysisStepLabel.Name" xml:space="preserve">
+    <value>AnalysisStepLabel</value>
+  </data>
+  <data name="&gt;&gt;AnalysisStepLabel.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;AnalysisStepLabel.Parent" xml:space="preserve">
+    <value>StepCon</value>
+  </data>
+  <data name="&gt;&gt;AnalysisStepLabel.ZOrder" xml:space="preserve">
+    <value>2</value>
+  </data>
+  <data name="StepCon.Location" type="System.Drawing.Point, System.Drawing.Primitives">
+    <value>3, 3</value>
+  </data>
+  <data name="StepCon.RowCount" type="System.Int32, System.Private.CoreLib">
+    <value>1</value>
+  </data>
+  <data name="StepCon.Size" type="System.Drawing.Size, System.Drawing.Primitives">
+    <value>194, 37</value>
+  </data>
+  <data name="StepCon.TabIndex" type="System.Int32, System.Private.CoreLib">
+    <value>0</value>
+  </data>
+  <data name="&gt;&gt;StepCon.Name" xml:space="preserve">
+    <value>StepCon</value>
+  </data>
+  <data name="&gt;&gt;StepCon.Type" xml:space="preserve">
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;StepCon.Parent" xml:space="preserve">
+    <value>CurrentToolCon</value>
+  </data>
+  <data name="&gt;&gt;StepCon.ZOrder" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="StepCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
+    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="LocateStepLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ConfigStepLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AnalysisStepLabel" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33.333332,Percent,33.333332,Percent,33.333332" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
   <data name="LocateStepLabel.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -165,7 +339,7 @@
     <value>LocateStepLabel</value>
   </data>
   <data name="&gt;&gt;LocateStepLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;LocateStepLabel.Parent" xml:space="preserve">
     <value>StepCon</value>
@@ -198,7 +372,7 @@
     <value>ConfigStepLabel</value>
   </data>
   <data name="&gt;&gt;ConfigStepLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ConfigStepLabel.Parent" xml:space="preserve">
     <value>StepCon</value>
@@ -231,85 +405,13 @@
     <value>AnalysisStepLabel</value>
   </data>
   <data name="&gt;&gt;AnalysisStepLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;AnalysisStepLabel.Parent" xml:space="preserve">
     <value>StepCon</value>
   </data>
   <data name="&gt;&gt;AnalysisStepLabel.ZOrder" xml:space="preserve">
     <value>2</value>
-  </data>
-  <data name="StepCon.Location" type="System.Drawing.Point, System.Drawing.Primitives">
-    <value>3, 3</value>
-  </data>
-  <data name="StepCon.RowCount" type="System.Int32, System.Private.CoreLib">
-    <value>1</value>
-  </data>
-  <data name="StepCon.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>194, 37</value>
-  </data>
-  <data name="StepCon.TabIndex" type="System.Int32, System.Private.CoreLib">
-    <value>0</value>
-  </data>
-  <data name="&gt;&gt;StepCon.Name" xml:space="preserve">
-    <value>StepCon</value>
-  </data>
-  <data name="&gt;&gt;StepCon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;StepCon.Parent" xml:space="preserve">
-    <value>CurrentToolCon</value>
-  </data>
-  <data name="&gt;&gt;StepCon.ZOrder" xml:space="preserve">
-    <value>0</value>
-  </data>
-  <data name="StepCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="LocateStepLabel" Row="0" RowSpan="1" Column="1" ColumnSpan="1" /&gt;&lt;Control Name="ConfigStepLabel" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;Control Name="AnalysisStepLabel" Row="0" RowSpan="1" Column="2" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,33,333332,Percent,33,333332,Percent,33,333332" /&gt;&lt;Rows Styles="Percent,100" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="CurrentToolCon.Location" type="System.Drawing.Point, System.Drawing.Primitives">
-    <value>3, 3</value>
-  </data>
-  <data name="CurrentToolCon.RowCount" type="System.Int32, System.Private.CoreLib">
-    <value>2</value>
-  </data>
-  <data name="CurrentToolCon.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>200, 635</value>
-  </data>
-  <data name="CurrentToolCon.TabIndex" type="System.Int32, System.Private.CoreLib">
-    <value>1</value>
-  </data>
-  <data name="&gt;&gt;CurrentToolCon.Name" xml:space="preserve">
-    <value>CurrentToolCon</value>
-  </data>
-  <data name="&gt;&gt;CurrentToolCon.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;CurrentToolCon.Parent" xml:space="preserve">
-    <value>MainLayout</value>
-  </data>
-  <data name="&gt;&gt;CurrentToolCon.ZOrder" xml:space="preserve">
-    <value>1</value>
-  </data>
-  <data name="CurrentToolCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
-    <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="StepCon" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,56,Absolute,8,Absolute,38,Absolute,10,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
-  </data>
-  <data name="HistogramMenuItem.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>130, 22</value>
-  </data>
-  <data name="HistogramMenuItem.Text" xml:space="preserve">
-    <value>Histogram</value>
-  </data>
-  <data name="ExitMenuItem.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>93, 22</value>
-  </data>
-  <data name="ExitMenuItem.Text" xml:space="preserve">
-    <value>Exit</value>
-  </data>
-  <data name="FilesMenuItem.Size" type="System.Drawing.Size, System.Drawing.Primitives">
-    <value>42, 20</value>
-  </data>
-  <data name="FilesMenuItem.Text" xml:space="preserve">
-    <value>Files</value>
   </data>
   <data name="MenuBar.Location" type="System.Drawing.Point, System.Drawing.Primitives">
     <value>0, 0</value>
@@ -327,13 +429,31 @@
     <value>MenuBar</value>
   </data>
   <data name="&gt;&gt;MenuBar.Type" xml:space="preserve">
-    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.MenuStrip, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;MenuBar.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;MenuBar.ZOrder" xml:space="preserve">
     <value>1</value>
+  </data>
+  <data name="FilesMenuItem.Size" type="System.Drawing.Size, System.Drawing.Primitives">
+    <value>42, 20</value>
+  </data>
+  <data name="FilesMenuItem.Text" xml:space="preserve">
+    <value>Files</value>
+  </data>
+  <data name="HistogramMenuItem.Size" type="System.Drawing.Size, System.Drawing.Primitives">
+    <value>130, 22</value>
+  </data>
+  <data name="HistogramMenuItem.Text" xml:space="preserve">
+    <value>Histogram</value>
+  </data>
+  <data name="ExitMenuItem.Size" type="System.Drawing.Size, System.Drawing.Primitives">
+    <value>130, 22</value>
+  </data>
+  <data name="ExitMenuItem.Text" xml:space="preserve">
+    <value>Exit</value>
   </data>
   <data name="MainLayout.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
@@ -360,7 +480,7 @@
     <value>MainLayout</value>
   </data>
   <data name="&gt;&gt;MainLayout.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TableLayoutPanel, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;MainLayout.Parent" xml:space="preserve">
     <value>$this</value>
@@ -390,24 +510,24 @@
     <value>FilesMenuItem</value>
   </data>
   <data name="&gt;&gt;FilesMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="&gt;&gt;ExitMenuItem.Name" xml:space="preserve">
-    <value>ExitMenuItem</value>
-  </data>
-  <data name="&gt;&gt;ExitMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;HistogramMenuItem.Name" xml:space="preserve">
     <value>HistogramMenuItem</value>
   </data>
   <data name="&gt;&gt;HistogramMenuItem.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;ExitMenuItem.Name" xml:space="preserve">
+    <value>ExitMenuItem</value>
+  </data>
+  <data name="&gt;&gt;ExitMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">
     <value>GUI</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=5.0.6.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>
