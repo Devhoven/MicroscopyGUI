@@ -4,7 +4,7 @@ using uEye.Defines;
 using System.Drawing;
 using System.Windows.Forms;
 using System.Threading;
-using System.Windows.Forms.DataVisualization.Charting;
+
 
 namespace MicroscopeGUI
 {
@@ -15,28 +15,33 @@ namespace MicroscopeGUI
 
         Thread WorkerThread;
 
-        StepCon[] Tools;
+        TableLayoutPanel[] Tools;
         int CurrentTool;
         
         public GUI()
         {
             InitializeComponent();
 
+            // GUI Setup
+            Display = new PictureViewer();
+            MainLayout.Controls.Add(Display, 1, 0);
+
+            // Binding the functionality to the menu bar buttons, since you can't do it in the GUI for some reason
+            HistogramMenuItem.Click += new EventHandler(delegate (object o, EventArgs a)
+            {
+                new HistogramForm().Show();
+            });
+            ExitMenuItem.Click += new EventHandler(delegate (object o, EventArgs a)
+            {
+                Close();
+            });
+
+            // For debugging the camera
             Status StatusRet;
 
             // Camera initialization
             Camera = new Camera();
             StatusRet = Camera.Init();
-
-            // GUI Setup
-            Display = new PictureViewer();
-            MainLayout.Controls.Add(Display, 1, 0);
-            
-            //Display = LiveImgCon;
-            ExitMenuItem.Click += new EventHandler(delegate (object o, EventArgs a)
-            {
-                Close();
-            });
 
             // Initializing the thread, which runs the image queue
             WorkerThread = new Thread(ImageQueue.Run);
@@ -55,7 +60,7 @@ namespace MicroscopeGUI
             StatusRet = Camera.Acquisition.Capture();
             WorkerThread.Start();
             
-            Tools = new StepCon[] { new ConfigStepCon(), new LocateStepCon(), new AnalysisStepCon() };
+            Tools = new TableLayoutPanel[] { new ConfigStepCon(), new LocateStepCon(), new AnalysisStepCon() };
             CurrentToolCon.Controls.Add(Tools[0]);
         }
 
@@ -63,9 +68,6 @@ namespace MicroscopeGUI
         private void ConfigStepLabel_Click(object sender, EventArgs e)
         {
             HighlightLabel(ConfigStepLabel, 0);
-
-            HistogramForm form = new HistogramForm();
-            form.Show();
         }
         private void LocateStepLabel_Click(object sender, EventArgs e)
         {
@@ -87,6 +89,7 @@ namespace MicroscopeGUI
             CurrentToolCon.Controls.Add(Tools[CurrentTool]);
         }
 
+        // Closes the ImageQueue Thread and the camera correctly
         private void GUIClosing(object sender, FormClosingEventArgs e)
         {
             ImageQueue.StopRunning = true;

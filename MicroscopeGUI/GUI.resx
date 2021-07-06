@@ -293,6 +293,12 @@
   <data name="CurrentToolCon.LayoutSettings" type="System.Windows.Forms.TableLayoutSettings, System.Windows.Forms">
     <value>&lt;?xml version="1.0" encoding="utf-16"?&gt;&lt;TableLayoutSettings&gt;&lt;Controls&gt;&lt;Control Name="StepCon" Row="0" RowSpan="1" Column="0" ColumnSpan="1" /&gt;&lt;/Controls&gt;&lt;Columns Styles="Percent,100" /&gt;&lt;Rows Styles="Absolute,56,Absolute,8,Absolute,38,Absolute,10,Absolute,20" /&gt;&lt;/TableLayoutSettings&gt;</value>
   </data>
+  <data name="HistogramMenuItem.Size" type="System.Drawing.Size, System.Drawing.Primitives">
+    <value>130, 22</value>
+  </data>
+  <data name="HistogramMenuItem.Text" xml:space="preserve">
+    <value>Histogram</value>
+  </data>
   <data name="ExitMenuItem.Size" type="System.Drawing.Size, System.Drawing.Primitives">
     <value>93, 22</value>
   </data>
@@ -390,6 +396,12 @@
     <value>ExitMenuItem</value>
   </data>
   <data name="&gt;&gt;ExitMenuItem.Type" xml:space="preserve">
+    <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;HistogramMenuItem.Name" xml:space="preserve">
+    <value>HistogramMenuItem</value>
+  </data>
+  <data name="&gt;&gt;HistogramMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=5.0.5.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;$this.Name" xml:space="preserve">

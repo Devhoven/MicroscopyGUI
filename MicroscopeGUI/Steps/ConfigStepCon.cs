@@ -11,15 +11,18 @@ using uEye.Types;
 
 namespace MicroscopeGUI
 {
-    class ConfigStepCon : StepCon
+    class ConfigStepCon : TableLayoutPanel
     {
-        public ConfigStepCon() : base("Config")
+        public ConfigStepCon()
         {
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
 
+            // Ensures that everything gets added to the correct row
             int RowCount = 1;
 
             SliderControl BrightnessSlider = null;
+
+            // All of these constructs add another control to the current table
 
             GUI.Camera.AutoFeatures.Software.Shutter.GetEnable(out bool ShutterEnabled);
             new CheckBoxControl("Auto Shutter:", ShutterEnabled, new EventHandler(delegate (object o, EventArgs a)

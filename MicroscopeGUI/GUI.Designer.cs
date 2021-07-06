@@ -40,6 +40,7 @@ namespace MicroscopeGUI
             this.MenuBar = new System.Windows.Forms.MenuStrip();
             this.FilesMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.HistogramMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.MainLayout = new System.Windows.Forms.TableLayoutPanel();
             this.ImgGalleryCon.SuspendLayout();
             this.CurrentToolCon.SuspendLayout();
@@ -103,6 +104,7 @@ namespace MicroscopeGUI
             // FilesMenuItem
             // 
             this.FilesMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.HistogramMenuItem,
             this.ExitMenuItem});
             this.FilesMenuItem.Name = "FilesMenuItem";
             resources.ApplyResources(this.FilesMenuItem, "FilesMenuItem");
@@ -111,6 +113,11 @@ namespace MicroscopeGUI
             // 
             this.ExitMenuItem.Name = "ExitMenuItem";
             resources.ApplyResources(this.ExitMenuItem, "ExitMenuItem");
+            // 
+            // HistogramMenuItem
+            // 
+            this.HistogramMenuItem.Name = "HistogramMenuItem";
+            resources.ApplyResources(this.HistogramMenuItem, "HistogramMenuItem");
             // 
             // MainLayout
             // 
@@ -156,6 +163,7 @@ namespace MicroscopeGUI
         private System.Windows.Forms.Label LocateStepLabel;
         private System.Windows.Forms.Label ConfigStepLabel;
         private System.Windows.Forms.Label AnalysisStepLabel;
+        private System.Windows.Forms.ToolStripMenuItem HistogramMenuItem;
     }
 }
 

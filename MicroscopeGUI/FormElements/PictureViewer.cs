@@ -12,13 +12,14 @@ namespace MicroscopeGUI
 {
     public partial class PictureViewer : PictureBox
     {
-        int Width = 1240;
-        int Height = 1024;
+        new int Width = 1240;
+        new int Height = 1024;
 
         float ZoomFactor = 1.0f;
 
         bool Panning = false;
         Point OldMousePos;
+        Point CurrentMousePos;
         Point Offset;
 
         public new Image Image
@@ -30,6 +31,8 @@ namespace MicroscopeGUI
         public PictureViewer()
         {
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            SizeMode = PictureBoxSizeMode.Zoom;    
+
             MouseWheel += PictureViewer_MouseWheel;
 
             MouseDown += PictureViewer_MouseDown;
@@ -40,19 +43,25 @@ namespace MicroscopeGUI
         private void PictureViewer_MouseMove(object sender, MouseEventArgs e)
         {
             if (Panning)
-            {
                 Offset = new Point(e.Location.X - OldMousePos.X, e.Location.Y - OldMousePos.Y);
-            }
+            int ZoomedWidth = (int)(Width * ZoomFactor);
+            int ZoomedHeight = (int)(Height * ZoomFactor);
+            int OffsetX = (base.Width - ZoomedWidth) / 2 + Offset.X;
+            int OffsetY = (base.Height - ZoomedHeight) / 2 + Offset.Y;
+
+            CurrentMousePos = new Point(OffsetX + Width / 2, OffsetY + Height / 2);
         }
 
         private void PictureViewer_MouseUp(object sender, MouseEventArgs e)
         {
-            Panning = false;
+            if (e.Button == MouseButtons.Right)
+                Panning = false;
         }
 
         private void PictureViewer_MouseDown(object sender, MouseEventArgs e)
         {
-            Panning = true;
+            if (e.Button == MouseButtons.Right)
+                Panning = true;
             OldMousePos = new Point(e.Location.X - Offset.X, e.Location.Y - Offset.Y);
         }
 
@@ -73,9 +82,14 @@ namespace MicroscopeGUI
             int ZoomedHeight = (int)(Height * ZoomFactor);
             int OffsetX = (base.Width - ZoomedWidth) / 2 + Offset.X;
             int OffsetY = (base.Height - ZoomedHeight) / 2 + Offset.Y;
-            Graphics.DrawImage(Image, 
-                new Rectangle(OffsetX, OffsetY, ZoomedWidth, ZoomedHeight), 
+            Graphics.DrawImage(Image,
+                new Rectangle(OffsetX, OffsetY, ZoomedWidth, ZoomedHeight),
                 new Rectangle(0, 0, Width, Height), GraphicsUnit.Pixel);
+
+            Graphics.DrawEllipse(new Pen(Color.Red, 4), CurrentMousePos.X, CurrentMousePos.Y, 10, 10);
+
+            // Forces the picture box to repaint
+            Invalidate();
         }
     }
 }

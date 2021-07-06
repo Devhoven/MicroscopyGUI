@@ -81,11 +81,10 @@ namespace MicroscopeGUI
             Enable = EnabledByDefault;
         }
 
+        // If you need to set the value of the slider, this method should be used, since it can also be accessed from another 
+        // thread and won't cause problems
         public void SetValue(int Value)
         {
-            if (ImageQueue.StopRunning)
-                return;
-
             if (Slider.InvokeRequired)
             {
                 SetValueCallback Callback = new SetValueCallback(SetValue);

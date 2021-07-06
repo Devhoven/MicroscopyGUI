@@ -9,11 +9,11 @@ using System.Windows.Forms;
 
 namespace MicroscopeGUI
 {
-    class LocateStepCon : StepCon
+    class LocateStepCon : TableLayoutPanel
     {
         Button SnapButton;
 
-        public LocateStepCon() : base("Locate")
+        public LocateStepCon()
         {
             SnapButton = new Button();
             SnapButton.Text = "Snap";

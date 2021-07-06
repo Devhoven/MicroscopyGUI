@@ -35,9 +35,9 @@ namespace MicroscopeGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(800, 450);
+            this.ClientSize = new System.Drawing.Size(647, 373);
             this.Name = "HistogramForm";
-            this.Text = "HistogramForm";
+            this.Text = "Histogram";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.HistogramForm_FormClosing);
             this.ResumeLayout(false);
 
