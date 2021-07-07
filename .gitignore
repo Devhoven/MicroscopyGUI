@@ -1,0 +1,6 @@
+.vs
+MicroscopeGUI\obj
+MicroscopeGUI\bin
+MicroscopeGUI\.vs
+*.cache
+*.assets.cache
