@@ -483,11 +483,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\MEINS\\Desktop\\Arduino\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
+      "projectUniqueName": "C:\\Users\\MEINS\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
       "projectName": "MicroscopeGUI",
-      "projectPath": "C:\\Users\\MEINS\\Desktop\\Arduino\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
+      "projectPath": "C:\\Users\\MEINS\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
       "packagesPath": "C:\\Users\\MEINS\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\MEINS\\Desktop\\Arduino\\MicrosopyGUI\\MicroscopeGUI\\obj\\",
+      "outputPath": "C:\\Users\\MEINS\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\MEINS\\AppData\\Roaming\\NuGet\\NuGet.Config",
