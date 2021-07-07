@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using System.Drawing;
+﻿using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Numerics;
+using System.Windows.Forms;
 
 
 namespace MicroscopeGUI
@@ -15,12 +11,12 @@ namespace MicroscopeGUI
         new int Width = 1240;
         new int Height = 1024;
 
-        float ZoomFactor = 1.0f;
-
         bool Panning = false;
-        Point OldMousePos;
-        Point CurrentMousePos;
-        Point Offset;
+
+        float ZoomFactor = 1.0f;
+        Vector2 Offset;
+        Vector2 OldMousePos;
+        Vector2 CurrentMousePos;
 
         public new Image Image
         {
@@ -31,7 +27,7 @@ namespace MicroscopeGUI
         public PictureViewer()
         {
             Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
-            SizeMode = PictureBoxSizeMode.Zoom;    
+            SizeMode = PictureBoxSizeMode.Normal;    
 
             MouseWheel += PictureViewer_MouseWheel;
 
@@ -43,14 +39,12 @@ namespace MicroscopeGUI
         private void PictureViewer_MouseMove(object sender, MouseEventArgs e)
         {
             if (Panning)
-                Offset = new Point(e.Location.X - OldMousePos.X, e.Location.Y - OldMousePos.Y);
-            //int ZoomedWidth = (int)(Width * ZoomFactor);
-            //int ZoomedHeight = (int)(Height * ZoomFactor);
-            //int OffsetX = (base.Width - ZoomedWidth) / 2 + Offset.X;
-            //int OffsetY = (base.Height - ZoomedHeight) / 2 + Offset.Y;
+            {
+                Offset.X += (e.X - OldMousePos.X) / ZoomFactor;
+                Offset.Y += (e.Y - OldMousePos.Y) / ZoomFactor;
 
-            //CurrentMousePos = new Point(OffsetX + ZoomedWidth / 2, OffsetY + ZoomedHeight / 2);
-            CurrentMousePos = Offset;
+                OldMousePos = new Vector2(e.X, e.Y);
+            }
         }
 
         private void PictureViewer_MouseUp(object sender, MouseEventArgs e)
@@ -63,31 +57,38 @@ namespace MicroscopeGUI
         {
             if (e.Button == MouseButtons.Right)
                 Panning = true;
-            OldMousePos = new Point(e.Location.X - Offset.X, e.Location.Y - Offset.Y);
+
+            OldMousePos = new Vector2(e.X, e.Y);
         }
 
         private void PictureViewer_MouseWheel(object sender, MouseEventArgs e)
         {
-            ZoomFactor += e.Delta > 0 ? 0.2f : -0.2f;
-            ZoomFactor = ZoomFactor < 1 ? 1 : ZoomFactor;
+            ZoomFactor *= e.Delta > 0 ? 1.1f : 0.9f;
+            ZoomFactor = ZoomFactor < 0.8f ? 0.8f : ZoomFactor;
+
+            CurrentMousePos = new Vector2(e.X, e.Y);
         }
 
         protected override void OnPaint(PaintEventArgs pe)
         {
             Graphics Graphics = pe.Graphics;
-
             Graphics.Clear(Color.White);
 
             Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
-            int ZoomedWidth = (int)(Width * ZoomFactor);
-            int ZoomedHeight = (int)(Height * ZoomFactor);
-            int OffsetX = (base.Width - ZoomedWidth) / 2 + Offset.X;
-            int OffsetY = (base.Height - ZoomedHeight) / 2 + Offset.Y;
-            Graphics.DrawImage(Image,
-                new Rectangle(OffsetX, OffsetY, ZoomedWidth, ZoomedHeight),
-                new Rectangle(0, 0, Width, Height), GraphicsUnit.Pixel);
 
-            Graphics.DrawEllipse(new Pen(Color.Red, 4), CurrentMousePos.X, CurrentMousePos.Y, 10, 10);
+            Vector2 Pos = new Vector2(CurrentMousePos.X - Offset.X, CurrentMousePos.Y - Offset.Y);
+
+            Vector2 UVBottom = new Vector2(Width, Height);
+
+            Vector2 TexXY = Pos - Pos * ZoomFactor;
+            Vector2 TexXYBottom = UVBottom * ZoomFactor + Pos;
+
+            TexXYBottom -= Pos * ZoomFactor;
+            TexXYBottom -= TexXY;
+
+            Graphics.DrawImage(Image, 
+                new Rectangle((int)(TexXY.X + Offset.X), (int)(TexXY.Y + Offset.Y), (int)(TexXYBottom.X), (int)(TexXYBottom.Y)),
+                new Rectangle(0, 0, Width, Height), GraphicsUnit.Pixel);
 
             // Forces the picture box to repaint
             Invalidate();

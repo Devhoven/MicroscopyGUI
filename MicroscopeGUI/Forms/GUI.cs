@@ -114,16 +114,17 @@ namespace MicroscopeGUI
                 if (Path.EndsWith(".jpg") | Path.EndsWith(".png"))
                 {
                     // Creating a new PictureBox for each row of the tableLayoutPanel
+                    Bitmap CurrentImage = new Bitmap(Path);
                     PictureBox NewImgCon = new PictureBox
                     {
-                        Image = new Bitmap(Path),
+                        Image = CurrentImage,
                         SizeMode = PictureBoxSizeMode.Zoom,
                         Anchor = AnchorStyles.Left | AnchorStyles.Top,
                         Name = Path.Substring(Path.LastIndexOf("\\")).Remove(0, 1),
                         Margin = new Padding(4, 0, 0, 4),
                         Size = new System.Drawing.Size(160, 160)
                     };
-
+                    
                     // Binding the doubleclick event
                     NewImgCon.MouseDoubleClick += PicBoxClicked;
 
