@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "dgSpecHash": "EpxjYLSawj87PE33Ib51qU5Z8s8B8ePCI8kYglOu6Jt653eXnqVjN35qESKOkd9ahT4OMyEYrbWRwT3SJJVvPw==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\MEINS\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\MEINS\\.nuget\\packages\\maikebing.system.windows.forms.datavisualization\\5.0.1\\maikebing.system.windows.forms.datavisualization.5.0.1.nupkg.sha512",
+    "C:\\Users\\MEINS\\.nuget\\packages\\microsoft.netcore.platforms\\5.0.0\\microsoft.netcore.platforms.5.0.0.nupkg.sha512",
+    "C:\\Users\\MEINS\\.nuget\\packages\\microsoft.netcore.targets\\1.1.0\\microsoft.netcore.targets.1.1.0.nupkg.sha512",
+    "C:\\Users\\MEINS\\.nuget\\packages\\microsoft.win32.systemevents\\5.0.0\\microsoft.win32.systemevents.5.0.0.nupkg.sha512",
+    "C:\\Users\\MEINS\\.nuget\\packages\\system.drawing.common\\5.0.0\\system.drawing.common.5.0.0.nupkg.sha512",
+    "C:\\Users\\MEINS\\.nuget\\packages\\system.drawing.primitives\\4.3.0\\system.drawing.primitives.4.3.0.nupkg.sha512",
+    "C:\\Users\\MEINS\\.nuget\\packages\\system.runtime\\4.3.0\\system.runtime.4.3.0.nupkg.sha512",
+    "C:\\Users\\MEINS\\.nuget\\packages\\system.runtime.extensions\\4.3.0\\system.runtime.extensions.4.3.0.nupkg.sha512",
+    "C:\\Users\\MEINS\\.nuget\\packages\\system.windows.extensions\\5.0.0\\system.windows.extensions.5.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}
