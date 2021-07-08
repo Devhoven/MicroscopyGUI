@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Numerics;
 using System.Windows.Forms;
@@ -14,6 +15,7 @@ namespace MicroscopeGUI
         bool Panning = false;
 
         float ZoomFactor = 1.0f;
+
         Vector2 Offset;
         Vector2 OldMousePos;
         Vector2 CurrentMousePos;
@@ -40,22 +42,23 @@ namespace MicroscopeGUI
         {
             if (Panning)
             {
-                Offset.X += (e.X - OldMousePos.X) / ZoomFactor;
-                Offset.Y += (e.Y - OldMousePos.Y) / ZoomFactor;
+                Offset.X -= (e.X - OldMousePos.X) / ZoomFactor;
+                Offset.Y -= (e.Y - OldMousePos.Y) / ZoomFactor;
 
-                OldMousePos = new Vector2(e.X, e.Y);
+                OldMousePos = CurrentMousePos;
             }
+            CurrentMousePos = new Vector2(e.X, e.Y);
         }
 
         private void PictureViewer_MouseUp(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Middle)
                 Panning = false;
         }
 
         private void PictureViewer_MouseDown(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
+            if (e.Button == MouseButtons.Middle)
                 Panning = true;
 
             OldMousePos = new Vector2(e.X, e.Y);
@@ -65,10 +68,8 @@ namespace MicroscopeGUI
         {
             ZoomFactor *= e.Delta > 0 ? 1.1f : 0.9f;
             ZoomFactor = ZoomFactor < 0.8f ? 0.8f : ZoomFactor;
-
-            CurrentMousePos = new Vector2(e.X, e.Y);
         }
-
+        
         protected override void OnPaint(PaintEventArgs pe)
         {
             Graphics Graphics = pe.Graphics;
@@ -76,18 +77,14 @@ namespace MicroscopeGUI
 
             Graphics.InterpolationMode = InterpolationMode.NearestNeighbor;
 
-            Vector2 Pos = new Vector2(CurrentMousePos.X - Offset.X, CurrentMousePos.Y - Offset.Y);
+            Vector2 MouseWorldPos = new Vector2(CurrentMousePos.X - Offset.X,
+                CurrentMousePos.Y - Offset.Y);
 
-            Vector2 UVBottom = new Vector2(Width, Height);
-
-            Vector2 TexXY = Pos - Pos * ZoomFactor;
-            Vector2 TexXYBottom = UVBottom * ZoomFactor + Pos;
-
-            TexXYBottom -= Pos * ZoomFactor;
-            TexXYBottom -= TexXY;
+            Vector2 TopLeftOffset = MouseWorldPos - MouseWorldPos * ZoomFactor;
+            Vector2 ZoomedSize = new Vector2(Width, Height) * ZoomFactor;
 
             Graphics.DrawImage(Image, 
-                new Rectangle((int)(TexXY.X + Offset.X), (int)(TexXY.Y + Offset.Y), (int)(TexXYBottom.X), (int)(TexXYBottom.Y)),
+                new Rectangle((int)(TopLeftOffset.X), (int)(TopLeftOffset.Y), (int)(ZoomedSize.X), (int)(ZoomedSize.Y)),
                 new Rectangle(0, 0, Width, Height), GraphicsUnit.Pixel);
 
             // Forces the picture box to repaint
