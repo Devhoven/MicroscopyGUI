@@ -1,32 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Vincent\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj": {}
+    "C:\\Users\\Vincent\\Documents\\GitHub\\MicroscopeGUI\\MicroscopeGUI\\MicroscopeGUI\\MicroscopeGUI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Vincent\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj": {
+    "C:\\Users\\Vincent\\Documents\\GitHub\\MicroscopeGUI\\MicroscopeGUI\\MicroscopeGUI\\MicroscopeGUI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Vincent\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
+        "projectUniqueName": "C:\\Users\\Vincent\\Documents\\GitHub\\MicroscopeGUI\\MicroscopeGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
         "projectName": "MicroscopeGUI",
-        "projectPath": "C:\\Users\\Vincent\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
+        "projectPath": "C:\\Users\\Vincent\\Documents\\GitHub\\MicroscopeGUI\\MicroscopeGUI\\MicroscopeGUI\\MicroscopeGUI.csproj",
         "packagesPath": "C:\\Users\\Vincent\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Vincent\\Documents\\GitHub\\MicrosopyGUI\\MicroscopeGUI\\obj\\",
+        "outputPath": "C:\\Users\\Vincent\\Documents\\GitHub\\MicroscopeGUI\\MicroscopeGUI\\MicroscopeGUI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Vincent\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net5.0-windows7.0"
+          "netcoreapp3.1"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net5.0-windows7.0": {
-            "targetAlias": "net5.0-windows",
+          "netcoreapp3.1": {
+            "targetAlias": "netcoreapp3.1",
             "projectReferences": {}
           }
         },
@@ -37,12 +37,16 @@
         }
       },
       "frameworks": {
-        "net5.0-windows7.0": {
-          "targetAlias": "net5.0-windows",
+        "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "dependencies": {
-            "Maikebing.System.Windows.Forms.DataVisualization": {
+            "Ookii.Dialogs.Wpf": {
               "target": "Package",
-              "version": "[5.0.1, )"
+              "version": "[3.1.0, )"
+            },
+            "System.Drawing.Common": {
+              "target": "Package",
+              "version": "[5.0.2, )"
             }
           },
           "imports": [
@@ -59,7 +63,7 @@
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             },
-            "Microsoft.WindowsDesktop.App.WindowsForms": {
+            "Microsoft.WindowsDesktop.App.WPF": {
               "privateAssets": "none"
             }
           },

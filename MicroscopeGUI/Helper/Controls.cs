@@ -3,7 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 
 namespace MicroscopeGUI
 {
@@ -19,94 +27,123 @@ namespace MicroscopeGUI
             set { _Enable = value; }
         }
 
-        public Control(string Name)
+        public Control(string Name, Grid Parent)
         {
             Label = new Label();
-            Label.Text = Name;
-            Label.Anchor = AnchorStyles.Left;
-            Label.AutoSize = true;
+            Label.Content = Name;
+            Label.VerticalAlignment = VerticalAlignment.Top;
+            Label.HorizontalAlignment = HorizontalAlignment.Left;
+
+            // Has to be initialized for every new row
+            RowDefinition CheckBoxRowDefinition = new RowDefinition()
+            {
+                Height = GridLength.Auto
+            };
+            Parent.RowDefinitions.Add(CheckBoxRowDefinition);
         }
     }
 
     class CheckBoxControl : Control
     {
+        // Standard margins for the label
+        static Thickness LabelMargin = new Thickness()
+        {
+            Right = 20
+        };
+        static Thickness CheckBoxMargin = new Thickness()
+        {
+            Right = 5
+        };
+
+        public override bool Enable
+        {
+            get => CheckBox.IsEnabled;
+            set => CheckBox.IsEnabled = value;
+        }
+
         CheckBox CheckBox;
 
-        public CheckBoxControl(string Name, bool DefaultEnabled, EventHandler BoxClickedEvent,
-            TableLayoutControlCollection Control, int Row, int Column) : base(Name)
+        public CheckBoxControl(string Name, bool DefaultEnabled, RoutedEventHandler BoxClickedEvent,
+            Grid Parent, int Row) : base(Name, Parent)
         {
             CheckBox = new CheckBox();
-            CheckBox.Checked = DefaultEnabled;
+            CheckBox.IsChecked = DefaultEnabled;
             CheckBox.Click += BoxClickedEvent;
+            CheckBox.VerticalAlignment = VerticalAlignment.Center;
+            CheckBox.HorizontalAlignment = HorizontalAlignment.Right;
+            CheckBox.Margin = CheckBoxMargin;
 
-            Control.Add(CheckBox, Row, Column);
-            Control.Add(Label, Row, Column);
+            Label.Margin = LabelMargin;
+
+            // Adding the elements to the parent grid
+            Parent.Children.Add(Label);
+            Parent.Children.Add(CheckBox);
+            Grid.SetRow(Label, Row);
+            Grid.SetRow(CheckBox, Row);
         }
     }
 
     class SliderControl : Control
     {
-        string OriginalName;
-        public TrackBar Slider;
+        // Standard margins for the elements
+        static Thickness LabelMargin = new Thickness()
+        {
+            Bottom = 20
+        };
+        static Thickness SliderMargin = new Thickness()
+        {
+            Right = 5,
+            Left = 5
+        };
 
-        delegate void SetValueCallback(int Value);
+        string OriginalName;
+        public Slider Slider;
 
         public override bool Enable
         {
-            get { return _Enable; }
-            set
-            {
-                Slider.Enabled = value;
-                _Enable = value;
-            }
+            get => Slider.IsEnabled; 
+            set => Slider.IsEnabled = value;
         }
 
-        public SliderControl(string Name, int Min, int Max, int StartVal, EventHandler ValueChangedEvent, 
-            TableLayoutControlCollection Control, int Row, int Column, bool EnabledByDefault = true) : base(Name + " (" + StartVal + "):")
+        public SliderControl(string Name, int Min, int Max, int StartVal, RoutedPropertyChangedEventHandler<double> ValueChangedEvent,
+            Grid Parent, int Row, bool EnabledByDefault = true) : base(Name + " (" + StartVal + "):", Parent)
         {
-            Slider = new TrackBar();
-            Slider.Anchor = AnchorStyles.Left | AnchorStyles.Right | AnchorStyles.Top;
+            Slider = new Slider();
+            Slider.VerticalAlignment = VerticalAlignment.Bottom;
             Slider.Minimum = Min;
             Slider.Maximum = Max;
             Slider.Value = StartVal;
+            Slider.Margin = SliderMargin;
 
             Slider.ValueChanged += ValueChangedEvent;
             Slider.ValueChanged += ChangeLabel;
 
+            Label.Margin = LabelMargin;
+
             OriginalName = Name;
 
-            Control.Add(Slider, Row, Column);
-            Control.Add(Label, Row, Column);
+            // Adding the elements to the parent grid
+            Parent.Children.Add(Label);
+            Parent.Children.Add(Slider);
+            // Setting the row value 
+            Grid.SetRow(Label, Row);
+            Grid.SetRow(Slider, Row);
 
             Enable = EnabledByDefault;
         }
 
-        // If you need to set the value of the slider, this method should be used, since it can also be accessed from another 
-        // thread and won't cause problems
-        public void SetValue(int Value)
-        {
-            if (Slider.InvokeRequired)
-            {
-                SetValueCallback Callback = new SetValueCallback(SetValue);
-                Slider.BeginInvoke(Callback, new object[] { Value });
-            }
-            else
-            {
-                Slider.Value = Value;
-            }
-        }
+        public void SetValue(double Value) =>
+            Slider.Value = Value;
 
-        private void ChangeLabel(object sender, EventArgs e)
-        {
-            Label.Text = OriginalName + " (" + Slider.Value + "): ";
-        }
+        private void ChangeLabel(object sender, EventArgs e) =>
+            Label.Content = OriginalName + " (" + (int)Slider.Value + "): ";
     }
 
     class UpdatingSliderControl : SliderControl
     {
-        public UpdatingSliderControl(string Name, int Min, int Max, int StartVal, EventHandler ValueChangedEvent,
-            EventHandler OnFrameChange, TableLayoutControlCollection Control, int Row, int Column) : 
-            base(Name, Min, Max, StartVal, ValueChangedEvent, Control, Row, Column)
+        public UpdatingSliderControl(string Name, int Min, int Max, int StartVal, RoutedPropertyChangedEventHandler<double> ValueChangedEvent,
+            EventHandler OnFrameChange, Grid Parent, int Row, bool EnabledByDefault = true) :
+            base(Name, Min, Max, StartVal, ValueChangedEvent, Parent, Row, EnabledByDefault)
         {
             ImageQueue.OnFrameChange += OnFrameChange;
         }
