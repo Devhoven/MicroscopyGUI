@@ -7,6 +7,9 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
+    <Window.Resources>
+        
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -24,8 +27,8 @@
             <local:ConfigStepCon Grid.Row="0"/>
         </Grid>
 
-        <local:ImageViewer x:Name="ZooDisplay" Grid.Column="1">
-            <Image Source="C:/Users/Vincent/Desktop/SEMImages/CPUBruch.png" RenderOptions.BitmapScalingMode="NearestNeighbor"></Image>
+        <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1">
+            <Image x:Name="Test" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
         </local:ImageViewer>
 
         <Grid Name="ImageGalleryCon" Grid.ZIndex="1" Grid.Column="2" Background="Aqua" Width="200">

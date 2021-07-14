@@ -132,8 +132,11 @@ namespace MicroscopeGUI
             Enable = EnabledByDefault;
         }
 
-        public void SetValue(double Value) =>
-            Slider.Value = Value;
+        // Thread safe value setting
+        public void SetValue(double Value)
+        {
+            UI.CurrentDispatcher.Invoke(() => Slider.Value = Value);
+        }
 
         private void ChangeLabel(object sender, EventArgs e) =>
             Label.Content = OriginalName + " (" + (int)Slider.Value + "): ";

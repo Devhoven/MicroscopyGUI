@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -13,14 +14,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using uEye;
 using uEye.Defines;
+using Image = System.Windows.Controls.Image;
 
 namespace MicroscopeGUI
 {
     public partial class UI : Window
     {
         public static Camera Cam;
+        public static Image CurrentFrame;
+        public static Dispatcher CurrentDispatcher;
 
         Thread WorkerThread;
 
@@ -30,9 +35,13 @@ namespace MicroscopeGUI
 
             InitializeComponent();
 
-            Closing += GUIClosing;
-        }
+            CurrentFrame = Test;
+            CurrentDispatcher = Dispatcher;
 
+            Closing += GUIClosing;
+
+            StartCapture();
+        }
 
         void InitializeCam()
         {
@@ -55,11 +64,15 @@ namespace MicroscopeGUI
                     Cam.Memory.Sequence.Add(MemID);
             }
             StatusRet = Cam.Memory.Sequence.InitImageQueue();
+        }
 
+        void StartCapture()
+        {
             // Starting the live feed and the image queue thread
-            StatusRet = Cam.Acquisition.Capture();
+            Cam.Acquisition.Capture();
             WorkerThread.Start();
         }
+
         private void GUIClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             ImageQueue.StopRunning = true;
