@@ -22,9 +22,22 @@
 
         <Grid Name="ToolCon" Grid.ZIndex="1" Grid.Column="0" Background="OrangeRed" Width="200">
             <Grid.RowDefinitions>
+                <RowDefinition Height="30"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <local:ConfigStepCon Grid.Row="0"/>
+            
+            <Grid Name="StepBtnCon" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Config" Grid.Column="0"/>
+                <Label Content="Locate" Grid.Column="1"/>
+                <Label Content="Analysis" Grid.Column="2"/>
+            </Grid>
+            
+            <local:ConfigStepCon Grid.Row="1"/>
         </Grid>
 
         <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1">
