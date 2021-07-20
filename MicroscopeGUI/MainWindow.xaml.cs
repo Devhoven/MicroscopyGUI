@@ -29,45 +29,18 @@ namespace MicroscopeGUI
 
         Thread WorkerThread;
 
-        double[] ValuesR;
-        double[] ValuesG;
-        double[] ValuesB;
-        double[] ValuesX;
-
         public UI()
         {
             InitializeCam();
 
             InitializeComponent();
 
-            CurrentFrame = Test;
+            CurrentFrame = CurrentFrameCon;
             CurrentDispatcher = Dispatcher;
 
             Closing += GUIClosing;
 
             StartCapture();
-
-            ValuesR = new double[255];
-            ValuesG = new double[255];
-            ValuesB = new double[255];
-            ValuesX = new double[255];
-            for (int i = 0; i < 255; i++)
-                ValuesX[i] = i;
-
-            ImageQueue.OnFrameChange += new EventHandler(delegate (object o, EventArgs e)
-            {
-                WpfPlot1.Plot.Clear();
-                for (int i = 0; i < 255; i++)
-                    ValuesR[i] = ImageQueue.Histogram[i];
-
-                //for (int i = 256; i < 511; i++)
-                //    ValuesG[i - 256] = ImageQueue.Histogram[i];
-
-                //for (int i = 512; i < 767; i++)
-                //    ValuesB[i - 512] = ImageQueue.Histogram[i];
-
-                WpfPlot1.Plot.PlotBar(ValuesX, ValuesR, null, "Labelu", 0.8, 0, true, System.Drawing.Color.Red);
-            });
         }
 
         void InitializeCam()

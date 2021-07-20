@@ -18,8 +18,6 @@ namespace MicroscopeGUI
     {
         // Is set to true at the end of the program, so the thread won't be running in the background
         public static volatile bool StopRunning = false;
-        // Always holds the newest frame of the camera
-        static byte[] CurrentFrameData = new byte[1280 * 1024 * 3];
         // Fires if the frame has changed
         public static event EventHandler OnFrameChange = delegate { };
         // Contains all of the values of the histogram of the current image
@@ -42,14 +40,20 @@ namespace MicroscopeGUI
 
                     UI.Cam.Memory.ToBitmap(MemID, out Bitmap bmp);
                     
-                    //Setting the current image on the picture panel
+                    // Checking if the main Thread is still running
                     if (!StopRunning && !UI.CurrentDispatcher.HasShutdownStarted)
-                        UI.CurrentDispatcher.Invoke(() => UI.CurrentFrame.Source = Convert(bmp));
+                    {
+                        // Setting the current image on the picture panel
+                        // Calling the frame change event
+                        UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+                            new Action(() => {
+                                UI.CurrentFrame.Source = Convert(bmp);
+                                OnFrameChange(null, null);
+                            }));
+                    }
 
                     // Unlocking the image buffer
                     UI.Cam.Memory.Unlock(MemID);
-
-                    OnFrameChange(null, null);
                 }
             }
         }
