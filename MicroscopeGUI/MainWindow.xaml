@@ -20,7 +20,7 @@
             <RowDefinition Height="1*"/>
         </Grid.RowDefinitions>
 
-        <Grid Name="ToolCon" Grid.ZIndex="1" Grid.Column="0" Background="OrangeRed" Width="200">
+        <Grid Name="ToolCon" Grid.ZIndex="1" Grid.Column="0" Background="OrangeRed" Width="500">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="1*"/>
@@ -36,8 +36,10 @@
                 <Label Content="Locate" Grid.Column="1"/>
                 <Label Content="Analysis" Grid.Column="2"/>
             </Grid>
-            
-            <local:ConfigStepCon Grid.Row="1"/>
+
+            <WpfPlot Name="WpfPlot1" Grid.Row="1"/>
+
+            <!--<local:ConfigStepCon Grid.Row="1"/>-->
         </Grid>
 
         <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1">

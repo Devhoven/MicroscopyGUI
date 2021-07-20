@@ -21,7 +21,7 @@ namespace MicroscopeGUI
         // Always holds the newest frame of the camera
         static byte[] CurrentFrameData = new byte[1280 * 1024 * 3];
         // Fires if the frame has changed
-        public static event EventHandler OnFrameChange;
+        public static event EventHandler OnFrameChange = delegate { };
         // Contains all of the values of the histogram of the current image
         // 3 * 256, since there is a value for every 8 bit value of one channel
         public static uint[] Histogram = new uint[3 * 256];
@@ -41,9 +41,10 @@ namespace MicroscopeGUI
                     UI.Cam.Memory.Lock(MemID);
 
                     UI.Cam.Memory.ToBitmap(MemID, out Bitmap bmp);
-
+                    
                     //Setting the current image on the picture panel
-                    UI.CurrentDispatcher.Invoke(() => UI.CurrentFrame.Source = Convert(bmp));
+                    if (!StopRunning && !UI.CurrentDispatcher.HasShutdownStarted)
+                        UI.CurrentDispatcher.Invoke(() => UI.CurrentFrame.Source = Convert(bmp));
 
                     // Unlocking the image buffer
                     UI.Cam.Memory.Unlock(MemID);
@@ -53,21 +54,21 @@ namespace MicroscopeGUI
             }
         }
 
-        static BitmapSource Convert(System.Drawing.Bitmap bitmap)
+        static BitmapSource Convert(Bitmap BMP)
         {
-            var bitmapData = bitmap.LockBits(
-                new System.Drawing.Rectangle(0, 0, bitmap.Width, bitmap.Height),
-                System.Drawing.Imaging.ImageLockMode.ReadOnly, bitmap.PixelFormat);
+            BitmapData BMPData = BMP.LockBits(
+                new Rectangle(0, 0, BMP.Width, BMP.Height),
+                ImageLockMode.ReadOnly, BMP.PixelFormat);
 
-            var bitmapSource = BitmapSource.Create(
-                bitmapData.Width, bitmapData.Height,
-                bitmap.HorizontalResolution, bitmap.VerticalResolution,
+            BitmapSource BMPSource = BitmapSource.Create(
+                BMPData.Width, BMPData.Height,
+                BMP.HorizontalResolution, BMP.VerticalResolution,
                 PixelFormats.Bgr24, null,
-                bitmapData.Scan0, bitmapData.Stride * bitmapData.Height, bitmapData.Stride);
+                BMPData.Scan0, BMPData.Stride * BMPData.Height, BMPData.Stride);
 
-            bitmap.UnlockBits(bitmapData);
+            BMP.UnlockBits(BMPData);
 
-            return bitmapSource;
+            return BMPSource;
         }
     }
 }
