@@ -25,7 +25,7 @@ namespace MicroscopeGUI
         public static uint[] Histogram = new uint[3 * 256];
 
         public static void Run()
-        {
+        {/*
             while (!StopRunning)
             {
                 // Waits for the next image and returns the memory ID if a new image was sent by the cam
@@ -55,7 +55,7 @@ namespace MicroscopeGUI
                     // Unlocking the image buffer
                     UI.Cam.Memory.Unlock(MemID);
                 }
-            }
+            }*/
         }
 
         static BitmapSource Convert(Bitmap BMP)

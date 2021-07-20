@@ -21,10 +21,11 @@ namespace MicroscopeGUI
 {
     class ImageGallery : StackPanel
     {
-        public String path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+        // standard path 
+        public String stdPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); 
         public ImageGallery()
         {
-            string[] FilePaths = System.IO.Directory.GetFiles(path);
+            string[] FilePaths = System.IO.Directory.GetFiles(stdPath);
             LoadImagesFromFolder(FilePaths);
         }
         public void Init()
@@ -32,11 +33,7 @@ namespace MicroscopeGUI
             VistaFolderBrowserDialog Dialog = new VistaFolderBrowserDialog();
             if (Dialog.ShowDialog().GetValueOrDefault())
             {
-                path = Dialog.SelectedPath;
-                // Returns all of the file paths
-                string[] FilePaths = System.IO.Directory.GetFiles(path);
-                // loading images from images 
-                LoadImagesFromFolder(FilePaths);
+                LoadImagesFromFolder(System.IO.Directory.GetFiles(Dialog.SelectedPath));
             }
         }
 
@@ -46,7 +43,8 @@ namespace MicroscopeGUI
             {
                 Bottom = 5
             };
-            Children.Clear();
+
+            Children.Clear(); // clears old Images from ImageGallery before adding new ones
             foreach (string Path in FilePaths)
             {
                 if (Path.EndsWith(".png"))
