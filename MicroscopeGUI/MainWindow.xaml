@@ -51,9 +51,21 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            <Label Content="Image Gallery" HorizontalAlignment="Center" Grid.Row="0"/>
+
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <Label Content="Image Gallery" HorizontalAlignment="Center" Grid.Column="0"/>
+                <Button x:Name="ChangeDirBtn" Content="Change dir." Click="ChangeDirBtn_Click" Grid.Column="1"/>
+            </Grid>
+            
             <ScrollViewer Grid.Row="1">
-                <local:ImageGallery VerticalAlignment="Top" Margin="5, 5, 0, 0"/>
+                <local:ImageGallery x:Name="ImgGallery" VerticalAlignment="Top" Margin="5, 5, 0, 0"/>
             </ScrollViewer>
         </Grid>
     </Grid>

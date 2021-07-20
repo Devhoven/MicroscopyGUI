@@ -21,14 +21,20 @@ namespace MicroscopeGUI
 {
     class ImageGallery : StackPanel
     {
+        public String path = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         public ImageGallery()
+        {
+            string[] FilePaths = System.IO.Directory.GetFiles(path);
+            LoadImagesFromFolder(FilePaths);
+        }
+        public void Init()
         {
             VistaFolderBrowserDialog Dialog = new VistaFolderBrowserDialog();
             if (Dialog.ShowDialog().GetValueOrDefault())
             {
-                string NewDir = Dialog.SelectedPath;
+                path = Dialog.SelectedPath;
                 // Returns all of the file paths
-                string[] FilePaths = System.IO.Directory.GetFiles(NewDir);
+                string[] FilePaths = System.IO.Directory.GetFiles(path);
                 // loading images from images 
                 LoadImagesFromFolder(FilePaths);
             }
@@ -40,6 +46,7 @@ namespace MicroscopeGUI
             {
                 Bottom = 5
             };
+            Children.Clear();
             foreach (string Path in FilePaths)
             {
                 if (Path.EndsWith(".png"))

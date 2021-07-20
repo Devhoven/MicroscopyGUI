@@ -80,5 +80,10 @@ namespace MicroscopeGUI
             WorkerThread.Join();
             Cam.Exit();
         }
+
+        private void ChangeDirBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ImgGallery.Init();
+        }
     }
 }
