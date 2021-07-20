@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MicroscopeGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800"
+        Title="MainWindow" Height="333" Width="640"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Window.Resources>
-        
+
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -25,7 +25,7 @@
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            
+
             <Grid Name="StepBtnCon" Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -34,10 +34,8 @@
                 </Grid.ColumnDefinitions>
                 <Label Content="Config" Grid.Column="0"/>
                 <Label Content="Locate" Grid.Column="1"/>
-                <Label Content="Analysis" Grid.Column="2"/>
+                <Label Content="Analysis" Grid.Column="2" MouseDoubleClick="Label_MouseDoubleClick"/>
             </Grid>
-
-            <!--<WpfPlot Name="WpfPlot1" Grid.Row="1"/>-->
 
             <local:ConfigStepCon Grid.Row="1"/>
         </Grid>

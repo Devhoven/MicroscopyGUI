@@ -45,7 +45,7 @@ namespace MicroscopeGUI
                     {
                         // Setting the current image on the picture panel
                         // Calling the frame change event
-                        UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background,
+                        UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
                             new Action(() => {
                                 UI.CurrentFrame.Source = Convert(bmp);
                                 OnFrameChange(null, null);
