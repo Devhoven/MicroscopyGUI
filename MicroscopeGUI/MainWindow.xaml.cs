@@ -88,6 +88,11 @@ namespace MicroscopeGUI
         {
             HistogramPopup = new HistogramWindow();
             HistogramPopup.Show();
+		}
+
+        private void ChangeDirBtn_Click(object sender, RoutedEventArgs e)
+        {
+            ImgGallery.Init();
         }
     }
 }
