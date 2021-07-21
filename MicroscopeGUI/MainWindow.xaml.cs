@@ -28,6 +28,7 @@ namespace MicroscopeGUI
         public static Dispatcher CurrentDispatcher;
 
         Thread WorkerThread;
+        HistogramWindow HistogramPopup;
 
         public UI()
         {
@@ -63,7 +64,7 @@ namespace MicroscopeGUI
                 if (StatusRet == Status.Success)
                     Cam.Memory.Sequence.Add(MemID);
             }
-            
+
             StatusRet = Cam.Memory.Sequence.InitImageQueue();
         }
 
@@ -76,10 +77,18 @@ namespace MicroscopeGUI
 
         private void GUIClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
+            if (!(HistogramPopup is null))
+                HistogramPopup.Close();
             ImageQueue.StopRunning = true;
             WorkerThread.Join();
             Cam.Exit();
         }
+
+        private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            HistogramPopup = new HistogramWindow();
+            HistogramPopup.Show();
+		}
 
         private void ChangeDirBtn_Click(object sender, RoutedEventArgs e)
         {
