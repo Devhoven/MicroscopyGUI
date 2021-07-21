@@ -45,16 +45,13 @@ namespace MicroscopeGUI
         // Seperates the r g b values from the histogram and adds them onto the plot
         private void ImageQueueFrameChange(object sender, EventArgs e)
         {
-            for (int i = 0; i < 255; i++)
-                ValuesR[i] = ImageQueue.Histogram[i];
+            Array.Copy(ImageQueue.Histogram, 0, ValuesR, 0, 255);
 
             // Starts at 256, since the value at 255 does not represent a real value
-            for (int i = 256; i < 511; i++)
-                ValuesG[i - 256] = ImageQueue.Histogram[i];
+            Array.Copy(ImageQueue.Histogram, 256, ValuesG, 0, 255);
 
             // Same here
-            for (int i = 512; i < 767; i++)
-                ValuesB[i - 512] = ImageQueue.Histogram[i];
+            Array.Copy(ImageQueue.Histogram, 512, ValuesB, 0, 255);
 
             WpfPlot1.Plot.Clear();
             WpfPlot1.Plot.AddBar(ValuesR, System.Drawing.Color.Red).BorderLineWidth = 0;

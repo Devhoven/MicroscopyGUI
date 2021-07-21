@@ -10,14 +10,17 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using System.Runtime.InteropServices;
 using uEye;
 using uEye.Defines;
 using Image = System.Windows.Controls.Image;
+using MicroscopeGUI.UIElements.Steps;
 
 namespace MicroscopeGUI
 {
@@ -28,6 +31,10 @@ namespace MicroscopeGUI
         public static Dispatcher CurrentDispatcher;
 
         Thread WorkerThread;
+
+        ConfigStepCon ConfigCon;
+        LocateStepCon LocateCon;
+        AnalysisStepCon AnalysisCon;
         HistogramWindow HistogramPopup;
 
         public UI()
@@ -35,6 +42,11 @@ namespace MicroscopeGUI
             InitializeCam();
 
             InitializeComponent();
+
+            ConfigCon = new ConfigStepCon(ToolCon);
+            LocateCon = new LocateStepCon(ToolCon);
+            AnalysisCon = new AnalysisStepCon(ToolCon);
+            SetVisibillity(ConfigCon);
 
             CurrentFrame = CurrentFrameCon;
             CurrentDispatcher = Dispatcher;
@@ -90,9 +102,25 @@ namespace MicroscopeGUI
             HistogramPopup.Show();
 		}
 
-        private void ChangeDirBtn_Click(object sender, RoutedEventArgs e)
+        private void ChangeDirBtnClick(object sender, RoutedEventArgs e) =>
+            ImgGallery.UpdatePath();
+
+        private void ConfigBtnClick(object sender, RoutedEventArgs e) =>
+            SetVisibillity(ConfigCon);
+
+        private void LocateBtnClick(object sender, RoutedEventArgs e) =>
+            SetVisibillity(LocateCon);
+
+        private void AnalysisBtnClick(object sender, RoutedEventArgs e) =>
+            SetVisibillity(AnalysisCon);
+
+        void SetVisibillity(StepCon Con)
         {
-            ImgGallery.Init();
+            ConfigCon.Visibility = Visibility.Hidden;
+            LocateCon.Visibility = Visibility.Hidden;
+            AnalysisCon.Visibility = Visibility.Hidden;
+
+            Con.Visibility = Visibility.Visible;
         }
     }
 }

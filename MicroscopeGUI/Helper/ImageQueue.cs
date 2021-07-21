@@ -11,6 +11,8 @@ using ColorMode = uEye.Defines.ColorMode;
 using System.Windows.Media.Imaging;
 using System.Runtime.InteropServices;
 using System.Windows.Media;
+using System.Windows.Interop;
+using System.Windows;
 
 namespace MicroscopeGUI
 {
@@ -25,7 +27,7 @@ namespace MicroscopeGUI
         public static uint[] Histogram = new uint[3 * 256];
 
         public static void Run()
-        {/*
+        {
             while (!StopRunning)
             {
                 // Waits for the next image and returns the memory ID if a new image was sent by the cam
@@ -39,23 +41,25 @@ namespace MicroscopeGUI
                     UI.Cam.Memory.Lock(MemID);
 
                     UI.Cam.Memory.ToBitmap(MemID, out Bitmap bmp);
-                    
+
                     // Checking if the main Thread is still running
                     if (!StopRunning && !UI.CurrentDispatcher.HasShutdownStarted)
                     {
                         // Setting the current image on the picture panel
                         // Calling the frame change event
                         UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
-                            new Action(() => {
+                            new Action(() =>
+                            {
                                 UI.CurrentFrame.Source = Convert(bmp);
+
                                 OnFrameChange(null, null);
                             }));
                     }
-
+                    
                     // Unlocking the image buffer
                     UI.Cam.Memory.Unlock(MemID);
                 }
-            }*/
+            }
         }
 
         static BitmapSource Convert(Bitmap BMP)
@@ -71,6 +75,8 @@ namespace MicroscopeGUI
                 BMPData.Scan0, BMPData.Stride * BMPData.Height, BMPData.Stride);
 
             BMP.UnlockBits(BMPData);
+
+            BMP.Dispose();
 
             return BMPSource;
         }

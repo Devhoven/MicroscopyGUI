@@ -8,7 +8,6 @@
         Title="MainWindow" Height="333" Width="640"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Window.Resources>
-
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -32,16 +31,18 @@
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="Config" Grid.Column="0"/>
-                <Label Content="Locate" Grid.Column="1"/>
-                <Label Content="Analysis" Grid.Column="2" MouseDoubleClick="Label_MouseDoubleClick"/>
+                <Button Content="Config" Grid.Column="0" Click="ConfigBtnClick" BorderThickness="0" Background="OrangeRed"/>
+                <Button Content="Locate" Grid.Column="1" Click="LocateBtnClick" BorderThickness="0" Background="OrangeRed"/>
+                <Button Content="Analysis" Grid.Column="2" Click="AnalysisBtnClick" BorderThickness="0" Background="OrangeRed"/>
             </Grid>
-
-            <local:ConfigStepCon Grid.Row="1"/>
         </Grid>
 
         <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1">
-            <Image x:Name="CurrentFrameCon" Source="" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+            <Image x:Name="CurrentFrameCon" RenderOptions.BitmapScalingMode="NearestNeighbor">
+                <Image.Source>
+                    <BitmapImage x:Name="BMPImage" UriSource="C:/Users/MEINS/Pictures/GithubProfilePic.png"/>
+                </Image.Source>
+            </Image>
         </local:ImageViewer>
 
         <Grid Name="ImageGalleryCon" Grid.ZIndex="1" Grid.Column="2" Background="Aqua" Width="200">
@@ -59,7 +60,7 @@
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="Image Gallery" HorizontalAlignment="Center" Grid.Column="0"/>
-                <Button x:Name="ChangeDirBtn" Content="Change dir." Click="ChangeDirBtn_Click" Grid.Column="1"/>
+                <Button x:Name="ChangeDirBtn" Content="Change dir." Click="ChangeDirBtnClick" Grid.Column="1"/>
             </Grid>
 
             <ScrollViewer Grid.Row="1">

@@ -15,11 +15,11 @@ using System.Windows.Shapes;
 using RPCEventHandler = System.Windows.RoutedPropertyChangedEventHandler<double>;
 using RPCEventArgs = System.Windows.RoutedPropertyChangedEventArgs<double>;
 
-namespace MicroscopeGUI
+namespace MicroscopeGUI.UIElements.Steps
 {
-    class ConfigStepCon : Grid
+    class ConfigStepCon : StepCon
     {
-        public ConfigStepCon()
+        public ConfigStepCon(Grid Parent, int Row = 1) : base(Parent, Row)
         {
             int RowCount = 0;
 

@@ -22,13 +22,15 @@ namespace MicroscopeGUI
     class ImageGallery : StackPanel
     {
         // standard path 
-        public String stdPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); 
+        public string stdPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); 
+
         public ImageGallery()
         {
             string[] FilePaths = System.IO.Directory.GetFiles(stdPath);
             LoadImagesFromFolder(FilePaths);
         }
-        public void Init()
+
+        public void UpdatePath()
         {
             VistaFolderBrowserDialog Dialog = new VistaFolderBrowserDialog();
             if (Dialog.ShowDialog().GetValueOrDefault())
