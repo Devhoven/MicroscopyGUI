@@ -23,14 +23,14 @@
         <DockPanel Grid.ColumnSpan="3" Grid.Row="0" Panel.ZIndex="1">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_New" />
-                    <MenuItem Header="_Open Folder" Click="OpenFolderClick" />
-                    <MenuItem Header="_Save" />
-                    <Separator />
-                    <MenuItem Header="_Exit" />
+                    <MenuItem Header="_New"/>
+                    <MenuItem Header="_Open Folder" Click="OpenFolderClick"/>
+                    <MenuItem Header="_Save"/>
+                    <Separator/>
+                    <MenuItem Header="_Exit"/>
                 </MenuItem>
             </Menu>
-            <TextBox AcceptsReturn="True" />
+            <TextBox AcceptsReturn="True"/>
         </DockPanel>
 
         <Grid Name="ToolCon" Grid.ZIndex="1" Grid.Column="0" Grid.Row="1" Background="OrangeRed">
@@ -49,7 +49,7 @@
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-				
+
                 <Button Content="Config" Grid.Column="0" Click="ConfigBtnClick" BorderThickness="0" Background="OrangeRed"/>
                 <Button Content="Locate" Grid.Column="1" Click="LocateBtnClick" BorderThickness="0" Background="OrangeRed"/>
                 <Button Content="Analysis" Grid.Column="2" Click="AnalysisBtnClick" BorderThickness="0" Background="OrangeRed"/>
@@ -59,7 +59,7 @@
         <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1" Grid.Row="1">
             <Image x:Name="CurrentFrameCon" RenderOptions.BitmapScalingMode="NearestNeighbor">
                 <Image.Source>
-                    <BitmapImage x:Name="BMPImage" UriSource="C:/Users/MEINS/Pictures/GithubProfilePic.png"/>
+                    <BitmapImage x:Name="BMPImage" UriSource="/MicroscopeGUI;component/Assets/NoCam.png"/>
                 </Image.Source>
             </Image>
         </local:ImageViewer>

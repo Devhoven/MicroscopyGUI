@@ -7,6 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\NoCam.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <COMReference Include="{d37e2a3e-8545-3a39-9f4f-31827c9124ab}">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>4</VersionMinor>
@@ -25,6 +29,10 @@
     <Reference Include="uEyeDotNet">
       <HintPath>..\..\..\..\..\Desktop\uEyeExmaples\uEye_DotNet_CSharp_ImageQueue\uEye_DotNet_ImageQueue\uEyeImageQueue\uEyeDotNet.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Assets\NoCam.png" />
   </ItemGroup>
 
 </Project>

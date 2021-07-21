@@ -35,6 +35,7 @@ namespace MicroscopeGUI
         ConfigStepCon ConfigCon;
         LocateStepCon LocateCon;
         AnalysisStepCon AnalysisCon;
+
         HistogramWindow HistogramPopup;
 
         public UI()
@@ -78,6 +79,8 @@ namespace MicroscopeGUI
             }
 
             StatusRet = Cam.Memory.Sequence.InitImageQueue();
+            if (StatusRet != Status.SUCCESS)
+                ImageQueue.StopRunning = true;
         }
 
         void StartCapture()
@@ -95,12 +98,6 @@ namespace MicroscopeGUI
             WorkerThread.Join();
             Cam.Exit();
         }
-
-        private void Label_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            HistogramPopup = new HistogramWindow();
-            HistogramPopup.Show();
-		}
 
         private void ChangeDirBtnClick(object sender, RoutedEventArgs e) =>
             ImgGallery.UpdatePath();
@@ -123,9 +120,7 @@ namespace MicroscopeGUI
             Con.Visibility = Visibility.Visible;
         }
 
-        private void OpenFolderClick(object sender, RoutedEventArgs e)
-        {
+        private void OpenFolderClick(object sender, RoutedEventArgs e) =>
             ImgGallery.UpdatePath();
-        }
     }
 }
