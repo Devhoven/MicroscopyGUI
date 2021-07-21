@@ -123,9 +123,9 @@ namespace MicroscopeGUI
             Con.Visibility = Visibility.Visible;
         }
 
-        private void openFolder_Click(object sender, RoutedEventArgs e)
+        private void OpenFolderClick(object sender, RoutedEventArgs e)
         {
-            ImgGallery.Init();
+            ImgGallery.UpdatePath();
         }
     }
 }
