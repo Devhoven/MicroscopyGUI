@@ -59,6 +59,8 @@ namespace MicroscopeGUI
                     // Unlocking the image buffer
                     UI.Cam.Memory.Unlock(MemID);
                 }
+                else
+                    break;
             }
         }
 
