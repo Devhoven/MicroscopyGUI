@@ -25,6 +25,7 @@ using uEye.Types;
 using Brushes = System.Windows.Media.Brushes;
 using System.IO;
 using System.Windows.Forms;
+using Button = System.Windows.Controls.Button;
 
 namespace MicroscopeGUI
 {
