@@ -22,6 +22,7 @@ using uEye.Defines;
 using Image = System.Windows.Controls.Image;
 using MicroscopeGUI.UIElements.Steps;
 using uEye.Types;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace MicroscopeGUI
 {
@@ -48,7 +49,7 @@ namespace MicroscopeGUI
             ConfigCon = new ConfigStepCon(ToolCon);
             LocateCon = new LocateStepCon(ToolCon);
             AnalysisCon = new AnalysisStepCon(ToolCon);
-            SetVisibillity(ConfigCon);
+            SetVisibillity(ConfigCon, ConfigConBtn);
 
             CurrentFrame = CurrentFrameCon;
             CurrentDispatcher = Dispatcher;
@@ -110,21 +111,26 @@ namespace MicroscopeGUI
             ImgGallery.UpdatePath();
 
         private void ConfigBtnClick(object sender, RoutedEventArgs e) =>
-            SetVisibillity(ConfigCon);
+            SetVisibillity(ConfigCon, ConfigConBtn);
 
         private void LocateBtnClick(object sender, RoutedEventArgs e) =>
-            SetVisibillity(LocateCon);
+            SetVisibillity(LocateCon, LocateConBtn);
 
         private void AnalysisBtnClick(object sender, RoutedEventArgs e) =>
-            SetVisibillity(AnalysisCon);
+            SetVisibillity(AnalysisCon, AnalysisConBtn);
 
-        void SetVisibillity(StepCon Con)
+        void SetVisibillity(StepCon Con, Button Btn)
         {
             ConfigCon.Visibility = Visibility.Hidden;
             LocateCon.Visibility = Visibility.Hidden;
             AnalysisCon.Visibility = Visibility.Hidden;
 
+            ConfigConBtn.Background = Brushes.Transparent;
+            LocateConBtn.Background = Brushes.Transparent;
+            AnalysisConBtn.Background = Brushes.Transparent;
+
             Con.Visibility = Visibility.Visible;
+            Btn.Background = Brushes.LightSkyBlue;
         }
     }
 }

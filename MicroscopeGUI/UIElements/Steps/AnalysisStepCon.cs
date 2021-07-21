@@ -18,6 +18,8 @@ namespace MicroscopeGUI.UIElements.Steps
     class AnalysisStepCon : StepCon
     {
         public AnalysisStepCon(Grid Parent, int Row = 1) : base(Parent, Row)
-        { }
+        {
+
+        }
     }
 }

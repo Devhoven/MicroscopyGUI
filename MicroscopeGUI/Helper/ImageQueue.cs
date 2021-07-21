@@ -13,6 +13,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Media;
 using System.Windows.Interop;
 using System.Windows;
+using MicroscopeGUI.Helper;
 
 namespace MicroscopeGUI
 {
@@ -52,7 +53,7 @@ namespace MicroscopeGUI
                         UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
                             new Action(() =>
                             {
-                                UI.CurrentFrame.Source = Convert(bmp);
+                                UI.CurrentFrame.Source = bmp.ConvertToBitmapSource();
 
                                 OnFrameChange(null, null);
                             }));
@@ -63,6 +64,7 @@ namespace MicroscopeGUI
                 }
                 else
                 {
+                    // Displaying the NoCam Image if you can't receive an image anymore
                     UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
                            new Action(() =>
                                UI.CurrentFrame.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"))
@@ -70,25 +72,6 @@ namespace MicroscopeGUI
                     break;
                 }
             }
-        }
-
-        static BitmapSource Convert(Bitmap BMP)
-        {
-            BitmapData BMPData = BMP.LockBits(
-                new Rectangle(0, 0, BMP.Width, BMP.Height),
-                ImageLockMode.ReadOnly, BMP.PixelFormat);
-
-            BitmapSource BMPSource = BitmapSource.Create(
-                BMPData.Width, BMPData.Height,
-                BMP.HorizontalResolution, BMP.VerticalResolution,
-                PixelFormats.Bgr24, null,
-                BMPData.Scan0, BMPData.Stride * BMPData.Height, BMPData.Stride);
-
-            BMP.UnlockBits(BMPData);
-
-            BMP.Dispose();
-
-            return BMPSource;
         }
     }
 }
