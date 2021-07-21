@@ -28,9 +28,12 @@
                 <MenuItem Header="_File">
                     <MenuItem Header="_New"/>
                     <MenuItem Header="_Open Folder" Click="ChangeDirClick"/>
-                    <MenuItem Header="_Save"/>
+                    <MenuItem Header="_Save" Click="SaveClick"/>
                     <Separator/>
                     <MenuItem Header="_Exit"/>
+                </MenuItem>
+                <MenuItem Header="_Other">
+                    <MenuItem Header="Histogram" Click="HistClick"/>
                 </MenuItem>
             </Menu>
             <TextBox AcceptsReturn="True"/>
