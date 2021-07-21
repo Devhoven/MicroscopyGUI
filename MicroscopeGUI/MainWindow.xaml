@@ -5,10 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MicroscopeGUI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="333" Width="640"
+        Title="MainWindow" Height="450" Width="800"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Window.Resources>
     </Window.Resources>
+
+
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -16,14 +19,32 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="17"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid Name="ToolCon" Grid.ZIndex="1" Grid.Column="0" Background="OrangeRed" Width="200">
+        <DockPanel Grid.ColumnSpan="3" Grid.Row="0">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" />
+                    <MenuItem Header="_Open Folder" Click="openFolder_Click" />
+                    <MenuItem Header="_Save" />
+                    <Separator />
+                    <MenuItem Header="_Exit" />
+                </MenuItem>
+            </Menu>
+            <TextBox AcceptsReturn="True" />
+        </DockPanel>
+
+        <Grid Name="ToolCon" Grid.ZIndex="1" Grid.Column="0" Grid.Row="1" Background="OrangeRed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
 
             <Grid Name="StepBtnCon" Grid.Row="0">
                 <Grid.ColumnDefinitions>
@@ -31,6 +52,7 @@
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
+				
                 <Button Content="Config" Grid.Column="0" Click="ConfigBtnClick" BorderThickness="0" Background="OrangeRed"/>
                 <Button Content="Locate" Grid.Column="1" Click="LocateBtnClick" BorderThickness="0" Background="OrangeRed"/>
                 <Button Content="Analysis" Grid.Column="2" Click="AnalysisBtnClick" BorderThickness="0" Background="OrangeRed"/>
@@ -45,7 +67,7 @@
             </Image>
         </local:ImageViewer>
 
-        <Grid Name="ImageGalleryCon" Grid.ZIndex="1" Grid.Column="2" Background="Aqua" Width="200">
+        <Grid Name="ImageGalleryCon" Grid.ZIndex="1" Grid.Column="2" Grid.Row="1" Background="Aqua">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="1*"/>
@@ -56,8 +78,7 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
                 <Label Content="Image Gallery" HorizontalAlignment="Center" Grid.Column="0"/>
                 <Button x:Name="ChangeDirBtn" Content="Change dir." Click="ChangeDirBtnClick" Grid.Column="1"/>
@@ -68,4 +89,5 @@
             </ScrollViewer>
         </Grid>
     </Grid>
+
 </Window>
