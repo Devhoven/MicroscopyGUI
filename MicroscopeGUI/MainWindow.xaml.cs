@@ -21,6 +21,7 @@ using uEye;
 using uEye.Defines;
 using Image = System.Windows.Controls.Image;
 using MicroscopeGUI.UIElements.Steps;
+using uEye.Types;
 
 namespace MicroscopeGUI
 {
@@ -40,9 +41,9 @@ namespace MicroscopeGUI
 
         public UI()
         {
-            InitializeCam();
-
             InitializeComponent();
+
+            InitializeCam();
 
             ConfigCon = new ConfigStepCon(ToolCon);
             LocateCon = new LocateStepCon(ToolCon);
@@ -79,8 +80,12 @@ namespace MicroscopeGUI
             }
 
             StatusRet = Cam.Memory.Sequence.InitImageQueue();
+            //Initialization failed, showing the error screen
             if (StatusRet != Status.SUCCESS)
+            {
+                CurrentFrameCon.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"));
                 ImageQueue.StopRunning = true;
+            }
         }
 
         void StartCapture()
@@ -96,10 +101,12 @@ namespace MicroscopeGUI
                 HistogramPopup.Close();
             ImageQueue.StopRunning = true;
             WorkerThread.Join();
-            Cam.Exit();
+            // So, if the cam crashed or got pulled out in the process, the programm will still close correctly
+            if (ImageQueue.CurrentCamStatus == Status.SUCCESS)
+                Cam.Exit();
         }
 
-        private void ChangeDirBtnClick(object sender, RoutedEventArgs e) =>
+        private void ChangeDirClick(object sender, RoutedEventArgs e) =>
             ImgGallery.UpdatePath();
 
         private void ConfigBtnClick(object sender, RoutedEventArgs e) =>
@@ -119,8 +126,5 @@ namespace MicroscopeGUI
 
             Con.Visibility = Visibility.Visible;
         }
-
-        private void OpenFolderClick(object sender, RoutedEventArgs e) =>
-            ImgGallery.UpdatePath();
     }
 }

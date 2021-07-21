@@ -20,6 +20,8 @@ namespace MicroscopeGUI
     {
         // Is set to true at the end of the program, so the thread won't be running in the background
         public static volatile bool StopRunning = false;
+        // Holds the current status of the cam, which we get from WaitForNextImage
+        public static volatile Status CurrentCamStatus;
         // Fires if the frame has changed
         public static event EventHandler OnFrameChange = delegate { };
         // Contains all of the values of the histogram of the current image
@@ -31,8 +33,8 @@ namespace MicroscopeGUI
             while (!StopRunning)
             {
                 // Waits for the next image and returns the memory ID if a new image was sent by the cam
-                Status StatusRet = UI.Cam.Memory.Sequence.WaitForNextImage(100, out int MemID, out _);
-                if (StatusRet == Status.Success)
+                CurrentCamStatus = UI.Cam.Memory.Sequence.WaitForNextImage(3000, out int MemID, out _);
+                if (CurrentCamStatus == Status.Success)
                 {
                     // Getting the values of the histogram
                     UI.Cam.Image.GetHistogram(MemID, ColorMode.BGR8Packed, out Histogram);
@@ -55,12 +57,18 @@ namespace MicroscopeGUI
                                 OnFrameChange(null, null);
                             }));
                     }
-                    
+
                     // Unlocking the image buffer
                     UI.Cam.Memory.Unlock(MemID);
                 }
                 else
+                {
+                    UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
+                           new Action(() =>
+                               UI.CurrentFrame.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"))
+                            ));
                     break;
+                }
             }
         }
 
