@@ -49,11 +49,13 @@ namespace MicroscopeGUI
             {
                 if (Path.EndsWith(".png"))
                 {
-                    Children.Add(new System.Windows.Controls.Image() {
+                    Children.Add(new System.Windows.Controls.Image()
+                    {
                         Source = new BitmapImage(new Uri(Path)),
                         Width = 150,
                         Height = 150,
-                        Margin = ImgBoxMargin
+                        Margin = ImgBoxMargin,
+                        ToolTip = Path.Substring(Path.LastIndexOf("\\") + 1)
                     });
                 }
             }

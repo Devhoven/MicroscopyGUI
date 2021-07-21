@@ -8,8 +8,11 @@
         Title="MainWindow" Height="450" Width="800"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Window.Resources>
-        
+
     </Window.Resources>
+
+
+
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
@@ -17,15 +20,33 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
+            <RowDefinition Height="17"/>
+            <RowDefinition/>
         </Grid.RowDefinitions>
 
-        <Grid Name="ToolCon" Grid.ZIndex="1" Grid.Column="0" Background="OrangeRed" Width="200">
+        <DockPanel Grid.ColumnSpan="3" Grid.Row="0">
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="_File">
+                    <MenuItem Header="_New" />
+                    <MenuItem Header="_Open Folder" Click="openFolder_Click" />
+                    <MenuItem Header="_Save" />
+                    <Separator />
+                    <MenuItem Header="_Exit" />
+                </MenuItem>
+            </Menu>
+            <TextBox AcceptsReturn="True" />
+        </DockPanel>
+
+        <Grid Name="ToolCon" Grid.ZIndex="1" Grid.Column="0" Grid.Row="1" Background="OrangeRed">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
-            
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+            </Grid.ColumnDefinitions>
+
             <Grid Name="StepBtnCon" Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
@@ -42,11 +63,11 @@
             <local:ConfigStepCon Grid.Row="1"/>
         </Grid>
 
-        <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1">
-            <Image x:Name="CurrentFrameCon" Source="" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+        <local:ImageViewer x:Name="ZoomDisplay" Grid.Row="1" Grid.ColumnSpan="3" Margin="142,0,147,0">
+            <Image x:Name="CurrentFrameCon" Source="C:\Users\Lukas\Pictures\unknown.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
         </local:ImageViewer>
 
-        <Grid Name="ImageGalleryCon" Grid.ZIndex="1" Grid.Column="2" Background="Aqua" Width="200">
+        <Grid Name="ImageGalleryCon" Grid.ZIndex="1" Grid.Column="2" Grid.Row="1" Background="Aqua">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="1*"/>
@@ -57,11 +78,10 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="2*"/>
-                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="Image Gallery" HorizontalAlignment="Center" Grid.Column="0"/>
-                <Button x:Name="ChangeDirBtn" Content="Change dir." Click="ChangeDirBtn_Click" Grid.Column="1"/>
+                <Label Content="Image Gallery" HorizontalAlignment="Center"/>
+                
             </Grid>
 
             <ScrollViewer Grid.Row="1">
@@ -69,4 +89,5 @@
             </ScrollViewer>
         </Grid>
     </Grid>
+
 </Window>

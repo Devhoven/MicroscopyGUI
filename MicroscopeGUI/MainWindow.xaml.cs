@@ -85,5 +85,10 @@ namespace MicroscopeGUI
         {
             ImgGallery.Init();
         }
+
+        private void openFolder_Click(object sender, RoutedEventArgs e)
+        {
+            ImgGallery.Init();
+        }
     }
 }
