@@ -22,6 +22,8 @@ using uEye.Defines;
 using Image = System.Windows.Controls.Image;
 using MicroscopeGUI.UIElements.Steps;
 using uEye.Types;
+using System.IO;
+using System.Windows.Forms;
 
 namespace MicroscopeGUI
 {
@@ -125,6 +127,37 @@ namespace MicroscopeGUI
             AnalysisCon.Visibility = Visibility.Hidden;
 
             Con.Visibility = Visibility.Visible;
+        }
+
+        private void HistClick(object sender, RoutedEventArgs e)
+        {
+            HistogramPopup = new HistogramWindow();
+            HistogramPopup.Show();
+        }
+
+        private void SaveClick(object sender, RoutedEventArgs e)
+        {
+            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)UI.CurrentFrame.Source.Width,
+                                                                           (int)UI.CurrentFrame.Source.Height,
+                                                                           100, 100, PixelFormats.Default);
+            renderTargetBitmap.Render(UI.CurrentFrame);
+            JpegBitmapEncoder jpegBitmapEncoder = new JpegBitmapEncoder();
+            jpegBitmapEncoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
+
+
+            SaveFileDialog _saveFile = new SaveFileDialog();
+            _saveFile.Title = "Save file";
+            _saveFile.Filter = "Jpeg|*.jpeg";
+
+            if (_saveFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            {
+                using (FileStream fileStream = new FileStream(_saveFile.FileName, FileMode.Create))
+                {
+                    jpegBitmapEncoder.Save(fileStream);
+                    fileStream.Flush();
+                    fileStream.Close();
+                }
+            }
         }
     }
 }
