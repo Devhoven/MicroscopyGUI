@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Interop;
 using System.Windows;
 using MicroscopeGUI.Helper;
+using System.Globalization;
 
 namespace MicroscopeGUI
 {
@@ -29,6 +30,9 @@ namespace MicroscopeGUI
         // 3 * 256, since there is a value for every 8 bit value of one channel
         public static uint[] Histogram = new uint[3 * 256];
 
+        public static Bitmap CurrentFrameBitmap;
+
+
         public static void Run()
         {
             while (!StopRunning)
@@ -43,7 +47,8 @@ namespace MicroscopeGUI
                     // Conversion to a bitmap
                     UI.Cam.Memory.Lock(MemID);
 
-                    UI.Cam.Memory.ToBitmap(MemID, out Bitmap bmp);
+                    UI.Cam.Memory.ToBitmap(MemID, out Bitmap CFB);
+                    CurrentFrameBitmap = CFB;
 
                     // Checking if the main Thread is still running
                     if (!StopRunning && !UI.CurrentDispatcher.HasShutdownStarted)
@@ -53,7 +58,7 @@ namespace MicroscopeGUI
                         UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
                             new Action(() =>
                             {
-                                UI.CurrentFrame.Source = bmp.ConvertToBitmapSource();
+                                UI.CurrentFrame.Source = CFB.GetWriteableBitmap();
 
                                 OnFrameChange(null, null);
                             }));

@@ -17,9 +17,26 @@ namespace MicroscopeGUI.UIElements.Steps
 {
     class AnalysisStepCon : StepCon
     {
+        bool IsFrozen = false;
+
         public AnalysisStepCon(Grid Parent, int Row = 1) : base(Parent, Row)
         {
+            Button FreezeBtn = new Button()
+            {
+                Content = "Freeze"
+            };
+            FreezeBtn.Click += FreezeBtnClick;
+            Children.Add(FreezeBtn);
+            SetRow(FreezeBtn, 0);
+        }
 
+        private void FreezeBtnClick(object sender, RoutedEventArgs e)
+        {
+            if (!IsFrozen)
+                UI.Cam.Acquisition.Freeze();
+            else
+                UI.Cam.Acquisition.Capture();
+            IsFrozen = !IsFrozen;
         }
     }
 }

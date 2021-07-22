@@ -1,30 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
+﻿using uEye;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using System.Windows.Threading;
-using System.Runtime.InteropServices;
-using uEye;
 using uEye.Defines;
-using Image = System.Windows.Controls.Image;
-using MicroscopeGUI.UIElements.Steps;
-using uEye.Types;
-using Brushes = System.Windows.Media.Brushes;
-using System.IO;
+using System.Windows;
+using System.Threading;
 using System.Windows.Forms;
+using System.Windows.Threading;
+using System.Windows.Media.Imaging;
+using MicroscopeGUI.UIElements.Steps;
+using Brushes = System.Windows.Media.Brushes;
+using Image = System.Windows.Controls.Image;
 using Button = System.Windows.Controls.Button;
 
 namespace MicroscopeGUI
@@ -38,7 +23,6 @@ namespace MicroscopeGUI
         Thread WorkerThread;
 
         ConfigStepCon ConfigCon;
-        LocateStepCon LocateCon;
         AnalysisStepCon AnalysisCon;
 
         HistogramWindow HistogramPopup;
@@ -50,7 +34,6 @@ namespace MicroscopeGUI
             InitializeCam();
 
             ConfigCon = new ConfigStepCon(ToolCon);
-            LocateCon = new LocateStepCon(ToolCon);
             AnalysisCon = new AnalysisStepCon(ToolCon);
             SetVisibillity(ConfigCon, ConfigConBtn);
 
@@ -116,20 +99,15 @@ namespace MicroscopeGUI
         private void ConfigBtnClick(object sender, RoutedEventArgs e) =>
             SetVisibillity(ConfigCon, ConfigConBtn);
 
-        private void LocateBtnClick(object sender, RoutedEventArgs e) =>
-            SetVisibillity(LocateCon, LocateConBtn);
-
         private void AnalysisBtnClick(object sender, RoutedEventArgs e) =>
             SetVisibillity(AnalysisCon, AnalysisConBtn);
 
         void SetVisibillity(StepCon Con, Button Btn)
         {
             ConfigCon.Visibility = Visibility.Hidden;
-            LocateCon.Visibility = Visibility.Hidden;
             AnalysisCon.Visibility = Visibility.Hidden;
 
             ConfigConBtn.Background = Brushes.Transparent;
-            LocateConBtn.Background = Brushes.Transparent;
             AnalysisConBtn.Background = Brushes.Transparent;
 
             Con.Visibility = Visibility.Visible;
@@ -144,26 +122,13 @@ namespace MicroscopeGUI
 
         private void SaveClick(object sender, RoutedEventArgs e)
         {
-            RenderTargetBitmap renderTargetBitmap = new RenderTargetBitmap((int)UI.CurrentFrame.Source.Width,
-                                                                           (int)UI.CurrentFrame.Source.Height,
-                                                                           100, 100, PixelFormats.Default);
-            renderTargetBitmap.Render(UI.CurrentFrame);
-            JpegBitmapEncoder jpegBitmapEncoder = new JpegBitmapEncoder();
-            jpegBitmapEncoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
-
-
             SaveFileDialog _saveFile = new SaveFileDialog();
             _saveFile.Title = "Save file";
-            _saveFile.Filter = "Jpeg|*.jpeg";
+            _saveFile.Filter = "Png|*.png";
 
             if (_saveFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                using (FileStream fileStream = new FileStream(_saveFile.FileName, FileMode.Create))
-                {
-                    jpegBitmapEncoder.Save(fileStream);
-                    fileStream.Flush();
-                    fileStream.Close();
-                }
+                ImageQueue.CurrentFrameBitmap.Save(_saveFile.FileName);
             }
         }
     }

@@ -3,6 +3,8 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
 
 namespace MicroscopeGUI
 {
@@ -36,6 +38,11 @@ namespace MicroscopeGUI
             }
         }
 
+        public ImageViewer()
+        {
+            DefaultStyleKey = typeof(Border);
+        }
+
         public void Initialize(UIElement element)
         {
             this.child = element;
@@ -48,6 +55,7 @@ namespace MicroscopeGUI
                 group.Children.Add(tt);
                 child.RenderTransform = group;
                 child.RenderTransformOrigin = new Point(0.0, 0.0);
+
                 this.MouseWheel += child_MouseWheel;
                 this.MouseLeftButtonDown += child_MouseLeftButtonDown;
                 this.MouseLeftButtonUp += child_MouseLeftButtonUp;
