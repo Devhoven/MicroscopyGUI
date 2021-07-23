@@ -214,5 +214,53 @@ namespace MicroscopeGUI.Properties {
                 this["CurrentFramerate"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public uint Brightness {
+            get {
+                return ((uint)(this["Brightness"]));
+            }
+            set {
+                this["Brightness"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int MasterGain {
+            get {
+                return ((int)(this["MasterGain"]));
+            }
+            set {
+                this["MasterGain"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int GammaVal {
+            get {
+                return ((int)(this["GammaVal"]));
+            }
+            set {
+                this["GammaVal"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public uint CurrentTemp {
+            get {
+                return ((uint)(this["CurrentTemp"]));
+            }
+            set {
+                this["CurrentTemp"] = value;
+            }
+        }
     }
 }
