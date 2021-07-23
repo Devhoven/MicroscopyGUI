@@ -29,6 +29,8 @@
                     <MenuItem Header="_New"/>
                     <MenuItem Header="_Open Folder" Click="ChangeDirClick"/>
                     <MenuItem Header="_Save" Click="SaveClick"/>
+                    <MenuItem Header="Save _Config" Click="ConfigSaveClick"/>
+                    <MenuItem Header="_Load Config" Click="ConfigLoadClick"/>
                     <Separator/>
                     <MenuItem Header="_Exit"/>
                 </MenuItem>

@@ -11,6 +11,7 @@ using MicroscopeGUI.UIElements.Steps;
 using Brushes = System.Windows.Media.Brushes;
 using Image = System.Windows.Controls.Image;
 using Button = System.Windows.Controls.Button;
+using P = MicroscopeGUI.Properties.Settings;
 
 namespace MicroscopeGUI
 {
@@ -130,6 +131,50 @@ namespace MicroscopeGUI
             {
                 ImageQueue.CurrentFrameBitmap.Save(_saveFile.FileName);
             }
+        }
+
+        private void ConfigSaveClick(object sender, RoutedEventArgs e)
+        {
+            // Auto Shutter
+            P.Default.ShutterEnable = Cam.AutoFeatures.Software.Shutter.Enabled;
+            // Auto WhiteBalance
+            P.Default.WhiteBalanceEnable = Cam.AutoFeatures.Software.WhiteBalance.Enabled;
+            // Auto Gain
+            P.Default.GainEnable = Cam.AutoFeatures.Software.Gain.Enabled;
+            // Framerate
+            Cam.Timing.Framerate.GetFrameRateRange(out double FPSMin, out double FPSMax, out _);
+            Cam.Timing.Framerate.Get(out double CurrentFPS);
+            P.Default.FrameRateMax = FPSMax;
+            P.Default.FrameRateMin = FPSMin;
+            P.Default.CurrentFramerate = CurrentFPS;
+            // Gamma
+            Cam.Gamma.Software.GetRange(out int GammaMin, out int GammaMax, out int GammaInc);
+            Cam.Gamma.Software.GetDefault(out int Val);
+            P.Default.GammaMax = GammaMax;
+            P.Default.GammaMin = GammaMin;
+            P.Default.GammaDefault = Val;
+            // Color Temperature
+            Cam.Color.Temperature.GetRange(out uint MinTemp, out uint MaxTemp, out _);
+            Cam.Color.Temperature.GetDefault(out uint DefaultTemp);
+            P.Default.ColorTempMax = MaxTemp;
+            P.Default.ColorTempMin = MinTemp;
+            P.Default.ColorTempDefault = DefaultTemp;
+            // Exposure
+            Cam.Timing.Exposure.Get(out double CurrentExposure);
+            Cam.Timing.Exposure.GetRange(out double MinExposure, out double MaxExposure, out _);
+            P.Default.ExposureMax = MaxExposure;
+            P.Default.ExposureMin = MinExposure;
+            P.Default.CurrentExposure = CurrentExposure;
+
+            P.Default.Save();
+            P.Default.Reload();
+
+            System.Windows.MessageBox.Show("Config saved!", "Microscope GUI");
+        }
+
+        private void ConfigLoadClick(object sender, RoutedEventArgs e)
+        {
+            Cam.Gamma.Software.Set(P.Default.GammaDefault);
         }
     }
 }
