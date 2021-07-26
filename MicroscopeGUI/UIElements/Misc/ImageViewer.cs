@@ -130,8 +130,8 @@ namespace MicroscopeGUI
 
         void ChildPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ViewMode = !ViewMode;
-            //this.Reset();
+            //ViewMode = !ViewMode;
+            this.Reset();
         }
 
         private void ChildMouseMove(object sender, MouseEventArgs e)
@@ -149,24 +149,24 @@ namespace MicroscopeGUI
                     }
                     else
                     {
-                        var tt = GetTranslateTransform(_Child);
-                        Point pos = e.GetPosition(this);
-                        pos.X = 0;
-                        pos.Y = 0;
-                        Line l = new Line()
-                        {
-                            X1 = pos.X,
-                            Y1 = pos.Y,
+                        //var tt = GetTranslateTransform(_Child);
+                        //Point pos = e.GetPosition(this);
+                        //pos.X = 0;
+                        //pos.Y = 0;
+                        //Line l = new Line()
+                        //{
+                        //    X1 = pos.X,
+                        //    Y1 = pos.Y,
 
-                            X2 = pos.X + 1,
-                            Y2 = pos.Y + 1,
+                        //    X2 = pos.X + 1,
+                        //    Y2 = pos.Y + 1,
 
-                            Stroke = Brushes.Red,
-                            StrokeThickness = 20
-                        };
+                        //    Stroke = Brushes.Red,
+                        //    StrokeThickness = 20
+                        //};
 
-                        _Child.Children.RemoveAt(1);
-                        _Child.Children.Add(l);
+                        //_Child.Children.RemoveAt(1);
+                        //_Child.Children.Add(l);
                     }
                 }
             }

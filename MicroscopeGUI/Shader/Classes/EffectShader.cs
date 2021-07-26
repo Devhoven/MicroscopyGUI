@@ -7,20 +7,20 @@ using System.Windows.Media.Effects;
 
 namespace MicroscopeGUI
 {
-    public class EffectShader : ShaderEffect
+    public class CustomShader : ShaderEffect
     {
-        static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Frame", typeof(EffectShader), 0);
+        static readonly DependencyProperty InputProperty = RegisterPixelShaderSamplerProperty("Frame", typeof(CustomShader), 0);
 
-        static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register("Brightness", typeof(float), typeof(EffectShader),
+        static readonly DependencyProperty BrightnessProperty = DependencyProperty.Register("Brightness", typeof(float), typeof(CustomShader),
             new UIPropertyMetadata(0.0f, PixelShaderConstantCallback(0)));
-        static readonly DependencyProperty ContrastProperty = DependencyProperty.Register("Contrast", typeof(float), typeof(EffectShader),
+        static readonly DependencyProperty ContrastProperty = DependencyProperty.Register("Contrast", typeof(float), typeof(CustomShader),
             new UIPropertyMetadata(1.0f, PixelShaderConstantCallback(1)));
 
-        static readonly DependencyProperty AmountRProperty = DependencyProperty.Register("AmountR", typeof(float), typeof(EffectShader),
+        static readonly DependencyProperty AmountRProperty = DependencyProperty.Register("AmountR", typeof(float), typeof(CustomShader),
             new UIPropertyMetadata(1.0f, PixelShaderConstantCallback(2)));
-        static readonly DependencyProperty AmountGProperty = DependencyProperty.Register("AmountG", typeof(float), typeof(EffectShader),
+        static readonly DependencyProperty AmountGProperty = DependencyProperty.Register("AmountG", typeof(float), typeof(CustomShader),
             new UIPropertyMetadata(1.0f, PixelShaderConstantCallback(3)));
-        static readonly DependencyProperty AmountBProperty = DependencyProperty.Register("AmountB", typeof(float), typeof(EffectShader),
+        static readonly DependencyProperty AmountBProperty = DependencyProperty.Register("AmountB", typeof(float), typeof(CustomShader),
             new UIPropertyMetadata(1.0f, PixelShaderConstantCallback(4)));
 
         public Brush Input
@@ -54,7 +54,7 @@ namespace MicroscopeGUI
             set => SetValue(AmountBProperty, value);
         }
 
-        public EffectShader()
+        public CustomShader()
         {
             PixelShader pixelShader = new PixelShader();
 

@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using Microsoft.Win32;
 using Ookii.Dialogs.Wpf;
 using System.Drawing;
+using Image = System.Windows.Controls.Image;
 
 namespace MicroscopeGUI
 {
@@ -51,13 +52,21 @@ namespace MicroscopeGUI
             {
                 if (Path.EndsWith(".png"))
                 {
-                    Children.Add(new System.Windows.Controls.Image()
+                    Image NewImg = new Image()
                     {
                         Source = new BitmapImage(new Uri(Path)),
                         Width = 150,
                         Height = 150,
                         Margin = ImgBoxMargin,
                         ToolTip = Path.Substring(Path.LastIndexOf("\\") + 1)
+                    };
+
+                    Children.Add(NewImg);
+
+                    NewImg.MouseLeftButtonDown += new MouseButtonEventHandler(delegate (object o, MouseButtonEventArgs e)
+                    {
+                        ImageQueue.Mode = ImageQueue.ImgQueueMode.ViewingAnotherImage;
+                        UI.CurrentFrame.Source = NewImg.Source;
                     });
                 }
             }

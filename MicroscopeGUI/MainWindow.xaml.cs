@@ -20,7 +20,7 @@ namespace MicroscopeGUI
     {
         public static Camera Cam;
         public static Image CurrentFrame;
-        public static EffectShader FrameEffects;
+        public static CustomShader FrameEffects;
         public static Dispatcher CurrentDispatcher;
 
         Thread WorkerThread;

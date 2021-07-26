@@ -42,7 +42,7 @@
         </DockPanel>
 
         <!--Left Container-->
-        <Grid Name="ToolCon" Grid.ZIndex="1" Grid.Column="0" Grid.Row="1" 
+        <Grid Name="ToolCon" Grid.ZIndex="1" Grid.Column="0" Grid.Row="1"
               Background="{StaticResource ToolConBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
@@ -70,12 +70,15 @@
         
         <!--Image Container-->
         <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1" Grid.Row="1" ClipToBounds="True">
-            <Canvas x:Name="DrawingCanvas" Grid.Column="1" Grid.Row="1">
+            <Canvas x:Name="DrawingCanvas" Grid.Column="1" Grid.Row="1" RenderOptions.BitmapScalingMode="NearestNeighbor">
+                <Canvas.CacheMode>
+                    <BitmapCache RenderOptions.CachingHint="Cache" RenderOptions.BitmapScalingMode="NearestNeighbor"></BitmapCache>
+                </Canvas.CacheMode>
                 <Image x:Name="CurrentFrameCon" RenderOptions.BitmapScalingMode="NearestNeighbor"
                        Width="{Binding ActualWidth, ElementName=ZoomDisplay}" 
                        Height="{Binding ActualHeight, ElementName=ZoomDisplay}">
                     <Image.Effect>
-                        <local:EffectShader x:Name="EffectShader"/>
+                        <local:CustomShader x:Name="EffectShader"/>
                     </Image.Effect>
                 </Image>
                 <Line X1="0" Y1="0" X2="0" Y2="0" Stroke="AliceBlue"/>

@@ -38,8 +38,8 @@ namespace MicroscopeGUI
         {
             while (!StopRunning)
             {
-                // Skips the loop if the image is not live
-                if (Mode != ImgQueueMode.Live)
+                // Skips the loop if the image is frozen
+                if (Mode == ImgQueueMode.Frozen)
                     continue;
                 // Waits for the next image and returns the memory ID if a new image was sent by the cam
                 CurrentCamStatus = UI.Cam.Memory.Sequence.WaitForNextImage(3000, out int MemID, out _);
@@ -86,9 +86,12 @@ namespace MicroscopeGUI
             UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
                 new Action(() =>
                 {
-                    UI.CurrentFrame.Source = Bmp.GetWriteableBitmap();
+                    if (Mode == ImgQueueMode.Live)
+                    {
+                        UI.CurrentFrame.Source = Bmp.GetWriteableBitmap();
 
-                    OnFrameChange(null, null);
+                        OnFrameChange(null, null);
+                    }
                 }));
         }
 

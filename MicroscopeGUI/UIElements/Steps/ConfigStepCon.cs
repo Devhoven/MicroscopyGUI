@@ -100,7 +100,7 @@ namespace MicroscopeGUI.UIElements.Steps
                 {
                     UI.Cam.AutoFeatures.Software.Gain.SetEnable(false);
                     UI.Cam.Gain.Hardware.ConvertScaledToFactor.Master((int)((Slider)o).Value, out int factor);
-                    UI.Cam.Gain.Hardware.Factor.SetMaster(factor, out int newaaaa);
+                    UI.Cam.Gain.Hardware.Factor.SetMaster(factor, out _);
                 }),
             this, RowCount++);
 
