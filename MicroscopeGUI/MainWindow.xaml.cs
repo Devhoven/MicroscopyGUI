@@ -43,7 +43,7 @@ namespace MicroscopeGUI
             CurrentFrame = CurrentFrameCon;
             CurrentDispatcher = Dispatcher;
             FrameEffects = EffectShader;
-
+            
             Closing += GUIClosing;
 
             StartCapture();

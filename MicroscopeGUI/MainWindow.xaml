@@ -84,7 +84,6 @@
                 <Line X1="0" Y1="0" X2="0" Y2="0" Stroke="AliceBlue"/>
             </Canvas>
         </local:ImageViewer>
-        
 
         <!--Image Gallery-->
         <Grid Name="ImageGalleryCon" Grid.ZIndex="1" Grid.Column="2" Grid.Row="1" 

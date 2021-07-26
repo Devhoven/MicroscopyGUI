@@ -30,11 +30,13 @@ namespace MicroscopeGUI.UIElements.Steps
                 {
                     UI.Cam.Acquisition.Freeze();
                     ImageQueue.Mode = ImgQueueMode.Frozen;
+                    ((Button)o).Content = "Live";
                 }
                 else
                 {
                     UI.Cam.Acquisition.Capture();
                     ImageQueue.Mode = ImgQueueMode.Live;
+                    ((Button)o).Content = "Freeze";
                 }
             }), this, RowCount++);
 

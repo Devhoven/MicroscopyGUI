@@ -22,12 +22,17 @@ namespace MicroscopeGUI
 {
     class ImageGallery : StackPanel
     {
+        static Thickness ImgBoxMargin = new Thickness()
+        {
+            Bottom = 5
+        };
+
         // standard path 
-        public string stdPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); 
+        public string StandardPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); 
 
         public ImageGallery()
         {
-            string[] FilePaths = System.IO.Directory.GetFiles(stdPath);
+            string[] FilePaths = System.IO.Directory.GetFiles(StandardPath);
             LoadImagesFromFolder(FilePaths);
         }
 
@@ -41,35 +46,42 @@ namespace MicroscopeGUI
         }
 
         private void LoadImagesFromFolder(string[] FilePaths)
-        {
-            Thickness ImgBoxMargin = new Thickness()
+        {   
+            for (int i = 0; i < Children.Count;)
             {
-                Bottom = 5
-            };
-
-            Children.Clear(); // clears old Images from ImageGallery before adding new ones
+                Children[i].MouseLeftButtonDown -= OnImageClick;
+                Children.Remove(Children[i]);
+            }
+            Children.Clear();
             foreach (string Path in FilePaths)
             {
                 if (Path.EndsWith(".png"))
                 {
+                    BitmapImage BmpImg = new BitmapImage();
+                    BmpImg.BeginInit();
+                    BmpImg.CacheOption = BitmapCacheOption.OnLoad;
+                    BmpImg.UriSource = new Uri(Path);
+                    BmpImg.EndInit();
                     Image NewImg = new Image()
                     {
-                        Source = new BitmapImage(new Uri(Path)),
+                        Source = BmpImg,
                         Width = 150,
                         Height = 150,
                         Margin = ImgBoxMargin,
                         ToolTip = Path.Substring(Path.LastIndexOf("\\") + 1)
                     };
-
+                    
                     Children.Add(NewImg);
 
-                    NewImg.MouseLeftButtonDown += new MouseButtonEventHandler(delegate (object o, MouseButtonEventArgs e)
-                    {
-                        ImageQueue.Mode = ImageQueue.ImgQueueMode.ViewingAnotherImage;
-                        UI.CurrentFrame.Source = NewImg.Source;
-                    });
+                    NewImg.MouseLeftButtonDown += OnImageClick;
                 }
             }
+        }
+
+        void OnImageClick(object o, MouseButtonEventArgs e)
+        {
+            ImageQueue.Mode = ImageQueue.ImgQueueMode.ViewingAnotherImage;
+            UI.CurrentFrame.Source = ((Image)o).Source;
         }
     }
 }
