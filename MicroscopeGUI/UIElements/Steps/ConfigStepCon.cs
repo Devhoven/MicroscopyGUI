@@ -68,7 +68,6 @@ namespace MicroscopeGUI.UIElements.Steps
 
 
             UI.Cam.Gamma.Software.GetRange(out int GammaMin, out int GammaMax, out int GammaInc);
-            new SliderControlInt("Gamma", -1, GammaMax, -1,
             new SliderControl("Gamma", -1, P.Default.GammaMax, -1,
                 new RPCEventHandler(delegate (object o, RPCEventArgs a)
                 {
@@ -88,9 +87,6 @@ namespace MicroscopeGUI.UIElements.Steps
             this, RowCount++, false);
 
 
-            UI.Cam.Color.Temperature.GetRange(out uint MinTemp, out uint MaxTemp, out _);
-            UI.Cam.Color.Temperature.GetDefault(out uint DefaultTemp);
-            new SliderControlInt("Color Temperature", (int)MinTemp, (int)MaxTemp, (int)DefaultTemp,
             new SliderControl("Color Temperature", (int)P.Default.ColorTempMin, (int)P.Default.ColorTempMax, (int)P.Default.ColorTempDefault,
                 new RPCEventHandler(delegate (object o, RPCEventArgs e)
                 {
@@ -117,9 +113,6 @@ namespace MicroscopeGUI.UIElements.Steps
             this, RowCount++);
 
 
-            UI.Cam.Timing.Exposure.Get(out double CurrentExposure);
-            UI.Cam.Timing.Exposure.GetRange(out double MinExposure, out double MaxExposure, out _);
-            new SliderControlInt("Exposure", (int)MinExposure, (int)MaxExposure, (int)CurrentExposure,
             new SliderControl("Exposure", (int)P.Default.ExposureMin, (int)P.Default.ExposureMax, (int)P.Default.CurrentExposure,
                 new RPCEventHandler(delegate (object o, RPCEventArgs a)
                 {

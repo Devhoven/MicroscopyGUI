@@ -126,13 +126,13 @@ namespace MicroscopeGUI
 
         private void SaveClick(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog _saveFile = new SaveFileDialog();
-            _saveFile.Title = "Save file";
-            _saveFile.Filter = "Png|*.png";
+            SaveFileDialog SaveDialog = new SaveFileDialog();
+            SaveDialog.Title = "Save file";
+            SaveDialog.Filter = "Png|*.png";
 
-            if (_saveFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+            if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                //ImageQueue.CurrentFrameBitmap.Save(_saveFile.FileName);
+                ImageQueue.CurrentFrameBitmap.Save(SaveDialog.FileName);
             }
         }
 
