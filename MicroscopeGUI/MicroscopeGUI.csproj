@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <None Remove="Assets\NoCam.png" />
+    <None Remove="Shader\Compiled\EffectShader.ps" />
+    <None Remove="Shader\FragmentShader.ps" />
   </ItemGroup>
 
   <ItemGroup>
@@ -33,6 +35,7 @@
 
   <ItemGroup>
     <Resource Include="Assets\NoCam.png" />
+    <Resource Include="Shader\Compiled\EffectShader.ps" />
   </ItemGroup>
 
 </Project>

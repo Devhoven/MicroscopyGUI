@@ -12,31 +12,56 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using RPCEventHandler = System.Windows.RoutedPropertyChangedEventHandler<double>;
+using RPCEventArgs = System.Windows.RoutedPropertyChangedEventArgs<double>;
+using ImgQueueMode = MicroscopeGUI.ImageQueue.ImgQueueMode;
 
 namespace MicroscopeGUI.UIElements.Steps
 {
     class AnalysisStepCon : StepCon
     {
-        bool IsFrozen = false;
-
         public AnalysisStepCon(Grid Parent, int Row = 1) : base(Parent, Row)
         {
-            Button FreezeBtn = new Button()
-            {
-                Content = "Freeze"
-            };
-            FreezeBtn.Click += FreezeBtnClick;
-            Children.Add(FreezeBtn);
-            SetRow(FreezeBtn, 0);
-        }
+            int RowCount = 0;
 
-        private void FreezeBtnClick(object sender, RoutedEventArgs e)
-        {
-            if (!IsFrozen)
-                UI.Cam.Acquisition.Freeze();
-            else
-                UI.Cam.Acquisition.Capture();
-            IsFrozen = !IsFrozen;
+            new ButtonControl("Freeze", new RoutedEventHandler(delegate (object o, RoutedEventArgs e)
+            {
+                if (ImageQueue.Mode == ImgQueueMode.Live)
+                {
+                    UI.Cam.Acquisition.Freeze();
+                    ImageQueue.Mode = ImgQueueMode.Frozen;
+                }
+                else
+                {
+                    UI.Cam.Acquisition.Capture();
+                    ImageQueue.Mode = ImgQueueMode.Live;
+                }
+            }), this, RowCount++);
+
+            new SliderControl("Contrast", 1, 6, 1, new RPCEventHandler(delegate (object o, RPCEventArgs e)
+            {
+                UI.FrameEffects.Contrast = (float)((Slider)o).Value;
+            }), this, RowCount++);
+
+            new SliderControl("Brightness", -1, 1, 0, new RPCEventHandler(delegate (object o, RPCEventArgs e)
+            {
+                UI.FrameEffects.Brightness = (float)((Slider)o).Value;
+            }), this, RowCount++);
+
+            new SliderControl("Amount of Red", 0, 1, 1, new RPCEventHandler(delegate (object o, RPCEventArgs e)
+            {
+                UI.FrameEffects.AmountR = (float)((Slider)o).Value;
+            }), this, RowCount++);
+
+            new SliderControl("Amount of Green", 0, 1, 1, new RPCEventHandler(delegate (object o, RPCEventArgs e)
+            {
+                UI.FrameEffects.AmountG = (float)((Slider)o).Value;
+            }), this, RowCount++);
+
+            new SliderControl("Amount of Blue", 0, 1, 1, new RPCEventHandler(delegate (object o, RPCEventArgs e)
+            {
+                UI.FrameEffects.AmountB = (float)((Slider)o).Value;
+            }), this, RowCount++);
         }
     }
 }

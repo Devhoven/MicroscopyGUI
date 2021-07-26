@@ -11,6 +11,7 @@ using MicroscopeGUI.UIElements.Steps;
 using Brushes = System.Windows.Media.Brushes;
 using Image = System.Windows.Controls.Image;
 using Button = System.Windows.Controls.Button;
+using System.Windows.Input;
 
 namespace MicroscopeGUI
 {
@@ -18,6 +19,7 @@ namespace MicroscopeGUI
     {
         public static Camera Cam;
         public static Image CurrentFrame;
+        public static EffectShader FrameEffects;
         public static Dispatcher CurrentDispatcher;
 
         Thread WorkerThread;
@@ -39,6 +41,7 @@ namespace MicroscopeGUI
 
             CurrentFrame = CurrentFrameCon;
             CurrentDispatcher = Dispatcher;
+            FrameEffects = EffectShader;
 
             Closing += GUIClosing;
 
@@ -128,7 +131,7 @@ namespace MicroscopeGUI
 
             if (_saveFile.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                ImageQueue.CurrentFrameBitmap.Save(_saveFile.FileName);
+                //ImageQueue.CurrentFrameBitmap.Save(_saveFile.FileName);
             }
         }
     }

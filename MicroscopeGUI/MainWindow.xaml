@@ -65,11 +65,21 @@
                         Background="{StaticResource ToolConBackground}"/>
             </Grid>
         </Grid>
-
+        
         <!--Image Container-->
-        <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1" Grid.Row="1">
-            <Image x:Name="CurrentFrameCon" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+        <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1" Grid.Row="1" ClipToBounds="True">
+            <Canvas x:Name="DrawingCanvas" Grid.Column="1" Grid.Row="1">
+                <Image x:Name="CurrentFrameCon" RenderOptions.BitmapScalingMode="NearestNeighbor"
+                       Width="{Binding ActualWidth, ElementName=ZoomDisplay}" 
+                       Height="{Binding ActualHeight, ElementName=ZoomDisplay}">
+                    <Image.Effect>
+                        <local:EffectShader x:Name="EffectShader"/>
+                    </Image.Effect>
+                </Image>
+                <Line X1="0" Y1="0" X2="0" Y2="0" Stroke="AliceBlue"/>
+            </Canvas>
         </local:ImageViewer>
+        
 
         <!--Image Gallery-->
         <Grid Name="ImageGalleryCon" Grid.ZIndex="1" Grid.Column="2" Grid.Row="1" 

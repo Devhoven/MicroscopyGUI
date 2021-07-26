@@ -29,14 +29,18 @@ namespace MicroscopeGUI
         // Contains all of the values of the histogram of the current image
         // 3 * 256, since there is a value for every 8 bit value of one channel
         public static uint[] Histogram = new uint[3 * 256];
-
+        // Holds the current frame as a bitmap
         public static Bitmap CurrentFrameBitmap;
-
+        // Is there to prevent issues with the camera
+        public static ImgQueueMode Mode = ImgQueueMode.Live;
 
         public static void Run()
         {
             while (!StopRunning)
             {
+                // Skips the loop if the image is not live
+                if (Mode != ImgQueueMode.Live)
+                    continue;
                 // Waits for the next image and returns the memory ID if a new image was sent by the cam
                 CurrentCamStatus = UI.Cam.Memory.Sequence.WaitForNextImage(3000, out int MemID, out _);
                 if (CurrentCamStatus == Status.Success)
@@ -47,28 +51,24 @@ namespace MicroscopeGUI
                     // Conversion to a bitmap
                     UI.Cam.Memory.Lock(MemID);
 
+                    // Converting it to a bitmap, since you can dispose it
+                    // When you do it directly with an array, you get a lot of gc calls
                     UI.Cam.Memory.ToBitmap(MemID, out Bitmap CFB);
                     CurrentFrameBitmap = CFB;
 
                     // Checking if the main Thread is still running
                     if (!StopRunning && !UI.CurrentDispatcher.HasShutdownStarted)
-                    {
-                        // Setting the current image on the picture panel
-                        // Calling the frame change event
-                        UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
-                            new Action(() =>
-                            {
-                                UI.CurrentFrame.Source = CFB.GetWriteableBitmap();
-
-                                OnFrameChange(null, null);
-                            }));
-                    }
+                        SetCurrentFrame(CFB);
 
                     // Unlocking the image buffer
                     UI.Cam.Memory.Unlock(MemID);
                 }
                 else
                 {
+                    // The program gets here if the user froze the cam and the cam was waiting for another image
+                    // If that happened, it skips to the next iteration of the loop and does not break out of it
+                    if (Mode != ImgQueueMode.Live)
+                        continue;
                     // Displaying the NoCam Image if you can't receive an image anymore
                     UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
                            new Action(() =>
@@ -77,6 +77,26 @@ namespace MicroscopeGUI
                     break;
                 }
             }
+        }
+
+        public static void SetCurrentFrame(Bitmap Bmp)
+        {
+            // Setting the current image on the picture panel
+            // Calling the frame change event
+            UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
+                new Action(() =>
+                {
+                    UI.CurrentFrame.Source = Bmp.GetWriteableBitmap();
+
+                    OnFrameChange(null, null);
+                }));
+        }
+
+        public enum ImgQueueMode
+        {
+            Live,
+            Frozen,
+            ViewingAnotherImage
         }
     }
 }

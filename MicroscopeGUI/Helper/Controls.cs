@@ -27,19 +27,37 @@ namespace MicroscopeGUI
             set { _Enable = value; }
         }
 
-        public Control(string Name, Grid Parent)
+        public Control(Grid Parent)
         {
-            Label = new Label();
-            Label.Content = Name;
-            Label.VerticalAlignment = VerticalAlignment.Top;
-            Label.HorizontalAlignment = HorizontalAlignment.Left;
-
             // Has to be initialized for every new row
             RowDefinition CheckBoxRowDefinition = new RowDefinition()
             {
                 Height = GridLength.Auto
             };
             Parent.RowDefinitions.Add(CheckBoxRowDefinition);
+        }
+
+        public Control(string Name, Grid Parent) : this(Parent)
+        {
+            Label = new Label();
+            Label.Content = Name;
+            Label.VerticalAlignment = VerticalAlignment.Top;
+            Label.HorizontalAlignment = HorizontalAlignment.Left;
+        }
+    }
+
+    class ButtonControl : Control
+    {
+        Button Button;
+
+        public ButtonControl(string Name, RoutedEventHandler ClickEvent, Grid Parent, int Row) : base(Parent)
+        {
+            Button = new Button();
+            Button.Click += ClickEvent;
+            Button.Content = Name;
+
+            Parent.Children.Add(Button);
+            Grid.SetRow(Button, Row);
         }
     }
 
@@ -83,6 +101,7 @@ namespace MicroscopeGUI
         }
     }
 
+    // Slider controls with double values
     class SliderControl : Control
     {
         // Standard margins for the elements
@@ -96,16 +115,16 @@ namespace MicroscopeGUI
             Left = 5
         };
 
-        string OriginalName;
+        internal string OriginalName;
         public Slider Slider;
 
         public override bool Enable
         {
-            get => Slider.IsEnabled; 
+            get => Slider.IsEnabled;
             set => Slider.IsEnabled = value;
         }
 
-        public SliderControl(string Name, int Min, int Max, int StartVal, RoutedPropertyChangedEventHandler<double> ValueChangedEvent,
+        public SliderControl(string Name, double Min, double Max, double StartVal, RoutedPropertyChangedEventHandler<double> ValueChangedEvent,
             Grid Parent, int Row, bool EnabledByDefault = true) : base(Name + " (" + StartVal + "):", Parent)
         {
             Slider = new Slider();
@@ -137,10 +156,28 @@ namespace MicroscopeGUI
             UI.CurrentDispatcher.Invoke(() => Slider.Value = Value);
 
         private void ChangeLabel(object sender, EventArgs e) =>
+            Label.Content = OriginalName + " (" + Slider.Value + "): ";
+    }
+
+    // Slider control for ints
+    class SliderControlInt : SliderControl
+    {
+        public SliderControlInt(string Name, int Min, int Max, int StartVal, RoutedPropertyChangedEventHandler<double> ValueChangedEvent,
+            Grid Parent, int Row, bool EnabledByDefault = true) : base(Name, Min, Max, StartVal, ValueChangedEvent, Parent, Row, EnabledByDefault)
+        {
+            Slider.IsSnapToTickEnabled = true;
+            Slider.TickFrequency = 1;
+        }
+
+        // Thread safe value setting
+        public void SetValue(int Value) =>
+            UI.CurrentDispatcher.Invoke(() => Slider.Value = Value);
+
+        private void ChangeLabel(object sender, EventArgs e) =>
             Label.Content = OriginalName + " (" + (int)Slider.Value + "): ";
     }
 
-    class UpdatingSliderControl : SliderControl
+    class UpdatingSliderControl : SliderControlInt
     {
         public UpdatingSliderControl(string Name, int Min, int Max, int StartVal, RoutedPropertyChangedEventHandler<double> ValueChangedEvent,
             EventHandler OnFrameChange, Grid Parent, int Row, bool EnabledByDefault = true) :
