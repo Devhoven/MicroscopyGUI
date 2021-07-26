@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using RPCEventHandler = System.Windows.RoutedPropertyChangedEventHandler<double>;
 using RPCEventArgs = System.Windows.RoutedPropertyChangedEventArgs<double>;
+using P = MicroscopeGUI.Properties.Settings;
 
 namespace MicroscopeGUI.UIElements.Steps
 {
@@ -27,8 +28,7 @@ namespace MicroscopeGUI.UIElements.Steps
 
             // All of these constructs add another control to the current table
 
-            UI.Cam.AutoFeatures.Software.Shutter.GetEnable(out bool ShutterEnabled);
-            new CheckBoxControl("Auto Shutter:", ShutterEnabled,
+            new CheckBoxControl("Auto Shutter:", P.Default.ShutterEnable,
                 new RoutedEventHandler(delegate (object o, RoutedEventArgs a)
                 {
                     UI.Cam.AutoFeatures.Software.Shutter.SetEnable((bool)((CheckBox)o).IsChecked);
@@ -36,8 +36,7 @@ namespace MicroscopeGUI.UIElements.Steps
             this, RowCount++);
 
 
-            UI.Cam.AutoFeatures.Software.WhiteBalance.GetEnable(out bool WhiteBalanceEnabled);
-            new CheckBoxControl("Auto Whitebalance:", WhiteBalanceEnabled,
+            new CheckBoxControl("Auto Whitebalance:", P.Default.WhiteBalanceEnable,
                 new RoutedEventHandler(delegate (object o, RoutedEventArgs a)
                 {
                     UI.Cam.AutoFeatures.Software.WhiteBalance.SetEnable((bool)((CheckBox)o).IsChecked);
@@ -45,8 +44,7 @@ namespace MicroscopeGUI.UIElements.Steps
             this, RowCount++);
 
 
-            UI.Cam.AutoFeatures.Software.Gain.GetEnable(out bool GainEnabled);
-            new CheckBoxControl("Auto Gain:", GainEnabled,
+            new CheckBoxControl("Auto Gain:", P.Default.GainEnable,
                 new RoutedEventHandler(delegate (object o, RoutedEventArgs a)
                 {
                     UI.Cam.AutoFeatures.Software.Gain.SetEnable((bool)((CheckBox)o).IsChecked);
@@ -55,10 +53,8 @@ namespace MicroscopeGUI.UIElements.Steps
             this, RowCount++);
 
 
-            UI.Cam.Timing.Framerate.GetFrameRateRange(out double FPSMin, out double FPSMax, out _);
-            UI.Cam.Timing.Framerate.Get(out double CurrentFPS);
             UpdatingSliderControl FPSSlider = null;
-            FPSSlider = new UpdatingSliderControl("FPS", (int)FPSMin, (int)FPSMax, (int)CurrentFPS,
+            FPSSlider = new UpdatingSliderControl("FPS", (int)P.Default.FrameRateMin, (int)P.Default.FrameRateMax, (int)P.Default.CurrentFramerate,
                 new RPCEventHandler(delegate (object o, RPCEventArgs a)
                 {
                     UI.Cam.Timing.Framerate.Set(((Slider)o).Value);
@@ -73,12 +69,12 @@ namespace MicroscopeGUI.UIElements.Steps
 
             UI.Cam.Gamma.Software.GetRange(out int GammaMin, out int GammaMax, out int GammaInc);
             new SliderControlInt("Gamma", -1, GammaMax, -1,
+            new SliderControl("Gamma", -1, P.Default.GammaMax, -1,
                 new RPCEventHandler(delegate (object o, RPCEventArgs a)
                 {
                     int Val = (int)((Slider)o).Value;
                     if (Val == -1)
-                        UI.Cam.Gamma.Software.GetDefault(out Val);
-                    UI.Cam.Gamma.Software.Set(Val);
+                        UI.Cam.Gamma.Software.Set(P.Default.GammaDefault);
                 }),
             this, RowCount++);
 
@@ -95,6 +91,7 @@ namespace MicroscopeGUI.UIElements.Steps
             UI.Cam.Color.Temperature.GetRange(out uint MinTemp, out uint MaxTemp, out _);
             UI.Cam.Color.Temperature.GetDefault(out uint DefaultTemp);
             new SliderControlInt("Color Temperature", (int)MinTemp, (int)MaxTemp, (int)DefaultTemp,
+            new SliderControl("Color Temperature", (int)P.Default.ColorTempMin, (int)P.Default.ColorTempMax, (int)P.Default.ColorTempDefault,
                 new RPCEventHandler(delegate (object o, RPCEventArgs e)
                 {
                     UI.Cam.Color.Temperature.Set((uint)((Slider)o).Value);
@@ -123,6 +120,7 @@ namespace MicroscopeGUI.UIElements.Steps
             UI.Cam.Timing.Exposure.Get(out double CurrentExposure);
             UI.Cam.Timing.Exposure.GetRange(out double MinExposure, out double MaxExposure, out _);
             new SliderControlInt("Exposure", (int)MinExposure, (int)MaxExposure, (int)CurrentExposure,
+            new SliderControl("Exposure", (int)P.Default.ExposureMin, (int)P.Default.ExposureMax, (int)P.Default.CurrentExposure,
                 new RPCEventHandler(delegate (object o, RPCEventArgs a)
                 {
                     UI.Cam.Timing.Exposure.Set(((Slider)o).Value);

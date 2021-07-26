@@ -12,6 +12,7 @@ using Brushes = System.Windows.Media.Brushes;
 using Image = System.Windows.Controls.Image;
 using Button = System.Windows.Controls.Button;
 using System.Windows.Input;
+using P = MicroscopeGUI.Properties.Settings;
 
 namespace MicroscopeGUI
 {
@@ -133,6 +134,82 @@ namespace MicroscopeGUI
             {
                 //ImageQueue.CurrentFrameBitmap.Save(_saveFile.FileName);
             }
+        }
+
+        private void ConfigSaveClick(object sender, RoutedEventArgs e)
+        {
+            // Auto Shutter
+            P.Default.ShutterEnable = Cam.AutoFeatures.Software.Shutter.Enabled;
+            // Auto WhiteBalance
+            P.Default.WhiteBalanceEnable = Cam.AutoFeatures.Software.WhiteBalance.Enabled;
+            // Auto Gain
+            P.Default.GainEnable = Cam.AutoFeatures.Software.Gain.Enabled;
+            // Framerate
+            Cam.Timing.Framerate.GetFrameRateRange(out double FPSMin, out double FPSMax, out _);
+            Cam.Timing.Framerate.Get(out double CurrentFPS);
+            P.Default.FrameRateMax = FPSMax;
+            P.Default.FrameRateMin = FPSMin;
+            P.Default.CurrentFramerate = CurrentFPS;
+            // Gamma
+            Cam.Gamma.Software.GetRange(out int GammaMin, out int GammaMax, out _);
+            Cam.Gamma.Software.GetDefault(out int DefaultVal);
+            Cam.Gamma.Software.Get(out int GammaVal);
+            P.Default.GammaMax = GammaMax;
+            P.Default.GammaMin = GammaMin;
+            P.Default.GammaDefault = DefaultVal;
+            P.Default.GammaVal = GammaVal;
+            // Brightness
+            Cam.AutoFeatures.Software.Reference.Get(out uint Brightness);
+            P.Default.Brightness = Brightness;
+            // Master Gain
+            Cam.Gain.Hardware.Factor.GetMaster(out int Master);
+            P.Default.MasterGain = Master;
+            // Color Temperature
+            Cam.Color.Temperature.GetRange(out uint MinTemp, out uint MaxTemp, out _);
+            Cam.Color.Temperature.GetDefault(out uint DefaultTemp);
+            P.Default.ColorTempMax = MaxTemp;
+            P.Default.ColorTempMin = MinTemp;
+            P.Default.ColorTempDefault = DefaultTemp;
+            // Saturation
+            Cam.Saturation.Get(out int satVal);
+            P.Default.Saturation = satVal;
+            // Exposure
+            Cam.Timing.Exposure.Get(out double CurrentExposure);
+            Cam.Timing.Exposure.GetRange(out double MinExposure, out double MaxExposure, out _);
+            P.Default.ExposureMax = MaxExposure;
+            P.Default.ExposureMin = MinExposure;
+            P.Default.CurrentExposure = CurrentExposure;
+
+            // Saving Values in Settings.settings file
+            P.Default.Save();
+
+            System.Windows.MessageBox.Show("Config saved!", "Microscope GUI");
+        }
+
+        private void ConfigLoadClick(object sender, RoutedEventArgs e)
+        {
+            // Auto Shutter
+            Cam.AutoFeatures.Software.Shutter.Enabled = P.Default.ShutterEnable;
+            // Auto WhiteBalance
+            Cam.AutoFeatures.Software.WhiteBalance.Enabled = P.Default.WhiteBalanceEnable;
+            // Auto Gain
+            Cam.AutoFeatures.Software.Gain.Enabled = P.Default.GainEnable;
+            // Framerate
+            Cam.Timing.Framerate.Set(P.Default.CurrentFramerate);
+            // Gamma
+            Cam.Gamma.Software.Set(P.Default.GammaVal);
+            // Brightness
+            Cam.AutoFeatures.Software.Reference.Set(P.Default.Brightness);
+            // Master Gain
+            Cam.Gain.Hardware.Factor.SetMaster(P.Default.MasterGain);
+            // Color Temperature
+            Cam.Color.Temperature.Set(P.Default.CurrentTemp);
+            // Saturation
+            Cam.Saturation.Set(P.Default.Saturation);
+            // Exposure
+            Cam.Timing.Exposure.Set(P.Default.CurrentExposure);
+
+            System.Windows.MessageBox.Show("Config loaded!", "Microscope GUI");
         }
     }
 }
