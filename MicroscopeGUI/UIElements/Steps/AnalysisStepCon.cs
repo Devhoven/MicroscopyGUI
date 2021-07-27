@@ -45,24 +45,24 @@ namespace MicroscopeGUI.UIElements.Steps
                 UI.FrameEffects.Contrast = (float)((Slider)o).Value;
             }), this, RowCount++);
 
-            new SliderControl("Brightness", -1, 1, 0, new RPCEventHandler(delegate (object o, RPCEventArgs e)
+            new SliderControl("Brightness", -255, 255, 0, new RPCEventHandler(delegate (object o, RPCEventArgs e)
             {
-                UI.FrameEffects.Brightness = (float)((Slider)o).Value;
+                UI.FrameEffects.Brightness = (float)((Slider)o).Value / 255;
             }), this, RowCount++);
 
-            new SliderControl("Amount of Red", 0, 1, 1, new RPCEventHandler(delegate (object o, RPCEventArgs e)
+            new SliderControl("Amount of Red", 0, 255, 255, new RPCEventHandler(delegate (object o, RPCEventArgs e)
             {
-                UI.FrameEffects.AmountR = (float)((Slider)o).Value;
+                UI.FrameEffects.AmountR = (float)((Slider)o).Value / 255;
             }), this, RowCount++);
 
-            new SliderControl("Amount of Green", 0, 1, 1, new RPCEventHandler(delegate (object o, RPCEventArgs e)
+            new SliderControl("Amount of Green", 0, 255, 255, new RPCEventHandler(delegate (object o, RPCEventArgs e)
             {
-                UI.FrameEffects.AmountG = (float)((Slider)o).Value;
+                UI.FrameEffects.AmountG = (float)((Slider)o).Value / 255;
             }), this, RowCount++);
 
-            new SliderControl("Amount of Blue", 0, 1, 1, new RPCEventHandler(delegate (object o, RPCEventArgs e)
+            new SliderControl("Amount of Blue", 0, 255, 255, new RPCEventHandler(delegate (object o, RPCEventArgs e)
             {
-                UI.FrameEffects.AmountB = (float)((Slider)o).Value;
+                UI.FrameEffects.AmountB = (float)((Slider)o).Value / 255;
             }), this, RowCount++);
         }
     }
