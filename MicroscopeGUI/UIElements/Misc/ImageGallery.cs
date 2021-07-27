@@ -46,12 +46,7 @@ namespace MicroscopeGUI
         }
 
         private void LoadImagesFromFolder(string[] FilePaths)
-        {   
-            for (int i = 0; i < Children.Count;)
-            {
-                Children[i].MouseLeftButtonDown -= OnImageClick;
-                Children.Remove(Children[i]);
-            }
+        {
             Children.Clear();
             foreach (string Path in FilePaths)
             {
@@ -59,7 +54,7 @@ namespace MicroscopeGUI
                 {
                     BitmapImage BmpImg = new BitmapImage();
                     BmpImg.BeginInit();
-                    BmpImg.CacheOption = BitmapCacheOption.OnLoad;
+                    BmpImg.CacheOption = BitmapCacheOption.None;
                     BmpImg.UriSource = new Uri(Path);
                     BmpImg.EndInit();
                     Image NewImg = new Image()
@@ -76,6 +71,12 @@ namespace MicroscopeGUI
                     NewImg.MouseLeftButtonDown += OnImageClick;
                 }
             }
+
+            // Clears up the unmanaged memory
+            // Only fully clears up the images after the third time xD
+            // But it is fine like this, since there is no memory leak now
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         void OnImageClick(object o, MouseButtonEventArgs e)
