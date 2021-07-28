@@ -26,16 +26,46 @@
         <DockPanel Grid.ColumnSpan="3" Grid.Row="0" Panel.ZIndex="1">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="_File">
-                    <MenuItem Header="_New"/>
-                    <MenuItem Header="_Open Folder" Click="ChangeDirClick"/>
-                    <MenuItem Header="_Save" Click="SaveClick"/>
-                    <MenuItem Header="Save _Config" Click="ConfigSaveClick"/>
-                    <MenuItem Header="_Load Config" Click="ConfigLoadClick"/>
+                    <MenuItem Header="_Save current frame" Click="SaveClick">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Icons/Save.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="_Change Image Gallery Folder" Click="ChangeDirClick">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Icons/Folder.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <Separator/>
-                    <MenuItem Header="_Exit"/>
+                    <MenuItem Header="_Exit">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Icons/Exit.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="_Camera">
+                    <MenuItem Header="_Save Cam Config" Click="ConfigSaveClick">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="_Load Cam Config" Click="ConfigLoadClick">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="_Restart Camera" Click="ReloadCamClick">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Icons/Restart.png"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
                 <MenuItem Header="_Other">
-                    <MenuItem Header="Histogram" Click="HistClick"/>
+                    <MenuItem Header="Histogram" Click="HistClick">
+                        <MenuItem.Icon>
+                            <Image Source="/Assets/Icons/Histogram.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                        </MenuItem.Icon>
+                    </MenuItem>
                 </MenuItem>
             </Menu>
             <TextBox AcceptsReturn="True"/>

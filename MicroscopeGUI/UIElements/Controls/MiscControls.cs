@@ -73,7 +73,7 @@ namespace MicroscopeGUI
             Grid.SetRow(CheckBox, Row);
         }
 
-        public override string GetName() =>
+        protected override string GetName() =>
             (string)Label.Content;
 
         public override void SetValue(object Value)
@@ -82,5 +82,4 @@ namespace MicroscopeGUI
         public override object GetValue() =>
             CheckBox.IsChecked;
     }
-
 }

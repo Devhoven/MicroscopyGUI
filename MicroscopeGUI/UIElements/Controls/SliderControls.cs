@@ -73,7 +73,7 @@ namespace MicroscopeGUI
         internal virtual void ChangeLabel(object sender, EventArgs e) =>
             Label.Content = OriginalName + " (" + Math.Round(Slider.Value, 3) + "): ";
 
-        public override string GetName() =>
+        protected override string GetName() =>
             OriginalName;
 
         public override object GetValue() =>

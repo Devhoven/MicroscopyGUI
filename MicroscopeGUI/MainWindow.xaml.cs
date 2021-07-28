@@ -1,6 +1,7 @@
 ﻿using uEye;
 using System;
-using System.Linq;
+using System.IO;
+using System.Text;
 using uEye.Defines;
 using System.Windows;
 using System.Threading;
@@ -11,9 +12,7 @@ using MicroscopeGUI.UIElements.Steps;
 using Brushes = System.Windows.Media.Brushes;
 using Image = System.Windows.Controls.Image;
 using Button = System.Windows.Controls.Button;
-using System.Windows.Input;
-using System.IO;
-using System.Text;
+using uEye.Types;
 
 namespace MicroscopeGUI
 {
@@ -25,6 +24,7 @@ namespace MicroscopeGUI
         public static Dispatcher CurrentDispatcher;
 
         Thread WorkerThread;
+        int[] MemoryIDs;
 
         ConfigStepCon ConfigCon;
         AnalysisStepCon AnalysisCon;
@@ -64,20 +64,29 @@ namespace MicroscopeGUI
 
             // Allocating image buffers for 1 second of an image queue
             Cam.Timing.Framerate.Get(out double Framerate);
-            for (int i = 0; i < (int)Framerate; i++)
-            {
-                StatusRet = Cam.Memory.Allocate(out int MemID, false);
-                if (StatusRet == Status.Success)
-                    Cam.Memory.Sequence.Add(MemID);
-            }
-
-            StatusRet = Cam.Memory.Sequence.InitImageQueue();
+            MemoryIDs = new int[(int)Framerate];
+            StatusRet = CreateRingBuffer();
+            
             //Initialization failed, showing the error screen
             if (StatusRet != Status.SUCCESS)
             {
                 CurrentFrameCon.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"));
                 ImageQueue.StopRunning = true;
             }
+        }
+
+        private Status CreateRingBuffer()
+        {
+            Status StatusRet;
+            for (int i = 0; i < MemoryIDs.Length; i++)
+            {
+                StatusRet = Cam.Memory.Allocate(out int MemID, false);
+                if (StatusRet == Status.Success)
+                    Cam.Memory.Sequence.Add(MemID);
+                MemoryIDs[i] = MemID;
+            }
+            StatusRet = Cam.Memory.Sequence.InitImageQueue();
+            return StatusRet;
         }
 
         void StartCapture()
@@ -87,15 +96,21 @@ namespace MicroscopeGUI
             WorkerThread.Start();
         }
 
-        private void GUIClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        private void CloseCamera()
         {
-            if (!(HistogramPopup is null))
-                HistogramPopup.Close();
             ImageQueue.StopRunning = true;
             WorkerThread.Join();
             // So, if the cam crashed or got pulled out in the process, the programm will still close correctly
             if (ImageQueue.CurrentCamStatus == Status.SUCCESS)
                 Cam.Exit();
+        }
+
+        #region GUIEvents
+        private void GUIClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!(HistogramPopup is null))
+                HistogramPopup.Close();
+            CloseCamera();
         }
 
         private void ChangeDirClick(object sender, RoutedEventArgs e) =>
@@ -160,5 +175,35 @@ namespace MicroscopeGUI
                 Control.LoadXML(File.ReadAllText(OpenDialog.FileName, Encoding.UTF8));
             }
         }
+        
+        // Closes all the stuff the camera set up (Except the ring buffer) and initializes it again
+        private void ReloadCamClick(object sender, RoutedEventArgs e)
+        {
+            // Closes the thread and joins it to the current
+            ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
+            ImageQueue.StopRunning = true;
+            WorkerThread.Join();
+
+            // Closes the camera
+            Cam.Exit();
+
+            // Initializes a new thread and a new camera
+            InitializeCam();
+
+            ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
+            ImageQueue.StopRunning = false;
+
+            StartCapture();
+
+            // Reloading all of the control elements
+            Control.RemoveAllControls();
+            ToolCon.Children.Remove(ConfigCon);
+            ToolCon.Children.Remove(AnalysisCon);
+            ConfigCon = new ConfigStepCon(ToolCon);
+            AnalysisCon = new AnalysisStepCon(ToolCon);
+            SetVisibillity(ConfigCon, ConfigConBtn);
+        }
+
+        #endregion
     }
 }

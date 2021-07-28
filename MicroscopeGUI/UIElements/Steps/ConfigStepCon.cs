@@ -24,6 +24,7 @@ namespace MicroscopeGUI.UIElements.Steps
             int RowCount = 0;
 
             SliderControlInt BrightnessSlider = null;
+            SliderControlInt ColorTemperatureSlider = null;
 
            UI.Cam.AutoFeatures.Software.Shutter.GetEnable(out bool ShutterEnabled);
             new CheckBoxControl("Auto Shutter", ShutterEnabled,
@@ -39,6 +40,8 @@ namespace MicroscopeGUI.UIElements.Steps
                 new RoutedEventHandler(delegate (object o, RoutedEventArgs a)
                 {
                     UI.Cam.AutoFeatures.Software.WhiteBalance.SetEnable((bool)((CheckBox)o).IsChecked);
+                    // The color temperature cannot be set if the auto whitebalance is enabled
+                    ColorTemperatureSlider.Enable = !(bool)((CheckBox)o).IsChecked;
                 }),
             this, RowCount++);
 
@@ -92,7 +95,7 @@ namespace MicroscopeGUI.UIElements.Steps
 
             UI.Cam.Color.Temperature.GetRange(out uint MinTemp, out uint MaxTemp, out _);
             UI.Cam.Color.Temperature.GetDefault(out uint DefaultTemp);
-            new SliderControlInt("Color Temperature", (int)MinTemp, (int)MaxTemp, (int)DefaultTemp,
+            ColorTemperatureSlider = new SliderControlInt("Color Temperature", (int)MinTemp, (int)MaxTemp, (int)DefaultTemp,
                 new RPCEventHandler(delegate (object o, RPCEventArgs e)
                 {
                     UI.Cam.Color.Temperature.Set((uint)((Slider)o).Value);

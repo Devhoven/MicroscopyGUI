@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Assets\NoCam.png" />
+    <None Remove="Assets\ConfigIcon.png" />
+    <None Remove="Assets\Icons\Exit.png" />
+    <None Remove="Assets\Icons\Folder.png" />
+    <None Remove="Assets\Icons\Histogram.png" />
+    <None Remove="Assets\Icons\Restart.png" />
+    <None Remove="Assets\Icons\Save.png" />
     <None Remove="Shader\Compiled\EffectShader.ps" />
     <None Remove="Shader\FragmentShader.ps" />
   </ItemGroup>
@@ -34,6 +39,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\Icons\Config.png" />
+    <Resource Include="Assets\Icons\Exit.png" />
+    <Resource Include="Assets\Icons\Folder.png" />
+    <Resource Include="Assets\Icons\Histogram.png" />
+    <Resource Include="Assets\Icons\Restart.png" />
+    <Resource Include="Assets\Icons\Save.png" />
     <Resource Include="Assets\NoCam.png" />
     <Resource Include="Shader\Compiled\EffectShader.ps" />
   </ItemGroup>

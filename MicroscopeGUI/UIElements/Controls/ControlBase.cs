@@ -17,14 +17,12 @@ using System.Xml;
 
 namespace MicroscopeGUI
 {
-    class Control
+    partial class Control
     {
-        static List<Control> AllControls = new List<Control>();
-
         public Label Label;
 
         protected bool _Enable;
-        internal bool Serializable;
+        protected bool Serializable;
 
         public virtual bool Enable
         {
@@ -32,7 +30,7 @@ namespace MicroscopeGUI
             set { _Enable = value; }
         }
 
-        internal Control(Grid Parent)
+        protected Control(Grid Parent)
         {
             // Has to be initialized for every new row
             RowDefinition CheckBoxRowDefinition = new RowDefinition()
@@ -45,7 +43,7 @@ namespace MicroscopeGUI
             Serializable = true;
         }
 
-        internal Control(string Name, Grid Parent) : this(Parent)
+        protected Control(string Name, Grid Parent) : this(Parent)
         {
             Label = new Label();
             Label.Content = Name;
@@ -53,44 +51,13 @@ namespace MicroscopeGUI
             Label.HorizontalAlignment = HorizontalAlignment.Left;
         }
 
-        public virtual string GetName() => 
-            "";
+        // Used for constructing the xml string
+        protected virtual string GetName() => "";
 
+        // Sets the value of the given control
         public virtual void SetValue(object Value) { }
 
-        public virtual object GetValue() => 
-            null;
-
-        public static void LoadXML(string XML)
-        {
-            using (XmlReader Reader = XmlReader.Create(new StringReader(XML)))
-            {
-                foreach (Control Current in AllControls)
-                {
-                    if (Current.Serializable)
-                    {
-                        Reader.ReadToFollowing(Current.GetName().Replace(' ', '-'));
-                        Reader.Read();
-                        Current.SetValue(Reader.ReadContentAsObject());
-                    }
-                }
-            }
-        }
-
-        public static string GetXMLString()
-        {
-            string Result = "<MicroscopeCamConfig>\n";
-            string CurrentName;
-            foreach (Control Current in AllControls)
-            {
-                if (Current.Serializable)
-                {
-                    CurrentName = Current.GetName().Replace(' ', '-');
-                    Result += "\t<" + CurrentName + ">" + Current.GetValue().ToString() + "</" + CurrentName + ">\n";
-                }
-            }
-
-            return Result + "</MicroscopeCamConfig>";
-        }
+        // Returns the value of the given control
+        public virtual object GetValue() => null;
     }
 }

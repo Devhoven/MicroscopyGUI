@@ -38,8 +38,8 @@ namespace MicroscopeGUI
         {
             while (!StopRunning)
             {
-                // Skips the loop if the image is frozen
-                if (Mode == ImgQueueMode.Frozen)
+                // Skips the loop if the image is frozen or the camera is shut
+                if (Mode == ImgQueueMode.Frozen || !UI.Cam.Memory.IsOpened)
                     continue;
                 // Waits for the next image and returns the memory ID if a new image was sent by the cam
                 CurrentCamStatus = UI.Cam.Memory.Sequence.WaitForNextImage(3000, out int MemID, out _);
