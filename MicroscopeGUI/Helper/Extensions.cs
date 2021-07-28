@@ -15,8 +15,9 @@ using System.Windows.Interop;
 using System.Windows;
 using System.Windows.Data;
 using System.Globalization;
+using Size = System.Windows.Size;
 
-namespace MicroscopeGUI.Helper
+namespace MicroscopeGUI
 {
     static class Extensions
     {
@@ -36,7 +37,7 @@ namespace MicroscopeGUI.Helper
                 ImageLockMode.ReadOnly, BMP.PixelFormat);
 
             FrameSource.Lock();
-
+            
             CopyMemory(FrameSource.BackBuffer, BMPData.Scan0, BMPData.Stride * BMPData.Height);
 
             FrameSource.AddDirtyRect(new Int32Rect(0, 0, BMP.Width, BMP.Height));
@@ -46,6 +47,24 @@ namespace MicroscopeGUI.Helper
             BMP.Dispose();
 
             return FrameSource;
+        }
+
+        // Returns the size in pixels of a given UI Element
+        // Stolen from: https://stackoverflow.com/a/3450426/9241163
+        public static Size GetElementPixelSize(this UIElement element)
+        {
+            Matrix transformToDevice;
+            var source = PresentationSource.FromVisual(element);
+            if (source != null)
+                transformToDevice = source.CompositionTarget.TransformToDevice;
+            else
+                using (var src = new HwndSource(new HwndSourceParameters()))
+                    transformToDevice = src.CompositionTarget.TransformToDevice;
+
+            if (element.DesiredSize == new Size())
+                element.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            return (Size)transformToDevice.Transform((Vector)element.DesiredSize);
         }
     }
 }

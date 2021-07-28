@@ -1,7 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -10,12 +12,17 @@ namespace MicroscopeGUI
 {
     // Stolen from https://stackoverflow.com/a/6782715
     // Modified it, so we can draw on it
+    // Removed all of the if (_Child == null) querys, since it never will be null in this case
     public class ImageViewer : Border
     {
         private Canvas _Child = null;
+        // How many childs are in the canvas, except the image
+        private int ChildCount;
+        // How much the user zoomed in the image, so not only images will get measured
+        private float Factor;
         private Point Origin;
         private Point Start;
-        private bool ViewMode = true;
+        private Point ChildStart;
 
         private TranslateTransform GetTranslateTransform(UIElement element)
         {
@@ -34,15 +41,15 @@ namespace MicroscopeGUI
             get { return base.Child; }
             set
             {
-                if (value != null && value != this.Child)
-                    this.Initialize(value);
+                if (value != null && value != Child)
+                    Initialize(value);
                 base.Child = value;
             }
         }
 
         public void Initialize(UIElement element)
         {
-            this._Child = element as Canvas;
+            _Child = element as Canvas;
             if (_Child != null)
             {
                 TransformGroup group = new TransformGroup();
@@ -53,12 +60,13 @@ namespace MicroscopeGUI
                 _Child.RenderTransform = group;
                 _Child.RenderTransformOrigin = new Point(0.0, 0.0);
 
-                this.MouseWheel += ChildMouseWheel;
-                this.MouseLeftButtonDown += ChildMouseLeftButtonDown;
-                this.MouseLeftButtonUp += ChildMouseLeftButtonUp;
-                this.MouseMove += ChildMouseMove;
-                this.PreviewMouseRightButtonDown += new MouseButtonEventHandler(
-                  ChildPreviewMouseRightButtonDown);
+                ChildCount = 0;
+                Factor = 1;
+
+                MouseDown += ChildMouseDown;
+                MouseUp += ChildMouseUp;
+                MouseWheel += ChildMouseWheel;
+                MouseMove += ChildMouseMove;
             }
         }
 
@@ -79,6 +87,94 @@ namespace MicroscopeGUI
         }
 
         #region Child Events
+        private void ChildMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Middle)
+            {
+                var tt = GetTranslateTransform(_Child);
+                Start = e.GetPosition(this);
+                Origin = new Point(tt.X, tt.Y);
+                Cursor = Cursors.Hand;
+                _Child.CaptureMouse();
+            }
+            else if(e.ChangedButton == MouseButton.Left)
+            {
+                var tt = GetTranslateTransform(_Child);
+                ChildStart = e.GetPosition(_Child);
+                Origin = new Point(tt.X, tt.Y);
+                Cursor = Cursors.Hand;
+                _Child.CaptureMouse();
+            }
+            else if (e.ChangedButton == MouseButton.Right)
+                Reset();
+        }
+
+        private void ChildMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (e.ChangedButton == MouseButton.Middle || e.ChangedButton == MouseButton.Left)
+            {
+                _Child.ReleaseMouseCapture();
+                Cursor = Cursors.Arrow;
+            }
+        }
+        
+        private void ChildMouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+            {
+                // Returns the position of the mouse relative to the image
+                Point p = e.GetPosition(_Child);
+
+                // Returns the parameters of a rectangle with a positive size (is required for a rectangle)
+                (double X, double Y, double Width, double Height) = GetRectangle(ChildStart, p);
+
+                Rectangle Rect = new Rectangle()
+                {
+                    Width = Width,
+                    Height = Height,
+                    Stroke = Brushes.Red,
+                    StrokeThickness = 2
+                };
+                TextBlock WidthDisplay = new TextBlock()
+                {
+                    Text = (Width * Factor).ToString(),
+                    FontSize = 20
+                };
+                TextBlock HeightDisplay = new TextBlock()
+                {
+                    Text = (Height * Factor).ToString(),
+                    FontSize = 20
+                };
+                HeightDisplay.LayoutTransform = new RotateTransform(90);
+
+                // Removing the old elements, except the image and adding the newly created
+                _Child.Children.RemoveRange(1, ChildCount);
+                _Child.Children.Add(Rect);
+                _Child.Children.Add(WidthDisplay);
+                _Child.Children.Add(HeightDisplay);
+
+                // Sets the render location of the new elements on the canvas
+                Canvas.SetLeft(Rect, X);
+                Canvas.SetTop(Rect, Y);
+
+                Size RenderedSize = WidthDisplay.GetElementPixelSize();
+                Canvas.SetLeft(WidthDisplay, X + Width / 2 - RenderedSize.Width / 2);
+                Canvas.SetTop(WidthDisplay, Y - WidthDisplay.FontSize - Rect.StrokeThickness - 3);
+
+                RenderedSize = HeightDisplay.GetElementPixelSize();
+                Canvas.SetLeft(HeightDisplay, X + Width);
+                Canvas.SetTop(HeightDisplay, Y + Height / 2 - RenderedSize.Width / 2);
+
+                ChildCount = 3;
+            }
+            else if (e.MiddleButton == MouseButtonState.Pressed)
+            {
+                var tt = GetTranslateTransform(_Child);
+                Vector v = Start - e.GetPosition(this);
+                tt.X = Origin.X - v.X;
+                tt.Y = Origin.Y - v.Y;
+            }
+        }
 
         private void ChildMouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -106,72 +202,19 @@ namespace MicroscopeGUI
                 tt.Y = absoluteY - relative.Y * st.ScaleY;
             }
         }
-
-        private void ChildMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (_Child != null)
-            {
-                var tt = GetTranslateTransform(_Child);
-                Start = e.GetPosition(this);
-                Origin = new Point(tt.X, tt.Y);
-                this.Cursor = Cursors.Hand;
-                _Child.CaptureMouse();
-            }
-        }
-
-        private void ChildMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (_Child != null)
-            {
-                _Child.ReleaseMouseCapture();
-                this.Cursor = Cursors.Arrow;
-            }
-        }
-
-        void ChildPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            //ViewMode = !ViewMode;
-            this.Reset();
-        }
-
-        private void ChildMouseMove(object sender, MouseEventArgs e)
-        {
-            if (_Child != null)
-            {
-                if (_Child.IsMouseCaptured)
-                {
-                    if (ViewMode)
-                    {
-                        var tt = GetTranslateTransform(_Child);
-                        Vector v = Start - e.GetPosition(this);
-                        tt.X = Origin.X - v.X;
-                        tt.Y = Origin.Y - v.Y;
-                    }
-                    else
-                    {
-                        //var tt = GetTranslateTransform(_Child);
-                        //Point pos = e.GetPosition(this);
-                        //pos.X = 0;
-                        //pos.Y = 0;
-                        //Line l = new Line()
-                        //{
-                        //    X1 = pos.X,
-                        //    Y1 = pos.Y,
-
-                        //    X2 = pos.X + 1,
-                        //    Y2 = pos.Y + 1,
-
-                        //    Stroke = Brushes.Red,
-                        //    StrokeThickness = 20
-                        //};
-
-                        //_Child.Children.RemoveAt(1);
-                        //_Child.Children.Add(l);
-                    }
-                }
-            }
-        }
-
         #endregion
+
+        // Constructs a rectangle out of two points
+        private (double, double, double, double) GetRectangle(Point p1, Point p2)
+        {
+            double Width = p2.X - p1.X;
+            double Height = p2.Y - p1.Y;
+            if (Width < 0)
+                p1.X = p2.X;
+            if (Height < 0)
+                p1.Y = p2.Y;
+
+            return (p1.X, p1.Y, Math.Abs(Width), Math.Abs(Height));
+        }
     }
 }

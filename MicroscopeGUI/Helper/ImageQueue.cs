@@ -13,7 +13,6 @@ using System.Runtime.InteropServices;
 using System.Windows.Media;
 using System.Windows.Interop;
 using System.Windows;
-using MicroscopeGUI.Helper;
 using System.Globalization;
 
 namespace MicroscopeGUI

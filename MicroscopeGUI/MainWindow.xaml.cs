@@ -36,7 +36,7 @@ namespace MicroscopeGUI
             InitializeComponent();
 
             InitializeCam();
-
+            
             ConfigCon = new ConfigStepCon(ToolCon);
             AnalysisCon = new AnalysisStepCon(ToolCon);
             SetVisibillity(ConfigCon, ConfigConBtn);
