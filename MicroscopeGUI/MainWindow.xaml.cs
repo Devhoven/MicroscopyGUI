@@ -13,6 +13,7 @@ using Brushes = System.Windows.Media.Brushes;
 using Image = System.Windows.Controls.Image;
 using Button = System.Windows.Controls.Button;
 using uEye.Types;
+using System.Windows.Controls;
 
 namespace MicroscopeGUI
 {
@@ -175,7 +176,7 @@ namespace MicroscopeGUI
                 Control.LoadXML(File.ReadAllText(OpenDialog.FileName, Encoding.UTF8));
             }
         }
-        
+
         // Closes all the stuff the camera set up (Except the ring buffer) and initializes it again
         private void ReloadCamClick(object sender, RoutedEventArgs e)
         {
@@ -204,6 +205,48 @@ namespace MicroscopeGUI
             SetVisibillity(ConfigCon, ConfigConBtn);
         }
 
+        
+
+        private void DarkModeChecked(object sender, RoutedEventArgs e)
+        {
+            ToolCon.Background = Brushes.LightSlateGray;
+            StepBtnCon.Background = Brushes.LightSlateGray;
+            ImageGalleryCon.Background = Brushes.LightSlateGray;
+            ZoomDisplay.Background = Brushes.Black;
+        }
+
+        private void DarkModeUnchecked(object sender, RoutedEventArgs e)
+        {
+            ToolCon.Background = Brushes.DarkGray;
+            StepBtnCon.Background = Brushes.DarkGray;
+            ImageGalleryCon.Background = Brushes.DarkGray;
+            ZoomDisplay.Background = Brushes.White;
+        }
+
+        private void CollapseItem(UIElement element, MenuItem sender)
+        {
+            if(element.Visibility == Visibility.Visible)
+            {
+                element.Visibility = Visibility.Collapsed;
+                sender.Background = Brushes.Transparent;
+            }
+            else
+            {
+                element.Visibility = Visibility.Visible;
+                sender.Background = Brushes.LightBlue;
+            }
+            
+        }
+
+        private void ConfigConToggle(object sender, RoutedEventArgs e)
+        {
+            CollapseItem(ToolCon, (MenuItem)sender);
+        }
+
+        private void ImageGalleryToggle(object sender, RoutedEventArgs e)
+        {
+            CollapseItem(ImageGalleryCon, (MenuItem)sender);
+        }
         #endregion
     }
 }

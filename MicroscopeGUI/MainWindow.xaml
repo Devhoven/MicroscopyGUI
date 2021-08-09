@@ -8,8 +8,8 @@
         Title="Microscope GUI" Height="720" Width="1080"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
     <Window.Resources>
-        <Brush x:Key="ToolConBackground">OrangeRed</Brush>
-        <Brush x:Key="ImgGalleryBackground">Aqua</Brush>
+        <Brush x:Key="ToolConBackground">DarkGray</Brush>
+        <Brush x:Key="ImgGalleryBackground">DarkGray</Brush>
     </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -21,59 +21,79 @@
             <RowDefinition Height="17"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
+
         <!--Navigation Bar-->
         <DockPanel Grid.ColumnSpan="3" Grid.Row="0" Panel.ZIndex="1">
-            <Menu DockPanel.Dock="Top">
-                <MenuItem Header="_File">
-                    <MenuItem Header="_Save current frame" Click="SaveClick">
-                        <MenuItem.Icon>
-                            <Image Source="/Assets/Icons/Save.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                        </MenuItem.Icon>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Menu DockPanel.Dock="Top" Grid.Column="0" Grid.ColumnSpan="2" Margin="0,0,34,0">
+                    <MenuItem Header="_File">
+                        <MenuItem Header="_Save current frame" Click="SaveClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Save.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="_Change Image Gallery Folder" Click="ChangeDirClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Folder.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator/>
+                        <MenuItem Header="_Exit">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Exit.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="_Change Image Gallery Folder" Click="ChangeDirClick">
-                        <MenuItem.Icon>
-                            <Image Source="/Assets/Icons/Folder.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                        </MenuItem.Icon>
+                    <MenuItem Header="_Camera">
+                        <MenuItem Header="_Save Cam Config" Click="ConfigSaveClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="_Load Cam Config" Click="ConfigLoadClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="_Restart Camera" Click="ReloadCamClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Restart.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
-                    <Separator/>
-                    <MenuItem Header="_Exit">
-                        <MenuItem.Icon>
-                            <Image Source="/Assets/Icons/Exit.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                        </MenuItem.Icon>
+                    <MenuItem Header="_Misc.">
+                        <MenuItem Header="Histogram" Click="HistClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Histogram.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="_Dark Mode" IsCheckable="True" Checked="DarkModeChecked" Unchecked="DarkModeUnchecked"/>
                     </MenuItem>
-                </MenuItem>
-                <MenuItem Header="_Camera">
-                    <MenuItem Header="_Save Cam Config" Click="ConfigSaveClick">
-                        <MenuItem.Icon>
+                    
+                </Menu>
+                <Menu DockPanel.Dock="Top" Grid.Column="1">
+                    <MenuItem Background="LightBlue" Click="ConfigConToggle">
+                        <MenuItem.Header>
                             <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                        </MenuItem.Icon>
+                        </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem Header="_Load Cam Config" Click="ConfigLoadClick">
-                        <MenuItem.Icon>
-                            <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                        </MenuItem.Icon>
+                    <MenuItem Background="LightBlue" Click="ImageGalleryToggle">
+                        <MenuItem.Header>
+                            <Image Source="/Assets/Icons/ImageGallery.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                        </MenuItem.Header>
                     </MenuItem>
-                    <MenuItem Header="_Restart Camera" Click="ReloadCamClick">
-                        <MenuItem.Icon>
-                            <Image Source="/Assets/Icons/Restart.png"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </MenuItem>
-                <MenuItem Header="_Other">
-                    <MenuItem Header="Histogram" Click="HistClick">
-                        <MenuItem.Icon>
-                            <Image Source="/Assets/Icons/Histogram.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </MenuItem>
-            </Menu>
-            <TextBox AcceptsReturn="True"/>
+                </Menu>
+            </Grid>
+
         </DockPanel>
 
         <!--Left Container-->
         <Grid Name="ToolCon" Grid.ZIndex="1" Grid.Column="0" Grid.Row="1"
-              Background="{StaticResource ToolConBackground}">
+              Background="{DynamicResource ToolConBackground}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="30"/>
                 <RowDefinition Height="1*"/>
@@ -82,14 +102,14 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="200"/>
             </Grid.ColumnDefinitions>
-            
+
             <!--Grid for the buttons-->
             <Grid Name="StepBtnCon" Grid.Row="0">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="1*"/>
                 </Grid.ColumnDefinitions>
-                
+
                 <!--Step Buttons-->
                 <Button Name="ConfigConBtn" Content="Config" Grid.Column="0" Click="ConfigBtnClick" BorderThickness="0" 
                         Background="{StaticResource ToolConBackground}"/>
@@ -97,7 +117,7 @@
                         Background="{StaticResource ToolConBackground}"/>
             </Grid>
         </Grid>
-        
+
         <!--Image Container-->
         <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1" Grid.Row="1" ClipToBounds="True">
             <Canvas x:Name="DrawingCanvas" Grid.Column="1" Grid.Row="1" RenderOptions.BitmapScalingMode="NearestNeighbor">
@@ -129,10 +149,10 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
-                <Label Content="Image Gallery" HorizontalAlignment="Center" Grid.Column="0"/>
+                <Label Content="Image Gallery" HorizontalAlignment="Center" Grid.Column="0" Width="200"/>
             </Grid>
 
-            <ScrollViewer Grid.Row="1">
+            <ScrollViewer Grid.Row="1" Visibility="Visible">
                 <local:ImageGallery x:Name="ImgGallery" VerticalAlignment="Top" Margin="5, 5, 0, 0"/>
             </ScrollViewer>
         </Grid>
