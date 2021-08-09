@@ -69,6 +69,7 @@ namespace MicroscopeGUI
                     Children.Add(NewImg);
 
                     NewImg.MouseLeftButtonDown += OnImageClick;
+                    NewImg.Cursor = Cursors.Hand;
                 }
             }
 
@@ -81,8 +82,11 @@ namespace MicroscopeGUI
 
         void OnImageClick(object o, MouseButtonEventArgs e)
         {
-            ImageQueue.Mode = ImageQueue.ImgQueueMode.ViewingAnotherImage;
-            UI.CurrentFrame.Source = ((Image)o).Source;
+            if (e.ClickCount == 2)
+            {
+                ImageQueue.Mode = ImageQueue.ImgQueueMode.ViewingAnotherImage;
+                UI.CurrentFrame.Source = ((Image)o).Source;
+            }
         }
     }
 }

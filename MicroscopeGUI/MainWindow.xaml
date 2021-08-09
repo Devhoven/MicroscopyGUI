@@ -10,7 +10,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ScrollBar.xaml"/>
+                <ResourceDictionary Source="XAML/ScrollBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
             
             <SolidColorBrush x:Key="ToolConBackground" Color="DarkGray" Opacity="0.2"/>

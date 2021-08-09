@@ -18,8 +18,8 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="ScrollBar.xaml">
+    <Resource Update="XAML\ScrollBar.xaml">
       <SubType>Designer</SubType>
-    </Page>
+    </Resource>
   </ItemGroup>
 </Project>

@@ -21,6 +21,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Page Remove="ScrollBar.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <COMReference Include="{d37e2a3e-8545-3a39-9f4f-31827c9124ab}">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>4</VersionMinor>
@@ -52,6 +56,9 @@
     <Resource Include="Assets\Icons\Save.png" />
     <Resource Include="Assets\Microscope.ico" />
     <Resource Include="Assets\NoCam.png" />
+    <Resource Include="XAML\ScrollBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Resource>
     <Resource Include="Shader\Compiled\EffectShader.ps" />
   </ItemGroup>
 
