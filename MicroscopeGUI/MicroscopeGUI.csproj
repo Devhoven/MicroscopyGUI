@@ -12,8 +12,10 @@
     <None Remove="Assets\Icons\Folder.png" />
     <None Remove="Assets\Icons\Histogram.png" />
     <None Remove="Assets\Icons\ImageGallery.png" />
+    <None Remove="Assets\Icons\Microscope.png" />
     <None Remove="Assets\Icons\Restart.png" />
     <None Remove="Assets\Icons\Save.png" />
+    <None Remove="Assets\Microscope.ico" />
     <None Remove="Shader\Compiled\EffectShader.ps" />
     <None Remove="Shader\FragmentShader.ps" />
   </ItemGroup>
@@ -45,8 +47,10 @@
     <Resource Include="Assets\Icons\Folder.png" />
     <Resource Include="Assets\Icons\Histogram.png" />
     <Resource Include="Assets\Icons\ImageGallery.png" />
+    <Resource Include="Assets\Icons\Microscope.png" />
     <Resource Include="Assets\Icons\Restart.png" />
     <Resource Include="Assets\Icons\Save.png" />
+    <Resource Include="Assets\Microscope.ico" />
     <Resource Include="Assets\NoCam.png" />
     <Resource Include="Shader\Compiled\EffectShader.ps" />
   </ItemGroup>

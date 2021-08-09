@@ -6,9 +6,11 @@
         xmlns:local="clr-namespace:MicroscopeGUI"
         mc:Ignorable="d"
         Title="Microscope GUI" Height="720" Width="1080"
-        WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        WindowStartupLocation="CenterScreen" WindowState="Maximized" Icon="/Assets/Microscope.ico">
     <Window.Resources>
-        <Brush x:Key="ToolConBackground">DarkGray</Brush>
+        <SolidColorBrush x:Key="ToolConBackground" Color="DarkGray" Opacity="0.2">
+            
+        </SolidColorBrush>
         <Brush x:Key="ImgGalleryBackground">DarkGray</Brush>
     </Window.Resources>
     <Grid>
@@ -21,6 +23,13 @@
             <RowDefinition Height="17"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#0F012D"  Offset="0.0"/>
+                <GradientStop Color="#0F1F2D" Offset="0.5"/>
+                <GradientStop Color="Black" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
 
         <!--Navigation Bar-->
         <DockPanel Grid.ColumnSpan="3" Grid.Row="0" Panel.ZIndex="1">
