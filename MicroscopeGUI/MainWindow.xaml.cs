@@ -13,6 +13,7 @@ using MicroscopeGUI.UIElements.Steps;
 using Brushes = System.Windows.Media.Brushes;
 using Image = System.Windows.Controls.Image;
 using Button = System.Windows.Controls.Button;
+using System.Windows.Media;
 
 namespace MicroscopeGUI
 {
