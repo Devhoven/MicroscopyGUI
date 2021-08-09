@@ -12,9 +12,8 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="XAML/ScrollBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
-            
-            <SolidColorBrush x:Key="ToolConBackground" Color="DarkGray" Opacity="0.2"/>
-            <SolidColorBrush x:Key="ImgGalleryBackground" Color="DarkGray" Opacity="0.2"/>
+
+            <SolidColorBrush x:Key="ConBackground" Color="#FF5E9183" Opacity="0.5"/>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -24,19 +23,19 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="25"/>
+            <RowDefinition Height="30"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#0F012D"  Offset="0.0"/>
-                <GradientStop Color="#0F1F2D" Offset="1.0"/>
+                <GradientStop Color="#FF1A8B97"  Offset="0.0"/>
+                <GradientStop Color="#FF1A2C68" Offset="1.0"/>
             </LinearGradientBrush>
         </Grid.Background>
 
         <!--Navigation Bar-->
-        <Border Grid.ColumnSpan="3" Grid.Row="0" Panel.ZIndex="1" Background="LightSteelBlue"
-                Margin="5 0 5 0" CornerRadius="5">
+        <Border Grid.ColumnSpan="3" Grid.Row="0" Panel.ZIndex="1" Background="{DynamicResource ConBackground}"
+                Margin="5 5 5 0" CornerRadius="5">
             <DockPanel>
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
@@ -107,9 +106,9 @@
 
 
         <!--Left Container-->
-        <Border Panel.ZIndex="1" Grid.Column="0" Grid.Row="1" Background="{DynamicResource ToolConBackground}"
+        <Border Panel.ZIndex="1" Grid.Column="0" Grid.Row="1" Background="{DynamicResource ConBackground}"
                 CornerRadius="5" Margin="5 5 5 5">
-            <Grid x:Name="ToolCon">
+            <Grid x:Name="ToolCon" Margin="5 5 5 5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="1*"/>
@@ -164,7 +163,7 @@
         </local:ImageViewer>
 
         <!--Image Gallery-->
-        <Border Grid.ZIndex="1" Grid.Column="2" Grid.Row="1" Background="{StaticResource ImgGalleryBackground}" 
+        <Border Grid.ZIndex="1" Grid.Column="2" Grid.Row="1" Background="{StaticResource ConBackground}" 
                 CornerRadius="5" Margin="5 5 5 5">
             <Grid Name="ImageGalleryCon">
                 <Grid.RowDefinitions>

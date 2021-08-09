@@ -50,7 +50,7 @@ namespace MicroscopeGUI
             Children.Clear();
             foreach (string Path in FilePaths)
             {
-                if (Path.EndsWith(".png"))
+                if (Path.ToLower().EndsWith(".png"))
                 {
                     BitmapImage BmpImg = new BitmapImage();
                     BmpImg.BeginInit();
