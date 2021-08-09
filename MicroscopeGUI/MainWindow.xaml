@@ -73,7 +73,6 @@
                         </MenuItem>
                         <MenuItem Header="_Dark Mode" IsCheckable="True" Checked="DarkModeChecked" Unchecked="DarkModeUnchecked"/>
                     </MenuItem>
-                    
                 </Menu>
                 <Menu DockPanel.Dock="Top" Grid.Column="1">
                     <MenuItem Background="LightBlue" Click="ConfigConToggle">
@@ -88,39 +87,52 @@
                     </MenuItem>
                 </Menu>
             </Grid>
-
         </DockPanel>
 
         <!--Left Container-->
-        <Grid Name="ToolCon" Grid.ZIndex="1" Grid.Column="0" Grid.Row="1"
-              Background="{DynamicResource ToolConBackground}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
+        <Border Panel.ZIndex="1" Grid.Column="0" Grid.Row="1" Background="{DynamicResource ToolConBackground}"
+                CornerRadius="5" Margin="5 5 5 5">
+            <Grid x:Name="ToolCon">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
-            </Grid.ColumnDefinitions>
-
-            <!--Grid for the buttons-->
-            <Grid Name="StepBtnCon" Grid.Row="0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
 
-                <!--Step Buttons-->
-                <Button Name="ConfigConBtn" Content="Config" Grid.Column="0" Click="ConfigBtnClick" BorderThickness="0" 
-                        Background="{StaticResource ToolConBackground}"/>
-                <Button Name="AnalysisConBtn" Content="Analysis" Grid.Column="2" Click="AnalysisBtnClick" BorderThickness="0"
-                        Background="{StaticResource ToolConBackground}"/>
-            </Grid>
-        </Grid>
+                <!--Grid for the buttons-->
+                <Grid x:Name="StepBtnCon" Grid.Row="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
 
+                    <!--Step Buttons-->
+                    <Button x:Name="ConfigConBtn" Content="Config" Grid.Column="0" Click="ConfigBtnClick" BorderThickness="0" 
+                    Margin="5 5 5 5" Background="LightBlue">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                    <Button x:Name="AnalysisConBtn" Content="Analysis" Grid.Column="2" Click="AnalysisBtnClick" BorderThickness="0"
+                     Margin="5 5 5 5" Background="LightBlue">
+                        <Button.Resources>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+        
         <!--Image Container-->
-        <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1" Grid.Row="1" ClipToBounds="True">
-            <Canvas x:Name="DrawingCanvas" Grid.Column="1" Grid.Row="1" RenderOptions.BitmapScalingMode="NearestNeighbor">
+        <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1" Grid.Row="1">
+            <Canvas x:Name="DrawingCanvas" RenderOptions.BitmapScalingMode="NearestNeighbor">
                 <Canvas.CacheMode>
                     <BitmapCache RenderOptions.CachingHint="Cache" RenderOptions.BitmapScalingMode="NearestNeighbor"></BitmapCache>
                 </Canvas.CacheMode>
@@ -135,27 +147,28 @@
         </local:ImageViewer>
 
         <!--Image Gallery-->
-        <Grid Name="ImageGalleryCon" Grid.ZIndex="1" Grid.Column="2" Grid.Row="1"
-              Background="{StaticResource ImgGalleryBackground}">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="1*"/>
-            </Grid.RowDefinitions>
-
-            <Grid>
+        <Border Grid.ZIndex="1" Grid.Column="2" Grid.Row="1" Background="{StaticResource ImgGalleryBackground}" 
+                CornerRadius="5" Margin="5 5 5 5">
+            <Grid Name="ImageGalleryCon">
                 <Grid.RowDefinitions>
+                    <RowDefinition Height="30"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="200"/>
-                </Grid.ColumnDefinitions>
-                <Label Content="Image Gallery" HorizontalAlignment="Center" Grid.Column="0" Width="200"/>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="200"/>
+                    </Grid.ColumnDefinitions>
+                    <Label Content="Image Gallery" HorizontalAlignment="Center" Grid.Column="0" Width="200"/>
+                </Grid>
+
+                <ScrollViewer Grid.Row="1" Visibility="Visible">
+                    <local:ImageGallery x:Name="ImgGallery" VerticalAlignment="Top" Margin="5, 5, 0, 0"/>
+                </ScrollViewer>
             </Grid>
-
-            <ScrollViewer Grid.Row="1" Visibility="Visible">
-                <local:ImageGallery x:Name="ImgGallery" VerticalAlignment="Top" Margin="5, 5, 0, 0"/>
-            </ScrollViewer>
-        </Grid>
+        </Border>
     </Grid>
-
 </Window>

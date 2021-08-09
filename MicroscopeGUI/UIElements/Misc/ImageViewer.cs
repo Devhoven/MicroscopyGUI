@@ -20,9 +20,10 @@ namespace MicroscopeGUI
         private int ChildCount;
         // How much the user zoomed in the image, so not only images will get measured
         private float Factor;
-        private Point Origin;
-        private Point Start;
-        private Point ChildStart;
+        private Point TransformOrigin;
+        private Point TransformStart;
+
+        private Point DrawStart;
 
         private TranslateTransform GetTranslateTransform(UIElement element)
         {
@@ -92,16 +93,15 @@ namespace MicroscopeGUI
             if (e.ChangedButton == MouseButton.Middle)
             {
                 var tt = GetTranslateTransform(_Child);
-                Start = e.GetPosition(this);
-                Origin = new Point(tt.X, tt.Y);
+                TransformStart = e.GetPosition(this);
+                TransformOrigin = new Point(tt.X, tt.Y);
                 Cursor = Cursors.Hand;
                 _Child.CaptureMouse();
             }
-            else if(e.ChangedButton == MouseButton.Left)
+            else if (e.ChangedButton == MouseButton.Left)
             {
                 var tt = GetTranslateTransform(_Child);
-                ChildStart = e.GetPosition(_Child);
-                Origin = new Point(tt.X, tt.Y);
+                DrawStart = e.GetPosition(_Child);
                 Cursor = Cursors.Hand;
                 _Child.CaptureMouse();
             }
@@ -117,7 +117,7 @@ namespace MicroscopeGUI
                 Cursor = Cursors.Arrow;
             }
         }
-        
+
         private void ChildMouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -126,7 +126,7 @@ namespace MicroscopeGUI
                 Point p = e.GetPosition(_Child);
 
                 // Returns the parameters of a rectangle with a positive size (is required for a rectangle)
-                (double X, double Y, double Width, double Height) = GetRectangle(ChildStart, p);
+                (double X, double Y, double Width, double Height) = GetRectangle(DrawStart, p);
 
                 Rectangle Rect = new Rectangle()
                 {
@@ -167,12 +167,12 @@ namespace MicroscopeGUI
 
                 ChildCount = 3;
             }
-            else if (e.MiddleButton == MouseButtonState.Pressed)
+            if (e.MiddleButton == MouseButtonState.Pressed)
             {
                 var tt = GetTranslateTransform(_Child);
-                Vector v = Start - e.GetPosition(this);
-                tt.X = Origin.X - v.X;
-                tt.Y = Origin.Y - v.Y;
+                Vector v = TransformStart - e.GetPosition(this);
+                tt.X = TransformOrigin.X - v.X;
+                tt.Y = TransformOrigin.Y - v.Y;
             }
         }
 
@@ -214,7 +214,7 @@ namespace MicroscopeGUI
             if (Height < 0)
                 p1.Y = p2.Y;
 
-            return (p1.X, p1.Y, Math.Abs(Width), Math.Abs(Height));
+            return (p1.X, p1.Y, (int)Math.Abs(Width), (int)Math.Abs(Height));
         }
     }
 }
