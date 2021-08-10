@@ -140,6 +140,7 @@ namespace MicroscopeGUI
                     FactorInputBox InputDialog = new FactorInputBox();
                     InputDialog.ShowDialog();
 
+                    // If the bool is set to true, the action was aborted
                     if (!InputDialog.Aborted)
                     {
                         double Measurement = double.Parse(InputDialog.InputBox.Text);

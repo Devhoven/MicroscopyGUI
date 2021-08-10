@@ -16,7 +16,7 @@ namespace MicroscopeGUI
     public partial class FactorInputBox : Window
     {
         static readonly Regex NumRegex = new Regex("[^0-9.]+"); // Regex that matches disallowed text
-        public bool Aborted = false;
+        public bool Aborted = true;
 
         public FactorInputBox()
         {
@@ -33,13 +33,29 @@ namespace MicroscopeGUI
         private void CheckIfNumeric(object sender, TextCompositionEventArgs e) =>
             e.Handled = NumRegex.IsMatch(e.Text);
 
-        private void SubmitClick(object sender, RoutedEventArgs e) =>
+        private void SubmitClick(object sender, RoutedEventArgs e)
+        {
+            // Won't submit until there is something in the InputBox
+            if (InputBox.Text != string.Empty)
+            {
+                Aborted = false;
+                Close();
+            }
+        }
+
+        private void AbortClick(object sender, RoutedEventArgs e) =>
             Close();
 
         private void InputKeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Enter)
-                Close();
+            {
+                if (InputBox.Text != string.Empty)
+                {
+                    Aborted = false;
+                    Close();
+                }
+            }
         }
     }
 }

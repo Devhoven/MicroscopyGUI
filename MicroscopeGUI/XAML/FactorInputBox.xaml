@@ -18,7 +18,7 @@
             <TextBox x:Name="InputBox" MinWidth="150" MaxWidth="169" FontSize="15"
                      PreviewTextInput="CheckIfNumeric" KeyDown="InputKeyDown"
                      HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF434346" Foreground="White"/>
-            <Grid>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button x:Name="Submit" FontSize="15" Content="Submit"
                         Background="#FF434346" Foreground="White"
                         Click="SubmitClick"
@@ -29,7 +29,18 @@
                         </Style>
                     </Button.Resources>
                 </Button>
-            </Grid>
+
+                <Button FontSize="15" Content="Abort"
+                        Background="#FF434346" Foreground="White"
+                        Click="AbortClick"
+                        HorizontalAlignment="Center" VerticalAlignment="Center" Padding="5 5 5 5" Margin="5 10 5 5">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </StackPanel>
         </StackPanel>
     </Grid>
 
