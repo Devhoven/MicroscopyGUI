@@ -12,6 +12,7 @@
     <None Remove="Assets\Icons\Folder.png" />
     <None Remove="Assets\Icons\Histogram.png" />
     <None Remove="Assets\Icons\ImageGallery.png" />
+    <None Remove="Assets\Icons\Measure.png" />
     <None Remove="Assets\Icons\Microscope.png" />
     <None Remove="Assets\Icons\Restart.png" />
     <None Remove="Assets\Icons\Save.png" />
@@ -51,6 +52,7 @@
     <Resource Include="Assets\Icons\Folder.png" />
     <Resource Include="Assets\Icons\Histogram.png" />
     <Resource Include="Assets\Icons\ImageGallery.png" />
+    <Resource Include="Assets\Icons\Measure.png" />
     <Resource Include="Assets\Icons\Microscope.png" />
     <Resource Include="Assets\Icons\Restart.png" />
     <Resource Include="Assets\Icons\Save.png" />

@@ -32,6 +32,8 @@ namespace MicroscopeGUI
         public static Bitmap CurrentFrameBitmap;
         // Is there to prevent issues with the camera
         public static ImgQueueMode Mode = ImgQueueMode.Live;
+        // Are holding the current width and height of the image
+        public static int Width = 1280, Height = 1028;
 
         public static void Run()
         {
@@ -46,6 +48,8 @@ namespace MicroscopeGUI
                 {
                     // Getting the values of the histogram
                     UI.Cam.Image.GetHistogram(MemID, ColorMode.BGR8Packed, out Histogram);
+
+                    UI.Cam.Memory.GetSize(MemID, out Width, out Height);
 
                     // Conversion to a bitmap
                     UI.Cam.Memory.Lock(MemID);

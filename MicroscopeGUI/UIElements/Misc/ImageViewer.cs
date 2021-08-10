@@ -10,20 +10,29 @@ using System.Windows.Shapes;
 
 namespace MicroscopeGUI
 {
-    // Stolen from https://stackoverflow.com/a/6782715
+    // Base is stolen from https://stackoverflow.com/a/6782715
     // Modified it, so we can draw on it
     // Removed all of the if (_Child == null) querys, since it never will be null in this case
     public class ImageViewer : Border
     {
-        private Canvas _Child = null;
+        Canvas _Child = null;
         // How many childs are in the canvas, except the image
-        private int ChildCount;
-        // How much the user zoomed in the image, so not only images will get measured
-        private float Factor;
-        private Point TransformOrigin;
-        private Point TransformStart;
+        int ChildCount;
 
-        private Point DrawStart;
+        MeasureMode CurrentMode = MeasureMode.Rectangle;
+        enum MeasureMode
+        {
+            Rectangle,
+            MeasureFactor
+        }
+
+        // Means unit per pixel
+        double PixelPerMeasurement = 2;
+
+        Point TransformOrigin;
+        Point TransformStart;
+
+        Point DrawStart;
 
         private TranslateTransform GetTranslateTransform(UIElement element)
         {
@@ -51,24 +60,21 @@ namespace MicroscopeGUI
         public void Initialize(UIElement element)
         {
             _Child = element as Canvas;
-            if (_Child != null)
-            {
-                TransformGroup group = new TransformGroup();
-                ScaleTransform st = new ScaleTransform();
-                group.Children.Add(st);
-                TranslateTransform tt = new TranslateTransform();
-                group.Children.Add(tt);
-                _Child.RenderTransform = group;
-                _Child.RenderTransformOrigin = new Point(0.0, 0.0);
 
-                ChildCount = 0;
-                Factor = 1;
+            TransformGroup group = new TransformGroup();
+            ScaleTransform st = new ScaleTransform();
+            group.Children.Add(st);
+            TranslateTransform tt = new TranslateTransform();
+            group.Children.Add(tt);
+            _Child.RenderTransform = group;
+            _Child.RenderTransformOrigin = new Point(0.0, 0.0);
 
-                MouseDown += ChildMouseDown;
-                MouseUp += ChildMouseUp;
-                MouseWheel += ChildMouseWheel;
-                MouseMove += ChildMouseMove;
-            }
+            ChildCount = 0;
+
+            MouseDown += ChildMouseDown;
+            MouseUp += ChildMouseUp;
+            MouseWheel += ChildMouseWheel;
+            MouseMove += ChildMouseMove;
         }
 
         public void Reset()
@@ -85,6 +91,14 @@ namespace MicroscopeGUI
                 tt.X = 0.0;
                 tt.Y = 0.0;
             }
+        }
+
+        public void ToggleMode()
+        {
+            if (CurrentMode == MeasureMode.Rectangle)
+                CurrentMode = MeasureMode.MeasureFactor;
+            else
+                CurrentMode = MeasureMode.Rectangle;
         }
 
         #region Child Events
@@ -111,10 +125,35 @@ namespace MicroscopeGUI
 
         private void ChildMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (e.ChangedButton == MouseButton.Middle || e.ChangedButton == MouseButton.Left)
+            if (e.ChangedButton == MouseButton.Middle)
             {
                 _Child.ReleaseMouseCapture();
                 Cursor = Cursors.Arrow;
+            }
+            else if (e.ChangedButton == MouseButton.Left)
+            {
+                _Child.ReleaseMouseCapture();
+                Cursor = Cursors.Arrow;
+
+                if (CurrentMode == MeasureMode.MeasureFactor)
+                {
+                    FactorInputBox InputDialog = new FactorInputBox();
+                    InputDialog.ShowDialog();
+                    double Measurement = double.Parse(InputDialog.InputBox.Text);
+
+                    // Returns the position of the mouse relative to the image
+                    Point CurrentMousePos = e.GetPosition(_Child);
+
+                    // Removing the old elements, except the image, since we don't need the line anymore
+                    RemoveChilds();
+
+                    double SizeFactor = GetScreenToPixelFactor();
+                    int PixelLength = (int)Math.Round((CurrentMousePos - DrawStart).Length * SizeFactor);
+
+                    PixelPerMeasurement = PixelLength / Measurement;
+
+                    CurrentMode = MeasureMode.Rectangle;
+                }
             }
         }
 
@@ -123,49 +162,20 @@ namespace MicroscopeGUI
             if (e.LeftButton == MouseButtonState.Pressed)
             {
                 // Returns the position of the mouse relative to the image
-                Point p = e.GetPosition(_Child);
+                Point CurrentMousePos = e.GetPosition(_Child);
 
-                // Returns the parameters of a rectangle with a positive size (is required for a rectangle)
-                (double X, double Y, double Width, double Height) = GetRectangle(DrawStart, p);
+                RemoveChilds();
 
-                Rectangle Rect = new Rectangle()
+                if (CurrentMode == MeasureMode.Rectangle)
                 {
-                    Width = Width,
-                    Height = Height,
-                    Stroke = Brushes.Red,
-                    StrokeThickness = 2
-                };
-                TextBlock WidthDisplay = new TextBlock()
+                    // Returns the parameters of a rectangle with a positive size (is required for a rectangle)
+                    (double X, double Y, double Width, double Height) = GetRectangle(DrawStart, CurrentMousePos);
+                    RenderRectangle(X, Y, Width, Height);
+                }
+                else if(CurrentMode == MeasureMode.MeasureFactor)
                 {
-                    Text = (Width * Factor).ToString(),
-                    FontSize = 20
-                };
-                TextBlock HeightDisplay = new TextBlock()
-                {
-                    Text = (Height * Factor).ToString(),
-                    FontSize = 20
-                };
-                HeightDisplay.LayoutTransform = new RotateTransform(90);
-
-                // Removing the old elements, except the image and adding the newly created
-                _Child.Children.RemoveRange(1, ChildCount);
-                _Child.Children.Add(Rect);
-                _Child.Children.Add(WidthDisplay);
-                _Child.Children.Add(HeightDisplay);
-
-                // Sets the render location of the new elements on the canvas
-                Canvas.SetLeft(Rect, X);
-                Canvas.SetTop(Rect, Y);
-
-                Size RenderedSize = WidthDisplay.GetElementPixelSize();
-                Canvas.SetLeft(WidthDisplay, X + Width / 2 - RenderedSize.Width / 2);
-                Canvas.SetTop(WidthDisplay, Y - WidthDisplay.FontSize - Rect.StrokeThickness - 3);
-
-                RenderedSize = HeightDisplay.GetElementPixelSize();
-                Canvas.SetLeft(HeightDisplay, X + Width);
-                Canvas.SetTop(HeightDisplay, Y + Height / 2 - RenderedSize.Width / 2);
-
-                ChildCount = 3;
+                    RenderLine(DrawStart, CurrentMousePos);
+                }
             }
             if (e.MiddleButton == MouseButtonState.Pressed)
             {
@@ -204,8 +214,93 @@ namespace MicroscopeGUI
         }
         #endregion
 
+        void RenderRectangle(double X, double Y, double Width, double Height)
+        {
+            // If the width and height are zero => The user only clicked on the canvas
+            // No new rectangle / text is added, thus "removing" the old rectangle
+            if (Width == 0 && Height == 0)
+                return;
+
+            double SizeFactor = GetScreenToPixelFactor();
+
+            // The values that are actually shown on the screen
+            int PixelWidth = (int)Math.Round(Width * SizeFactor);
+            int PixelHeight = (int)Math.Round(Height * SizeFactor);
+
+            Rectangle Rect = new Rectangle()
+            {
+                Width = Width,
+                Height = Height,
+                Stroke = Brushes.Red,
+                StrokeThickness = 1
+            };
+            // Disables aliasing on the rectangle :)
+            RenderOptions.SetEdgeMode(Rect, EdgeMode.Aliased);
+            TextBlock WidthDisplay = new TextBlock()
+            {
+                Text = Math.Round(PixelWidth * PixelPerMeasurement, 2).ToString(),
+                FontSize = 20,
+                Foreground = Brushes.Black
+            };
+            TextBlock HeightDisplay = new TextBlock()
+            {
+                Text = Math.Round(PixelHeight * PixelPerMeasurement, 2).ToString(),
+                FontSize = 20,
+                Foreground = Brushes.Black
+            };
+            // Rotates the height text 90 degrees
+            HeightDisplay.LayoutTransform = new RotateTransform(90);
+
+            // Adding the newly created shapes to the canvas
+            _Child.Children.Add(Rect);
+            _Child.Children.Add(WidthDisplay);
+            _Child.Children.Add(HeightDisplay);
+
+            // Sets the render location of the new elements on the canvas
+            Canvas.SetLeft(Rect, X);
+            Canvas.SetTop(Rect, Y);
+
+            // Sets the position of the text blocks
+            Size RenderedSize = WidthDisplay.GetElementPixelSize();
+            Canvas.SetLeft(WidthDisplay, X + Width / 2 - RenderedSize.Width / 2);
+            Canvas.SetTop(WidthDisplay, Y - WidthDisplay.FontSize - Rect.StrokeThickness - 3);
+
+            RenderedSize = HeightDisplay.GetElementPixelSize();
+            Canvas.SetLeft(HeightDisplay, X + Width);
+            Canvas.SetTop(HeightDisplay, Y + Height / 2 - RenderedSize.Width / 2);
+
+            ChildCount = 3;
+        }
+
+        void RenderLine(Point p1, Point p2)
+        {
+            if (p1.Equals(p2))
+                return;
+
+            Line Line = new Line()
+            {
+                X1 = p1.X,
+                Y1 = p1.Y,
+                X2 = p2.X,
+                Y2 = p2.Y,
+                Stroke = Brushes.Red,
+                StrokeThickness = 2
+            };
+
+            _Child.Children.Add(Line);
+
+            ChildCount = 1;
+        }
+
+        // Removing the old elements, except the image 
+        void RemoveChilds()
+        {
+            _Child.Children.RemoveRange(1, ChildCount);
+            ChildCount = 0;
+        }
+
         // Constructs a rectangle out of two points
-        private (double, double, double, double) GetRectangle(Point p1, Point p2)
+        (double, double, double, double) GetRectangle(Point p1, Point p2)
         {
             double Width = p2.X - p1.X;
             double Height = p2.Y - p1.Y;
@@ -214,7 +309,14 @@ namespace MicroscopeGUI
             if (Height < 0)
                 p1.Y = p2.Y;
 
-            return (p1.X, p1.Y, (int)Math.Abs(Width), (int)Math.Abs(Height));
+            return (p1.X, p1.Y, Math.Abs(Width), Math.Abs(Height));
+        }
+
+        double GetScreenToPixelFactor()
+        {
+            // Calculates the factor which converts the "screen" lengths to actual pixel lengths
+            double ActualWidth = (double)_Child.Children[0].GetValue(Image.ActualWidthProperty);
+            return ImageQueue.Width / ActualWidth;
         }
     }
 }

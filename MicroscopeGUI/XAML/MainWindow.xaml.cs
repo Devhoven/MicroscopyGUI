@@ -10,8 +10,8 @@ using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Windows.Media.Imaging;
 using MicroscopeGUI.UIElements.Steps;
-using Brushes = System.Windows.Media.Brushes;
 using Image = System.Windows.Controls.Image;
+using Brushes = System.Windows.Media.Brushes;
 using Button = System.Windows.Controls.Button;
 
 namespace MicroscopeGUI
@@ -140,15 +140,18 @@ namespace MicroscopeGUI
     // Class for all of the ui element events
     public partial class UI : Window
     {
+        // Changes the directory of the image gallery
         private void ChangeDirClick(object sender, RoutedEventArgs e) =>
             ImgGallery.UpdatePath();
 
+        // Makes the config step visible
         private void ConfigBtnClick(object sender, RoutedEventArgs e)
         {
             SetVisibillity(ConfigCon, ConfigConBtn);
             RegistryManager.SetValue("CurrentConfigStep", 0);
         }
 
+        // Makes the analysis step visible
         private void AnalysisBtnClick(object sender, RoutedEventArgs e)
         {
             SetVisibillity(AnalysisCon, AnalysisConBtn);
@@ -240,6 +243,11 @@ namespace MicroscopeGUI
             ConfigCon = new ConfigStepCon(ToolCon);
             AnalysisCon = new AnalysisStepCon(ToolCon);
             SetVisibillity(ConfigCon, ConfigConBtn);
+        }
+     
+        private void MeasureBtnClick(object sender, RoutedEventArgs e)
+        {
+            ZoomDisplay.ToggleMode();
         }
 
         private void ConfigConToggle(object sender, RoutedEventArgs e) =>

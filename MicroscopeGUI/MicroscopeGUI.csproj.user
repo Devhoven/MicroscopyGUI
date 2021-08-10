@@ -2,20 +2,21 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <ApplicationDefinition Update="App.xaml">
-      <SubType>Designer</SubType>
-    </ApplicationDefinition>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="HistogramWindow.xaml.cs">
+    <Compile Update="XAML\FactorInputBox.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="XAML\HistogramWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="HistogramWindow.xaml">
+    <Page Update="XAML\FactorInputBox.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="MainWindow.xaml">
+    <Page Update="XAML\HistogramWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="XAML\MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Resource Update="XAML\ScrollBar.xaml">
