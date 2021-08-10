@@ -247,6 +247,11 @@ namespace MicroscopeGUI
      
         private void MeasureBtnClick(object sender, RoutedEventArgs e)
         {
+            if (MeasureBtn.Background == Brushes.LightBlue)
+                MeasureBtn.Background = Brushes.Transparent;
+            else
+                MeasureBtn.Background = Brushes.LightBlue;
+
             ZoomDisplay.ToggleMode();
         }
 

@@ -139,20 +139,22 @@ namespace MicroscopeGUI
                 {
                     FactorInputBox InputDialog = new FactorInputBox();
                     InputDialog.ShowDialog();
-                    double Measurement = double.Parse(InputDialog.InputBox.Text);
 
-                    // Returns the position of the mouse relative to the image
-                    Point CurrentMousePos = e.GetPosition(_Child);
+                    if (!InputDialog.Aborted)
+                    {
+                        double Measurement = double.Parse(InputDialog.InputBox.Text);
+
+                        // Returns the position of the mouse relative to the image
+                        Point CurrentMousePos = e.GetPosition(_Child);
+
+                        double SizeFactor = GetScreenToPixelFactor();
+                        int PixelLength = (int)Math.Round((CurrentMousePos - DrawStart).Length * SizeFactor);
+
+                        PixelPerMeasurement = PixelLength / Measurement;
+                    }
 
                     // Removing the old elements, except the image, since we don't need the line anymore
                     RemoveChilds();
-
-                    double SizeFactor = GetScreenToPixelFactor();
-                    int PixelLength = (int)Math.Round((CurrentMousePos - DrawStart).Length * SizeFactor);
-
-                    PixelPerMeasurement = PixelLength / Measurement;
-
-                    CurrentMode = MeasureMode.Rectangle;
                 }
             }
         }

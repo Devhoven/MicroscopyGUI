@@ -16,12 +16,16 @@ namespace MicroscopeGUI
     public partial class FactorInputBox : Window
     {
         static readonly Regex NumRegex = new Regex("[^0-9.]+"); // Regex that matches disallowed text
+        public bool Aborted = false;
 
         public FactorInputBox()
         {
             InitializeComponent();
 
-            WindowStartupLocation = WindowStartupLocation.CenterOwner;
+            Point ScreenMousePos = Mouse.GetPosition(Application.Current.MainWindow);
+            Left = ScreenMousePos.X;
+            Top = ScreenMousePos.Y;
+
             InputBox.Focus();
         }
 
