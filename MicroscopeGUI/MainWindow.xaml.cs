@@ -13,7 +13,6 @@ using MicroscopeGUI.UIElements.Steps;
 using Brushes = System.Windows.Media.Brushes;
 using Image = System.Windows.Controls.Image;
 using Button = System.Windows.Controls.Button;
-using System.Windows.Media;
 
 namespace MicroscopeGUI
 {
@@ -37,10 +36,8 @@ namespace MicroscopeGUI
             InitializeComponent();
 
             InitializeCam();
-            
-            ConfigCon = new ConfigStepCon(ToolCon);
-            AnalysisCon = new AnalysisStepCon(ToolCon);
-            SetVisibillity(ConfigCon, ConfigConBtn);
+
+            InitializeUIComponents();
 
             CurrentFrame = CurrentFrameCon;
             CurrentDispatcher = Dispatcher;
@@ -76,7 +73,7 @@ namespace MicroscopeGUI
             }
         }
 
-        private Status CreateRingBuffer()
+        Status CreateRingBuffer()
         {
             Status StatusRet;
             for (int i = 0; i < MemoryIDs.Length; i++)
@@ -97,16 +94,32 @@ namespace MicroscopeGUI
             WorkerThread.Start();
         }
 
-        private void CloseCamera()
+        void InitializeUIComponents()
         {
-            ImageQueue.StopRunning = true;
-            WorkerThread.Join();
-            // So, if the cam crashed or got pulled out in the process, the programm will still close correctly
-            if (ImageQueue.CurrentCamStatus == Status.SUCCESS)
-                Cam.Exit();
+            ConfigCon = new ConfigStepCon(ToolCon);
+            AnalysisCon = new AnalysisStepCon(ToolCon);
+            int Selected = RegistryManager.GetIntVal("CurrentConfigStep");
+
+            if (Selected == 1)
+                SetVisibillity(AnalysisCon, AnalysisConBtn);
+            else
+                SetVisibillity(ConfigCon, ConfigConBtn);
+
+            bool ConfigConActivated = RegistryManager.GetBoolVal("ConfigConActivated");
+            if (!ConfigConActivated)
+            {
+                ToolCon.Visibility = Visibility.Collapsed;
+                ConfigConToggleBtn.Background = Brushes.Transparent;
+            }
+
+            bool ImgGalleryActivated = RegistryManager.GetBoolVal("ImgGalleryActivated");
+            if (!ImgGalleryActivated)
+            {
+                ImgGalleryCon.Visibility = Visibility.Collapsed;
+                ImgGalleryToggleBtn.Background = Brushes.Transparent;
+            }
         }
 
-        #region GUIEvents
         private void GUIClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (!(HistogramPopup is null))
@@ -114,15 +127,35 @@ namespace MicroscopeGUI
             CloseCamera();
         }
 
+        void CloseCamera()
+        {
+            ImageQueue.StopRunning = true;
+            WorkerThread.Join();
+            // So, if the cam crashed or got pulled out in the process, the programm will still close correctly
+            if (ImageQueue.CurrentCamStatus == Status.SUCCESS)
+                Cam.Exit();
+        }
+    }
+
+    // Class for all of the ui element events
+    public partial class UI : Window
+    {
         private void ChangeDirClick(object sender, RoutedEventArgs e) =>
             ImgGallery.UpdatePath();
 
-        private void ConfigBtnClick(object sender, RoutedEventArgs e) =>
+        private void ConfigBtnClick(object sender, RoutedEventArgs e)
+        {
             SetVisibillity(ConfigCon, ConfigConBtn);
+            RegistryManager.SetValue("CurrentConfigStep", 0);
+        }
 
-        private void AnalysisBtnClick(object sender, RoutedEventArgs e) =>
+        private void AnalysisBtnClick(object sender, RoutedEventArgs e)
+        {
             SetVisibillity(AnalysisCon, AnalysisConBtn);
+            RegistryManager.SetValue("CurrentConfigStep", 1);
+        }
 
+        // Sets the visibillity of the containers and changes the color of the buttons
         void SetVisibillity(StepCon Con, Button Btn)
         {
             ConfigCon.Visibility = Visibility.Hidden;
@@ -135,12 +168,14 @@ namespace MicroscopeGUI
             Btn.Background = Brushes.LightSkyBlue;
         }
 
+        // Opens the histogram window
         private void HistClick(object sender, RoutedEventArgs e)
         {
             HistogramPopup = new HistogramWindow();
             HistogramPopup.Show();
         }
 
+        // Saves the current frame
         private void SaveClick(object sender, RoutedEventArgs e)
         {
             SaveFileDialog SaveDialog = new SaveFileDialog();
@@ -153,6 +188,7 @@ namespace MicroscopeGUI
             }
         }
 
+        // Saves a config
         private void ConfigSaveClick(object sender, RoutedEventArgs e)
         {
             SaveFileDialog SaveDialog = new SaveFileDialog();
@@ -165,6 +201,7 @@ namespace MicroscopeGUI
             }
         }
 
+        // Loads a config
         private void ConfigLoadClick(object sender, RoutedEventArgs e)
         {
             OpenFileDialog OpenDialog = new OpenFileDialog();
@@ -205,48 +242,27 @@ namespace MicroscopeGUI
             SetVisibillity(ConfigCon, ConfigConBtn);
         }
 
-        
+        private void ConfigConToggle(object sender, RoutedEventArgs e) =>
+            ToggleItemVisibillity((MenuItem)sender, ToolCon, "ConfigConActivated");
 
-        private void DarkModeChecked(object sender, RoutedEventArgs e)
-        {
-            ToolCon.Background = Brushes.LightSlateGray;
-            StepBtnCon.Background = Brushes.LightSlateGray;
-            ImageGalleryCon.Background = Brushes.LightSlateGray;
-            ZoomDisplay.Background = Brushes.Black;
-        }
+        private void ImgGalleryToggle(object sender, RoutedEventArgs e) =>
+            ToggleItemVisibillity((MenuItem)sender, ImgGalleryCon, "ImgGalleryActivated");
 
-        private void DarkModeUnchecked(object sender, RoutedEventArgs e)
+        // Toggles the visibillity of a UI Elements and with it the color of the specified MenuItem
+        private void ToggleItemVisibillity(MenuItem Sender, UIElement Element, string ValName)
         {
-            ToolCon.Background = Brushes.DarkGray;
-            StepBtnCon.Background = Brushes.DarkGray;
-            ImageGalleryCon.Background = Brushes.DarkGray;
-            ZoomDisplay.Background = Brushes.White;
-        }
-
-        private void CollapseItem(UIElement element, MenuItem sender)
-        {
-            if(element.Visibility == Visibility.Visible)
+            if (Element.Visibility == Visibility.Visible)
             {
-                element.Visibility = Visibility.Collapsed;
-                sender.Background = Brushes.Transparent;
+                Element.Visibility = Visibility.Collapsed;
+                Sender.Background = Brushes.Transparent;
+                RegistryManager.SetValue(ValName, false);
             }
             else
             {
-                element.Visibility = Visibility.Visible;
-                sender.Background = Brushes.LightBlue;
+                Element.Visibility = Visibility.Visible;
+                Sender.Background = Brushes.LightBlue;
+                RegistryManager.SetValue(ValName, true);
             }
-            
         }
-
-        private void ConfigConToggle(object sender, RoutedEventArgs e)
-        {
-            CollapseItem(ToolCon, (MenuItem)sender);
-        }
-
-        private void ImageGalleryToggle(object sender, RoutedEventArgs e)
-        {
-            CollapseItem(ImageGalleryCon, (MenuItem)sender);
-        }
-        #endregion
     }
 }

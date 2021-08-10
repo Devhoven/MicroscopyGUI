@@ -36,7 +36,6 @@
         <!--Navigation Bar-->
         <Border Grid.ColumnSpan="3" Grid.Row="0" Panel.ZIndex="1" Background="{DynamicResource ConBackground}"
                 Margin="5 5 5 0" CornerRadius="5">
-            <DockPanel>
                 <Grid Background="Transparent">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
@@ -80,30 +79,27 @@
                             </MenuItem>
                         </MenuItem>
                         <MenuItem Header="_Misc.">
-                            <MenuItem Header="Histogram" Click="HistClick">
-                                <MenuItem.Icon>
-                                    <Image Source="/Assets/Icons/Histogram.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                                </MenuItem.Icon>
-                            </MenuItem>
-                            <MenuItem Header="_Dark Mode" IsCheckable="True" Checked="DarkModeChecked" Unchecked="DarkModeUnchecked"/>
+                        <MenuItem Header="Histogram" Click="HistClick">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Histogram.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                            </MenuItem.Icon>
                         </MenuItem>
+                    </MenuItem>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Grid.Column="1" Background="Transparent" Margin="2 2 2 2">
-                        <MenuItem Background="LightBlue" Click="ConfigConToggle">
+                        <MenuItem x:Name="ConfigConToggleBtn" Background="LightBlue" Click="ConfigConToggle">
                             <MenuItem.Header>
                                 <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                             </MenuItem.Header>
                         </MenuItem>
-                        <MenuItem Background="LightBlue" Click="ImageGalleryToggle">
+                        <MenuItem x:Name="ImgGalleryToggleBtn" Background="LightBlue" Click="ImgGalleryToggle">
                             <MenuItem.Header>
                                 <Image Source="/Assets/Icons/ImageGallery.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                             </MenuItem.Header>
                         </MenuItem>
                     </Menu>
                 </Grid>
-            </DockPanel>
         </Border>
-
 
         <!--Left Container-->
         <Border Panel.ZIndex="1" Grid.Column="0" Grid.Row="1" Background="{DynamicResource ConBackground}"
@@ -165,7 +161,7 @@
         <!--Image Gallery-->
         <Border Grid.ZIndex="1" Grid.Column="2" Grid.Row="1" Background="{StaticResource ConBackground}" 
                 CornerRadius="5" Margin="5 5 5 5">
-            <Grid Name="ImageGalleryCon">
+            <Grid x:Name="ImgGalleryCon">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="30"/>
                     <RowDefinition Height="1*"/>

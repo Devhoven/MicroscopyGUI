@@ -27,13 +27,14 @@ namespace MicroscopeGUI
             Bottom = 5
         };
 
-        // standard path 
-        public string StandardPath = Environment.GetFolderPath(Environment.SpecialFolder.Desktop); 
-
         public ImageGallery()
         {
-            string[] FilePaths = System.IO.Directory.GetFiles(StandardPath);
-            LoadImagesFromFolder(FilePaths);
+            string Path = RegistryManager.GetStrVal("ImgGalleryPath");
+            if (Path != string.Empty)
+            {
+                string[] FilePaths = System.IO.Directory.GetFiles(Path);
+                LoadImagesFromFolder(FilePaths);
+            }
         }
 
         public void UpdatePath()
@@ -42,6 +43,7 @@ namespace MicroscopeGUI
             if (Dialog.ShowDialog().GetValueOrDefault())
             {
                 LoadImagesFromFolder(System.IO.Directory.GetFiles(Dialog.SelectedPath));
+                RegistryManager.SetValue("ImgGalleryPath", Dialog.SelectedPath);
             }
         }
 
