@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:MicroscopeGUI"
         mc:Ignorable="d"
         Title="Microscope GUI" Height="720" Width="1080"
-        WindowStartupLocation="CenterScreen" WindowState="Maximized" Icon="/Assets/Microscope.ico">
+        WindowStartupLocation="CenterScreen" WindowState="Maximized" Icon="/Assets/Microscope.ico" Foreground="White" Background="#FF2D2D30">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="XAML/ScrollBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
-            <SolidColorBrush x:Key="ConBackground" Color="#FF5E9183" Opacity="0.5"/>
+            <SolidColorBrush x:Key="ConBackground" Color="#FF434346" Opacity="0.5"/>
         </ResourceDictionary>
     </Window.Resources>
     <Grid>
@@ -28,8 +28,8 @@
         </Grid.RowDefinitions>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
-                <GradientStop Color="#FF1A8B97"  Offset="0.0"/>
-                <GradientStop Color="#FF1A2C68" Offset="1.0"/>
+                <GradientStop Color="#FF1E1E1E"  Offset="0.0"/>
+                <GradientStop Color="#FF2D2D30" Offset="1.0"/>
             </LinearGradientBrush>
         </Grid.Background>
 
@@ -42,49 +42,49 @@
                         <ColumnDefinition Width="Auto"/>
                     </Grid.ColumnDefinitions>
 
-                    <Menu DockPanel.Dock="Top" Grid.Column="0" Grid.ColumnSpan="2" FontSize="13" Margin="5 3 0 0" Background="Transparent">
+                    <Menu DockPanel.Dock="Top" Grid.Column="0" Grid.ColumnSpan="2" FontSize="13" Margin="5 3 0 0" Background="Transparent" Foreground="White">
                         <MenuItem Header="_File">
-                            <MenuItem Header="_Save current frame" Click="SaveClick">
+                            <MenuItem Header="_Save current frame" Click="SaveClick" Foreground="Black">
                                 <MenuItem.Icon>
                                     <Image Source="/Assets/Icons/Save.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Header="_Change Image Gallery Folder" Click="ChangeDirClick">
+                            <MenuItem Header="_Change Image Gallery Folder" Click="ChangeDirClick" Foreground="Black">
                                 <MenuItem.Icon>
                                     <Image Source="/Assets/Icons/Folder.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                                 </MenuItem.Icon>
                             </MenuItem>
                             <Separator/>
-                            <MenuItem Header="_Exit">
+                            <MenuItem Header="_Exit" Foreground="Black">
                                 <MenuItem.Icon>
                                     <Image Source="/Assets/Icons/Exit.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
                         <MenuItem Header="_Camera">
-                            <MenuItem Header="_Save Cam Config" Click="ConfigSaveClick">
+                            <MenuItem Header="_Save Cam Config" Click="ConfigSaveClick" Foreground="Black">
                                 <MenuItem.Icon>
                                     <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Header="_Load Cam Config" Click="ConfigLoadClick">
+                            <MenuItem Header="_Load Cam Config" Click="ConfigLoadClick" Foreground="Black">
                                 <MenuItem.Icon>
                                     <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                                 </MenuItem.Icon>
                             </MenuItem>
-                            <MenuItem Header="_Restart Camera" Click="ReloadCamClick">
+                            <MenuItem Header="_Restart Camera" Click="ReloadCamClick" Foreground="Black">
                                 <MenuItem.Icon>
                                     <Image Source="/Assets/Icons/Restart.png"/>
                                 </MenuItem.Icon>
                             </MenuItem>
                         </MenuItem>
                         <MenuItem Header="_Misc.">
-                        <MenuItem Header="Histogram" Click="HistClick">
-                            <MenuItem.Icon>
-                                <Image Source="/Assets/Icons/Histogram.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                            </MenuItem.Icon>
+                            <MenuItem Header="Histogram" Click="HistClick" Foreground="Black">
+                                <MenuItem.Icon>
+                                    <Image Source="/Assets/Icons/Histogram.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                                </MenuItem.Icon>
+                            </MenuItem>
                         </MenuItem>
-                    </MenuItem>
                     </Menu>
                     <Menu DockPanel.Dock="Top" Grid.Column="1" Background="Transparent" Margin="2 2 2 2">
                         <MenuItem x:Name="ConfigConToggleBtn" Background="LightBlue" Click="ConfigConToggle">
@@ -123,7 +123,7 @@
 
                     <!--Step Buttons-->
                     <Button x:Name="ConfigConBtn" Content="Config" Grid.Column="0" Click="ConfigBtnClick" BorderThickness="0" 
-                    Margin="5 5 5 5" Background="LightBlue">
+                    Margin="5 5 5 5" Background="LightBlue" Foreground="White">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="5"/>
@@ -131,7 +131,7 @@
                         </Button.Resources>
                     </Button>
                     <Button x:Name="AnalysisConBtn" Content="Analysis" Grid.Column="1" Click="AnalysisBtnClick" BorderThickness="0"
-                     Margin="5 5 5 5" Background="LightBlue">
+                     Margin="5 5 5 5" Background="LightBlue" Foreground="White">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="5"/>
@@ -174,7 +174,7 @@
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="200"/>
                     </Grid.ColumnDefinitions>
-                    <Label Content="Image Gallery" HorizontalAlignment="Center" Grid.Column="0" Width="200"/>
+                    <Label Content="Image Gallery" HorizontalAlignment="Center" Grid.Column="0" Width="200" Foreground="White"/>
                 </Grid>
 
                 <ScrollViewer Grid.Row="1" Visibility="Visible">

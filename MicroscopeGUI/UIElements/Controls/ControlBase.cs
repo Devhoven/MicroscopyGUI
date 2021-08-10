@@ -46,6 +46,7 @@ namespace MicroscopeGUI
         protected Control(string Name, Grid Parent) : this(Parent)
         {
             Label = new Label();
+            Label.Foreground = Brushes.White;
             Label.Content = Name;
             Label.VerticalAlignment = VerticalAlignment.Top;
             Label.HorizontalAlignment = HorizontalAlignment.Left;
