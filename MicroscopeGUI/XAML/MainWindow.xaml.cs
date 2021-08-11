@@ -178,6 +178,14 @@ namespace MicroscopeGUI
             HistogramPopup.Show();
         }
 
+        // Opens the settings
+        private void SettingsClick(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow Settings = new SettingsWindow();
+            Settings.Owner = this;
+            Settings.Show();
+        }
+
         // Saves the current frame
         private void SaveClick(object sender, RoutedEventArgs e)
         {

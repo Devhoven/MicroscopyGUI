@@ -16,6 +16,7 @@
     <None Remove="Assets\Icons\Microscope.png" />
     <None Remove="Assets\Icons\Restart.png" />
     <None Remove="Assets\Icons\Save.png" />
+    <None Remove="Assets\Icons\Settings.png" />
     <None Remove="Assets\Microscope.ico" />
     <None Remove="Shader\Compiled\EffectShader.ps" />
     <None Remove="Shader\FragmentShader.ps" />
@@ -35,6 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Extended.Wpf.Toolkit" Version="4.1.0" />
     <PackageReference Include="Ookii.Dialogs.Wpf" Version="3.1.0" />
     <PackageReference Include="ScottPlot.WPF" Version="4.1.16" />
     <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
@@ -56,6 +58,7 @@
     <Resource Include="Assets\Icons\Microscope.png" />
     <Resource Include="Assets\Icons\Restart.png" />
     <Resource Include="Assets\Icons\Save.png" />
+    <Resource Include="Assets\Icons\Settings.png" />
     <Resource Include="Assets\Microscope.ico" />
     <Resource Include="Assets\NoCam.png" />
     <Resource Include="XAML\ScrollBar.xaml">

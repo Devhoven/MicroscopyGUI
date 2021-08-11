@@ -30,6 +30,7 @@ namespace MicroscopeGUI
         public ImageGallery()
         {
             string Path = RegistryManager.GetStrVal("ImgGalleryPath");
+            Settings.ImgGalleryPath = Path;
             if (Path != string.Empty)
             {
                 string[] FilePaths = System.IO.Directory.GetFiles(Path);
@@ -44,6 +45,7 @@ namespace MicroscopeGUI
             {
                 LoadImagesFromFolder(System.IO.Directory.GetFiles(Dialog.SelectedPath));
                 RegistryManager.SetValue("ImgGalleryPath", Dialog.SelectedPath);
+                Settings.ImgGalleryPath = Dialog.SelectedPath;
             }
         }
 

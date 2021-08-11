@@ -25,6 +25,7 @@ namespace MicroscopeGUI.UIElements.Steps
 
             SliderControlInt BrightnessSlider = null;
             SliderControlInt ColorTemperatureSlider = null;
+            SliderControl MasterGainSlider = null;
 
            UI.Cam.AutoFeatures.Software.Shutter.GetEnable(out bool ShutterEnabled);
             new CheckBoxControl("Auto Shutter", ShutterEnabled,
@@ -52,6 +53,7 @@ namespace MicroscopeGUI.UIElements.Steps
                 {
                     UI.Cam.AutoFeatures.Software.Gain.SetEnable((bool)((CheckBox)o).IsChecked);
                     BrightnessSlider.Enable = (bool)((CheckBox)o).IsChecked;
+                    MasterGainSlider.Enable = !(bool)((CheckBox)o).IsChecked;
                 }),
             this, RowCount++);
 
@@ -103,16 +105,6 @@ namespace MicroscopeGUI.UIElements.Steps
             this, RowCount++);
 
 
-            new SliderControl("Master Gain", 0, 100, 0,
-                new RPCEventHandler(delegate (object o, RPCEventArgs a)
-                {
-                    UI.Cam.AutoFeatures.Software.Gain.SetEnable(false);
-                    UI.Cam.Gain.Hardware.ConvertScaledToFactor.Master((int)((Slider)o).Value, out int factor);
-                    UI.Cam.Gain.Hardware.Factor.SetMaster(factor, out int newaaaa);
-                }),
-            this, RowCount++);
-
-
             new SliderControlInt("Saturation", 0, 200, 100,
                 new RPCEventHandler(delegate (object o, RPCEventArgs a)
                 {
@@ -127,6 +119,26 @@ namespace MicroscopeGUI.UIElements.Steps
                 new RPCEventHandler(delegate (object o, RPCEventArgs a)
                 {
                     UI.Cam.Timing.Exposure.Set(((Slider)o).Value);
+                }),
+            this, RowCount++);
+
+
+            MasterGainSlider = new SliderControl("Master Gain", 0, 100, 0,
+                new RPCEventHandler(delegate (object o, RPCEventArgs a)
+                {
+                    UI.Cam.AutoFeatures.Software.Gain.SetEnable(false);
+                    UI.Cam.Gain.Hardware.ConvertScaledToFactor.Master((int)((Slider)o).Value, out int factor);
+                    UI.Cam.Gain.Hardware.Factor.SetMaster(factor, out int newaaaa);
+                }),
+            this, RowCount++);
+
+
+            UI.Cam.BlackLevel.Offset.GetRange(out int BlackLvlMin, out int BlackLvlMax, out _);
+            UI.Cam.BlackLevel.Offset.Get(out int BlackLvlVal);
+            new SliderControl("Black level", BlackLvlMin, BlackLvlMax, BlackLvlVal,
+                new RPCEventHandler(delegate (object o, RPCEventArgs a)
+                {
+                    UI.Cam.BlackLevel.Offset.Set((int)((Slider)o).Value);
                 }),
             this, RowCount++);
         }

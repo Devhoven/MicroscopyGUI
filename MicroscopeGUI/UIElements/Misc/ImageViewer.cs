@@ -234,8 +234,8 @@ namespace MicroscopeGUI
             {
                 Width = Width,
                 Height = Height,
-                Stroke = Brushes.Red,
-                StrokeThickness = 1
+                Stroke = Settings.LineColor,
+                StrokeThickness = Settings.LineThickness
             };
             // Disables aliasing on the rectangle :)
             RenderOptions.SetEdgeMode(Rect, EdgeMode.Aliased);
@@ -243,13 +243,13 @@ namespace MicroscopeGUI
             {
                 Text = Math.Round(PixelWidth * PixelPerMeasurement, 2).ToString(),
                 FontSize = 20,
-                Foreground = Brushes.Black
+                Foreground = Settings.LineTextColor
             };
             TextBlock HeightDisplay = new TextBlock()
             {
                 Text = Math.Round(PixelHeight * PixelPerMeasurement, 2).ToString(),
                 FontSize = 20,
-                Foreground = Brushes.Black
+                Foreground = Settings.LineTextColor
             };
             // Rotates the height text 90 degrees
             HeightDisplay.LayoutTransform = new RotateTransform(90);
@@ -286,8 +286,8 @@ namespace MicroscopeGUI
                 Y1 = p1.Y,
                 X2 = p2.X,
                 Y2 = p2.Y,
-                Stroke = Brushes.Red,
-                StrokeThickness = 2
+                Stroke = Settings.LineColor,
+                StrokeThickness = Settings.LineThickness
             };
 
             _Child.Children.Add(Line);
