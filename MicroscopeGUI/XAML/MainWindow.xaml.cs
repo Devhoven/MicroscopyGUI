@@ -13,7 +13,6 @@ using MicroscopeGUI.UIElements.Steps;
 using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
 using Button = System.Windows.Controls.Button;
-using MicroscopeGUI.Helper;
 
 namespace MicroscopeGUI
 {
@@ -32,8 +31,6 @@ namespace MicroscopeGUI
 
         HistogramWindow HistogramPopup;
 
-        Metadata Metadata;
-
         public UI()
         {
             InitializeComponent();
@@ -49,6 +46,13 @@ namespace MicroscopeGUI
             UserInfo.InfoLabel = InfoLabel;
 
             Closing += GUIClosing;
+
+            using (FileStream fs = new FileStream("C:/Users/MEINS/Pictures/BinaryTest.png", FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                BitmapSource img = BitmapFrame.Create(fs);
+                BitmapMetadata md = (BitmapMetadata)img.Metadata;
+                object date = md.GetQuery("/[2]iTXt/TextEntry");
+            }
 
             StartCapture();
         }
@@ -202,11 +206,10 @@ namespace MicroscopeGUI
 
             if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                ImageQueue.CurrentFrameBitmap.Save(SaveDialog.FileName);
+
                 UserInfo.SetInfo("Saved the current frame to " + SaveDialog.FileName);
             }
 
-            Metadata = new Metadata();
             //Metadata.AddTags(SaveDialog.FileName, string[] blabla);
         }
 
@@ -242,6 +245,7 @@ namespace MicroscopeGUI
         private void ReloadCamClick(object sender, RoutedEventArgs e)
         {
             UserInfo.SetInfo("Reloading the cam...");
+
             // Closes the thread and joins it to the current
             ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
             ImageQueue.StopRunning = true;

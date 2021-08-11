@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicroscopeGUI", "MicroscopeGUI\MicroscopeGUI.csproj", "{7CF34C76-4677-465C-99D6-6B811B6A7B98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MicroscopeGUI", "MicroscopeGUI\MicroscopeGUI.csproj", "{7CF34C76-4677-465C-99D6-6B811B6A7B98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
