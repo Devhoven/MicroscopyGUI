@@ -13,6 +13,7 @@
                 <ResourceDictionary Source="ScrollBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey }" Color="White"/>
             <SolidColorBrush x:Key="ConBackground" Color="#FF434346" Opacity="0.5"/>
         </ResourceDictionary>
     </Window.Resources>
@@ -38,6 +39,7 @@
                 Margin="5 5 5 0" CornerRadius="5">
             <Grid Background="Transparent">
                 <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
@@ -91,7 +93,28 @@
                         </MenuItem>
                     </MenuItem>
                 </Menu>
-                <Menu DockPanel.Dock="Top" Grid.Column="1" Background="Transparent" Margin="2 2 2 2">
+                
+                <!--Got this from https://stackoverflow.com/a/1601994/9241163-->
+                <Label  Name="InfoLabel" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Collapsed" FontSize="13" Grid.Column="1">
+                    <Label.Style>
+                        <Style TargetType="{x:Type Label}">
+                            <Style.Triggers>
+                                <Trigger Property="Visibility" Value="Visible">
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="00:00:03" BeginTime="00:00:01" From="1.0" To="0.0" />
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                </Trigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Label.Style>
+                    Display Text
+                </Label>
+
+                <Menu DockPanel.Dock="Top" Grid.Column="2" Background="Transparent" Margin="2 2 2 2">
                     <MenuItem x:Name="MeasureBtn" Click="MeasureBtnClick">
                         <MenuItem.Header>
                             <Image Source="/Assets/Icons/Measure.png"/>
@@ -133,7 +156,7 @@
 
                     <!--Step Buttons-->
                     <Button x:Name="ConfigConBtn" Content="Config" Grid.Column="0" Click="ConfigBtnClick" BorderThickness="0" 
-                    Margin="5 5 5 5" Background="LightBlue" Foreground="White">
+                    Margin="5 5 5 5" Background="LightBlue">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="5"/>
@@ -141,7 +164,7 @@
                         </Button.Resources>
                     </Button>
                     <Button x:Name="AnalysisConBtn" Content="Analysis" Grid.Column="1" Click="AnalysisBtnClick" BorderThickness="0"
-                     Margin="5 5 5 5" Background="LightBlue" Foreground="White">
+                     Margin="5 5 5 5" Background="LightBlue">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="5"/>

@@ -42,6 +42,8 @@ namespace MicroscopeGUI
             CurrentFrame = CurrentFrameCon;
             CurrentDispatcher = Dispatcher;
             FrameEffects = EffectShader;
+
+            UserInfo.InfoLabel = InfoLabel;
             
             Closing += GUIClosing;
 
@@ -196,6 +198,7 @@ namespace MicroscopeGUI
             if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 ImageQueue.CurrentFrameBitmap.Save(SaveDialog.FileName);
+                UserInfo.SetInfo("Saved the current frame to " + SaveDialog.FileName);
             }
         }
 
@@ -209,6 +212,7 @@ namespace MicroscopeGUI
             if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 File.WriteAllText(SaveDialog.FileName, Control.GetXMLString(), Encoding.UTF8);
+                UserInfo.SetInfo("Saved the current config to " + SaveDialog.FileName);
             }
         }
 
@@ -222,12 +226,15 @@ namespace MicroscopeGUI
             if (OpenDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 Control.LoadXML(File.ReadAllText(OpenDialog.FileName, Encoding.UTF8));
+                UserInfo.SetInfo("Loaded the config from " + OpenDialog.FileName);
             }
         }
 
         // Closes all the stuff the camera set up (Except the ring buffer) and initializes it again
         private void ReloadCamClick(object sender, RoutedEventArgs e)
         {
+            UserInfo.SetInfo("Reloading the cam...");
+
             // Closes the thread and joins it to the current
             ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
             ImageQueue.StopRunning = true;
@@ -251,6 +258,8 @@ namespace MicroscopeGUI
             ConfigCon = new ConfigStepCon(ToolCon);
             AnalysisCon = new AnalysisStepCon(ToolCon);
             SetVisibillity(ConfigCon, ConfigConBtn);
+
+            UserInfo.SetInfo("Reloaded the cam");
         }
      
         private void MeasureBtnClick(object sender, RoutedEventArgs e)
