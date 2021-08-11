@@ -59,6 +59,8 @@ namespace MicroscopeGUI
             WpfPlot1.Plot.AddBar(ValuesB, System.Drawing.Color.Blue).BorderLineWidth = 0;
             WpfPlot1.Plot.SetAxisLimitsX(0, 255);
             WpfPlot1.Plot.SetAxisLimitsY(0, 100000);
+            WpfPlot1.Plot.XLabel("Pixel Value");
+            WpfPlot1.Plot.YLabel("Number of Pixels");
         }
 
         private void HistogramWindowClosed(object sender, EventArgs e) =>

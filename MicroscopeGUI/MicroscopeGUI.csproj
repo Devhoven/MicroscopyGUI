@@ -18,6 +18,7 @@
     <None Remove="Assets\Icons\Save.png" />
     <None Remove="Assets\Icons\Settings.png" />
     <None Remove="Assets\Microscope.ico" />
+    <None Remove="Histogram.png" />
     <None Remove="Shader\Compiled\EffectShader.ps" />
     <None Remove="Shader\FragmentShader.ps" />
   </ItemGroup>

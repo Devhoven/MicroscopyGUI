@@ -1,0 +1,21 @@
+﻿<Window x:Class="MicroscopeGUI.MetaDataWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MicroscopeGUI"
+        mc:Ignorable="d"
+        Title="Metadata" Height="169" Width="260">
+    <Grid>
+        <Grid.Background>
+            <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FF1E1E1E"  Offset="0.0"/>
+                <GradientStop Color="#FF2D2D30" Offset="1.0"/>
+            </LinearGradientBrush>
+        </Grid.Background>
+
+        <TextBlock Text="Date:" FontSize="10" Foreground="White" Margin="10,3,223,133"/>
+        <TextBox x:Name="InputBox" FontSize="10" Background="#FF434346" Foreground="White" Margin="130,3,33,133"/>
+
+    </Grid>
+</Window>

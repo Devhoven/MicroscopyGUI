@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MicroscopeGUI"
         mc:Ignorable="d"
-        Title="HistogramWindow" Height="300" Width="500">
+        Title="Histogram" Height="300" Width="500" Icon="/Assets/Microscope.ico">
     <Grid>
         <WpfPlot Name="WpfPlot1"/>
     </Grid>

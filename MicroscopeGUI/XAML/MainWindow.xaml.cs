@@ -13,6 +13,7 @@ using MicroscopeGUI.UIElements.Steps;
 using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
 using Button = System.Windows.Controls.Button;
+using MicroscopeGUI.Helper;
 
 namespace MicroscopeGUI
 {
@@ -31,6 +32,8 @@ namespace MicroscopeGUI
 
         HistogramWindow HistogramPopup;
 
+        Metadata Metadata;
+
         public UI()
         {
             InitializeComponent();
@@ -44,7 +47,7 @@ namespace MicroscopeGUI
             FrameEffects = EffectShader;
 
             UserInfo.InfoLabel = InfoLabel;
-            
+
             Closing += GUIClosing;
 
             StartCapture();
@@ -195,11 +198,16 @@ namespace MicroscopeGUI
             SaveDialog.Title = "Save file";
             SaveDialog.Filter = "Png|*.png";
 
+            //System.Windows.MessageBox.Show("Do you want to add metadata?", "Question", MessageBoxButton.YesNo);
+
             if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 ImageQueue.CurrentFrameBitmap.Save(SaveDialog.FileName);
                 UserInfo.SetInfo("Saved the current frame to " + SaveDialog.FileName);
             }
+
+            Metadata = new Metadata();
+            //Metadata.AddTags(SaveDialog.FileName, string[] blabla);
         }
 
         // Saves a config
@@ -234,7 +242,6 @@ namespace MicroscopeGUI
         private void ReloadCamClick(object sender, RoutedEventArgs e)
         {
             UserInfo.SetInfo("Reloading the cam...");
-
             // Closes the thread and joins it to the current
             ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
             ImageQueue.StopRunning = true;
