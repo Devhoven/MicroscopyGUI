@@ -40,7 +40,7 @@ namespace MicroscopeGUI
         }
 
         public SliderControl(string Name, double Min, double Max, double StartVal, RoutedPropertyChangedEventHandler<double> ValueChangedEvent,
-            Grid Parent, int Row, bool EnabledByDefault = true) : base(Name + " (" + StartVal + "):", Parent)
+            Grid Parent, int Row, bool EnabledByDefault = true) : base(Name + " (" + Math.Round(StartVal, 3) + "):", Parent)
         {
             Slider = new Slider();
             Slider.VerticalAlignment = VerticalAlignment.Bottom;
