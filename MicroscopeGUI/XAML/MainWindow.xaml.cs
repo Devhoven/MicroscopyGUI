@@ -32,6 +32,8 @@ namespace MicroscopeGUI
 
         HistogramWindow HistogramPopup;
 
+        MetaDataWindow MetadataPopup;
+
         public UI()
         {
             InitializeComponent();
@@ -127,6 +129,8 @@ namespace MicroscopeGUI
         {
             if (!(HistogramPopup is null))
                 HistogramPopup.Close();
+            if (!(MetadataPopup is null))
+                MetadataPopup.Close();
             CloseCamera();
         }
 
@@ -196,16 +200,14 @@ namespace MicroscopeGUI
             SaveDialog.Title = "Save file";
             SaveDialog.Filter = "Png|*.png";
 
-            //System.Windows.MessageBox.Show("Do you want to add metadata?", "Question", MessageBoxButton.YesNo);
-
             if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                ImageQueue.CurrentFrameBitmap.Save(SaveDialog.FileName);
-
-                UserInfo.SetInfo("Saved the current frame to " + SaveDialog.FileName);
+                MetadataPopup = new MetaDataWindow(SaveDialog.FileName);
+                MetadataPopup.Show();
             }
 
-            //Metadata.AddTags(SaveDialog.FileName, string[] blabla);
+
+
         }
 
         // Saves a config

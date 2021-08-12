@@ -27,7 +27,7 @@ namespace MicroscopeGUI.UIElements.Steps
             SliderControlInt ColorTemperatureSlider = null;
             SliderControl MasterGainSlider = null;
 
-           UI.Cam.AutoFeatures.Software.Shutter.GetEnable(out bool ShutterEnabled);
+            UI.Cam.AutoFeatures.Software.Shutter.GetEnable(out bool ShutterEnabled);
             new CheckBoxControl("Auto Shutter", ShutterEnabled,
                 new RoutedEventHandler(delegate (object o, RoutedEventArgs a)
                 {

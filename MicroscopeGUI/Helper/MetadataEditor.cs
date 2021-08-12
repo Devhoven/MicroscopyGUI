@@ -30,7 +30,7 @@ namespace MicroscopeGUI
             Array.Copy(TextData, 0, Data, KeyData.Length + 5, TextData.Length);
 
             // Retreiving the 4 byte representation of the length of the data
-            byte[] Bytes = BitConverter.GetBytes(Data.Length); 
+            byte[] Bytes = BitConverter.GetBytes(Data.Length);
 
             // Getting the position of the first IDAT chunk, so we can put the text before that
             int IDATPos = SearchForBytePattern(Stream, Encoding.ASCII.GetBytes("IDAT"));

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,9 +18,33 @@ namespace MicroscopeGUI
     /// </summary>
     public partial class MetaDataWindow : Window
     {
-        public MetaDataWindow()
+        string filename;
+        public MetaDataWindow(string filename)
         {
             InitializeComponent();
+
+            this.filename = filename;
+            CommentBox.Focus();
+            LoadText();
         }
+
+        public void LoadText()
+        {
+            TitleBox.Text = filename.Substring(filename.LastIndexOf("\\") + 1);
+        }
+
+        private void SubmitClick(object sender, RoutedEventArgs e)
+        {
+            //ImageQueue.CurrentFrameBitmap.Save(filename);
+            using (FileStream fs = new FileStream("C:\\Users\\Lukas\\Pictures\\unknown.png", FileMode.Open, FileAccess.Write, FileShare.Write)) //hier gibt es probleme mit exceptions in der metadataeditor klasse
+            {
+                MetadataEditor.AddiTXt(fs, "Comment", CommentBox.Text);
+            }
+            UserInfo.SetInfo("Saved the current frame to " + filename);
+            Close();
+        }
+
+        private void AbortClick(object sender, RoutedEventArgs e) =>
+            Close();
     }
 }
