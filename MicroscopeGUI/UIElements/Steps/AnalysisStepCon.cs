@@ -24,22 +24,6 @@ namespace MicroscopeGUI.UIElements.Steps
         {
             int RowCount = 0;
 
-            new ButtonControl("Freeze", new RoutedEventHandler(delegate (object o, RoutedEventArgs e)
-            {
-                if (ImageQueue.Mode == ImgQueueMode.Live)
-                {
-                    UI.Cam.Acquisition.Freeze();
-                    ImageQueue.Mode = ImgQueueMode.Frozen;
-                    ((Button)o).Content = "Live";
-                }
-                else
-                {
-                    UI.Cam.Acquisition.Capture();
-                    ImageQueue.Mode = ImgQueueMode.Live;
-                    ((Button)o).Content = "Freeze";
-                }
-            }), this, RowCount++);
-
             new SliderControl("Contrast", 1, 6, 1, new RPCEventHandler(delegate (object o, RPCEventArgs e)
             {
                 UI.FrameEffects.Contrast = (float)((Slider)o).Value;

@@ -24,7 +24,7 @@
             <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
+            <RowDefinition Height="35"/>
             <RowDefinition/>
         </Grid.RowDefinitions>
         <Grid.Background>
@@ -44,7 +44,7 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Menu DockPanel.Dock="Top" Grid.Column="0" Grid.ColumnSpan="2" FontSize="13" Margin="5 3 0 0" Background="Transparent" Foreground="White">
+                <Menu Grid.Column="0" Grid.ColumnSpan="2" FontSize="15" Margin="5 0 0 0" Background="Transparent" Foreground="White" VerticalAlignment="Center">
                     <MenuItem Header="_File">
                         <MenuItem Header="_Save current frame" Click="SaveClick" Foreground="Black">
                             <MenuItem.Icon>
@@ -64,6 +64,22 @@
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="_Camera">
+                        <MenuItem Header="_Restart Camera" Click="ReloadCamClick" Foreground="Black">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Restart.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="_Freeze Camera" Click="FreezeCamClick" Foreground="Black">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Restart.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <MenuItem Header="_Start Live Feed" Click="LiveFeedClick" Foreground="Black">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Restart.png"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator/>
                         <MenuItem Header="_Save Cam Config" Click="ConfigSaveClick" Foreground="Black">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
@@ -74,11 +90,7 @@
                                 <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="_Restart Camera" Click="ReloadCamClick" Foreground="Black">
-                            <MenuItem.Icon>
-                                <Image Source="/Assets/Icons/Restart.png"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
+                        
                     </MenuItem>
                     <MenuItem Header="_Misc.">
                         <MenuItem Header="Histogram" Click="HistClick" Foreground="Black">
@@ -95,7 +107,7 @@
                 </Menu>
                 
                 <!--Got this from https://stackoverflow.com/a/1601994/9241163-->
-                <Label  Name="InfoLabel" HorizontalAlignment="Center" VerticalAlignment="Top" Visibility="Collapsed" FontSize="13" Grid.Column="1">
+                <Label  Name="InfoLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" FontSize="15" Grid.Column="1">
                     <Label.Style>
                         <Style TargetType="{x:Type Label}">
                             <Style.Triggers>
@@ -139,7 +151,7 @@
                 CornerRadius="5" Margin="5 5 5 5">
             <Grid x:Name="ToolCon" Margin="5 5 5 5">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="50"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
@@ -148,7 +160,7 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Grid for the buttons-->
-                <Grid x:Name="StepBtnCon" Grid.Row="0">
+                <Grid x:Name="StepBtnCon" Grid.Row="0" Margin="0 0 0 10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
@@ -176,7 +188,7 @@
         </Border>
 
         <!--Image Container-->
-        <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1" Grid.Row="1">
+        <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1" Grid.Row="1" Margin="0 5 0 0">
             <Canvas x:Name="DrawingCanvas" RenderOptions.BitmapScalingMode="NearestNeighbor">
                 <Canvas.CacheMode>
                     <BitmapCache RenderOptions.CachingHint="Cache" RenderOptions.BitmapScalingMode="NearestNeighbor"></BitmapCache>

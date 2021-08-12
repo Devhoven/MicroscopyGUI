@@ -47,12 +47,12 @@ namespace MicroscopeGUI
 
             Closing += GUIClosing;
 
-            using (FileStream fs = new FileStream("C:/Users/MEINS/Pictures/BinaryTest.png", FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                BitmapSource img = BitmapFrame.Create(fs);
-                BitmapMetadata md = (BitmapMetadata)img.Metadata;
-                object date = md.GetQuery("/[2]iTXt/TextEntry");
-            }
+            //using (FileStream fs = new FileStream("C:/Users/MEINS/Pictures/BinaryTest.png", FileMode.Open, FileAccess.Read, FileShare.Read))
+            //{
+            //    BitmapSource img = BitmapFrame.Create(fs);
+            //    BitmapMetadata md = (BitmapMetadata)img.Metadata;
+            //    object date = md.GetQuery("/[2]iTXt/TextEntry");
+            //}
 
             StartCapture();
         }
@@ -206,6 +206,7 @@ namespace MicroscopeGUI
 
             if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
+                ImageQueue.CurrentFrameBitmap.Save(SaveDialog.FileName);
 
                 UserInfo.SetInfo("Saved the current frame to " + SaveDialog.FileName);
             }
@@ -272,7 +273,25 @@ namespace MicroscopeGUI
 
             UserInfo.SetInfo("Reloaded the cam");
         }
-     
+
+        // Freezes the cam
+        private void FreezeCamClick(object sender, RoutedEventArgs e)
+        {
+            Cam.Acquisition.Freeze();
+            ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
+
+            UserInfo.SetInfo("Freezed the camera");
+        }
+
+        // Starts the camera live feed again
+        private void LiveFeedClick(object sender, RoutedEventArgs e)
+        {
+            Cam.Acquisition.Capture();
+            ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
+
+            UserInfo.SetInfo("Started the live feed");
+        }
+
         private void MeasureBtnClick(object sender, RoutedEventArgs e)
         {
             if (MeasureBtn.Background == Brushes.LightBlue)

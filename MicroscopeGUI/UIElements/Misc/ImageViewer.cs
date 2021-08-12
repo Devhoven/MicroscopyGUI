@@ -27,7 +27,7 @@ namespace MicroscopeGUI
         }
 
         // Means unit per pixel
-        double PixelPerMeasurement = 2;
+        double PixelPerMeasurement = 1;
 
         Point TransformOrigin;
         Point TransformStart;

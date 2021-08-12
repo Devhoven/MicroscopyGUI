@@ -58,6 +58,9 @@ namespace MicroscopeGUI
         {
             PixelShader pixelShader = new PixelShader();
 
+            // This .ps is a precompoiled hlsl file
+            // Gets compiled in the command line with the command
+            // fxc /T ps_2_0 /E main /Fo RedTint.ps RedTint.hlsl
             pixelShader.UriSource = new Uri("pack://application:,,,/Shader/Compiled/EffectShader.ps", UriKind.Absolute);
 
             PixelShader = pixelShader;
