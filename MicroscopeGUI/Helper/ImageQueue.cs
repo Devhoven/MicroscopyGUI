@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Interop;
 using System.Windows;
 using System.Globalization;
+using uEye.Types;
 
 namespace MicroscopeGUI
 {
@@ -43,7 +44,7 @@ namespace MicroscopeGUI
                 if (Mode == ImgQueueMode.Frozen || !UI.Cam.Memory.IsOpened)
                     continue;
                 // Waits for the next image and returns the memory ID if a new image was sent by the cam
-                CurrentCamStatus = UI.Cam.Memory.Sequence.WaitForNextImage(3000, out int MemID, out _);
+                CurrentCamStatus = UI.Cam.Memory.Sequence.WaitForNextImage(10000, out int MemID, out _);
                 if (CurrentCamStatus == Status.Success)
                 {
                     // Getting the values of the histogram
@@ -74,9 +75,13 @@ namespace MicroscopeGUI
                         continue;
                     // Displaying the NoCam Image if you can't receive an image anymore
                     UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
-                           new Action(() =>
-                               UI.CurrentFrame.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"))
-                            ));
+                            new Action(() =>
+                                {
+                                    UI.OldXMLConfig = Control.GetXMLString();
+                                    UserInfo.SetInfo("Camera disconnected (" + Enum.GetName(typeof(Status), CurrentCamStatus) + ")");
+                                    UI.CurrentFrame.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"));
+                                }
+                           ));
                     break;
                 }
             }

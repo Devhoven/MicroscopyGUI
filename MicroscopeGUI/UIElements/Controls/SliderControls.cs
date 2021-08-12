@@ -98,12 +98,14 @@ namespace MicroscopeGUI
             Label.Content = OriginalName + " (" + (int)Slider.Value + "): ";
     }
 
-    class UpdatingSliderControl : SliderControlInt
+    class UpdatingSliderControl : SliderControl
     {
-        public UpdatingSliderControl(string Name, int Min, int Max, int StartVal, RoutedPropertyChangedEventHandler<double> ValueChangedEvent,
+        public UpdatingSliderControl(string Name, double Min, double Max, double StartVal, double Increment, RoutedPropertyChangedEventHandler<double> ValueChangedEvent,
             EventHandler OnFrameChange, Grid Parent, int Row, bool EnabledByDefault = true) :
             base(Name, Min, Max, StartVal, ValueChangedEvent, Parent, Row, EnabledByDefault)
         {
+            Slider.TickFrequency = Increment;
+            Slider.IsSnapToTickEnabled = true;
             ImageQueue.OnFrameChange += OnFrameChange;
         }
     }

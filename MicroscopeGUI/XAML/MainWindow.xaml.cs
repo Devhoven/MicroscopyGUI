@@ -13,7 +13,8 @@ using MicroscopeGUI.UIElements.Steps;
 using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
 using Button = System.Windows.Controls.Button;
-using System.Collections.Generic;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace MicroscopeGUI
 {
@@ -24,6 +25,8 @@ namespace MicroscopeGUI
         public static CustomShader FrameEffects;
         public static Dispatcher CurrentDispatcher;
 
+        public static string OldXMLConfig;
+        
         Thread WorkerThread;
         int[] MemoryIDs;
 
@@ -47,13 +50,14 @@ namespace MicroscopeGUI
             FrameEffects = EffectShader;
 
             UserInfo.InfoLabel = InfoLabel;
-
+            
             Closing += GUIClosing;
 
             StartCapture();
         }
 
-        void InitializeCam()
+        // The bool is for the reloading cam feature
+        void InitializeCam(bool SetErrorImage = true)
         {
             // For debugging the camera
             Status StatusRet;
@@ -61,6 +65,7 @@ namespace MicroscopeGUI
             // Camera initialization
             Cam = new Camera();
             StatusRet = Cam.Init();
+            Cam.Information.SetEnableErrorReport(true);
 
             // Initializing the thread, which runs the image queue
             WorkerThread = new Thread(ImageQueue.Run);
@@ -73,7 +78,11 @@ namespace MicroscopeGUI
             //Initialization failed, showing the error screen
             if (StatusRet != Status.SUCCESS)
             {
-                CurrentFrameCon.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"));
+                if (SetErrorImage)
+                {
+                    CurrentFrameCon.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"));
+                    InfoLabel.Content = "ERROR: " + Enum.GetName(typeof(Status), StatusRet) + "(" + (int)StatusRet + ")";
+                }
                 ImageQueue.StopRunning = true;
             }
         }
@@ -125,7 +134,7 @@ namespace MicroscopeGUI
             }
         }
 
-        private void GUIClosing(object sender, System.ComponentModel.CancelEventArgs e)
+        void GUIClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
             if (!(HistogramPopup is null))
                 HistogramPopup.Close();
@@ -148,18 +157,18 @@ namespace MicroscopeGUI
     public partial class UI : Window
     {
         // Changes the directory of the image gallery
-        private void ChangeDirClick(object sender, RoutedEventArgs e) =>
+        void ChangeDirClick(object sender, RoutedEventArgs e) =>
             ImgGallery.UpdatePath();
 
         // Makes the config step visible
-        private void ConfigBtnClick(object sender, RoutedEventArgs e)
+        void ConfigBtnClick(object sender, RoutedEventArgs e)
         {
             SetVisibillity(ConfigCon, ConfigConBtn);
             RegistryManager.SetValue("CurrentConfigStep", 0);
         }
 
         // Makes the analysis step visible
-        private void AnalysisBtnClick(object sender, RoutedEventArgs e)
+        void AnalysisBtnClick(object sender, RoutedEventArgs e)
         {
             SetVisibillity(AnalysisCon, AnalysisConBtn);
             RegistryManager.SetValue("CurrentConfigStep", 1);
@@ -179,14 +188,14 @@ namespace MicroscopeGUI
         }
 
         // Opens the histogram window
-        private void HistClick(object sender, RoutedEventArgs e)
+        void HistClick(object sender, RoutedEventArgs e)
         {
             HistogramPopup = new HistogramWindow();
             HistogramPopup.Show();
         }
 
         // Opens the settings
-        private void SettingsClick(object sender, RoutedEventArgs e)
+        void SettingsClick(object sender, RoutedEventArgs e)
         {
             SettingsWindow Settings = new SettingsWindow();
             Settings.Owner = this;
@@ -194,7 +203,7 @@ namespace MicroscopeGUI
         }
 
         // Saves the current frame
-        private void SaveClick(object sender, RoutedEventArgs e)
+        void SaveClick(object sender, RoutedEventArgs e)
         {
             SaveFileDialog SaveDialog = new SaveFileDialog();
             SaveDialog.Title = "Save file";
@@ -205,13 +214,10 @@ namespace MicroscopeGUI
                 MetadataPopup = new MetaDataWindow(SaveDialog.FileName);
                 MetadataPopup.Show();
             }
-
-
-
         }
 
         // Saves a config
-        private void ConfigSaveClick(object sender, RoutedEventArgs e)
+        void ConfigSaveClick(object sender, RoutedEventArgs e)
         {
             SaveFileDialog SaveDialog = new SaveFileDialog();
             SaveDialog.Title = "Save file";
@@ -222,10 +228,12 @@ namespace MicroscopeGUI
                 File.WriteAllText(SaveDialog.FileName, Control.GetXMLString(), Encoding.UTF8);
                 UserInfo.SetInfo("Saved the current config to " + SaveDialog.FileName);
             }
+            else
+                UserInfo.SetInfo("Action aborted");
         }
 
         // Loads a config
-        private void ConfigLoadClick(object sender, RoutedEventArgs e)
+        void ConfigLoadClick(object sender, RoutedEventArgs e)
         {
             OpenFileDialog OpenDialog = new OpenFileDialog();
             OpenDialog.Title = "Choose the config file";
@@ -236,42 +244,72 @@ namespace MicroscopeGUI
                 Control.LoadXML(File.ReadAllText(OpenDialog.FileName, Encoding.UTF8));
                 UserInfo.SetInfo("Loaded the config from " + OpenDialog.FileName);
             }
+            else
+                UserInfo.SetInfo("Action aborted");
         }
 
         // Closes all the stuff the camera set up (Except the ring buffer) and initializes it again
-        private void ReloadCamClick(object sender, RoutedEventArgs e)
+        void ReloadCamClick(object sender, RoutedEventArgs e)
         {
             UserInfo.SetInfo("Reloading the cam...");
 
-            // Closes the thread and joins it to the current
-            ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
-            ImageQueue.StopRunning = true;
-            WorkerThread.Join();
+            // Starts a new thread with the camera restarting logic inthere
+            Thread RestartThread = new Thread(RestartCam);
+            RestartThread.Start();
+            // Tries to join the thread together with the normal one again
+            // When this is done, the Join method waits for 10 seconds till the thread is finished
+            // If it hasn't finished until then, the restarting is aborted
+            if (!RestartThread.Join(TimeSpan.FromSeconds(10)))
+            {
+                RestartThread.Interrupt();
+                UserInfo.SetInfo("Aborted reloading the cam, since it took too long ( > 10 seconds), check if everything is plugged in correctly");
+            }
+            else
+            {
+                // Reloading all of the control elements
+                Control.RemoveAllControls();
+                ToolCon.Children.Remove(ConfigCon);
+                ToolCon.Children.Remove(AnalysisCon);
+                ConfigCon = new ConfigStepCon(ToolCon);
+                AnalysisCon = new AnalysisStepCon(ToolCon);
+                SetVisibillity(ConfigCon, ConfigConBtn);
 
-            // Closes the camera
-            Cam.Exit();
+                UserInfo.SetInfo("Reloaded the cam");
 
-            // Initializes a new thread and a new camera
-            InitializeCam();
+                if (!(OldXMLConfig is null))
+                {
+                    MessageBoxResult Result = MessageBox.Show("There is a saved config from before the camera crashed\nDo you want to load it?", "Question", MessageBoxButton.YesNo);
+                    if (Result == MessageBoxResult.Yes)
+                    {
+                        Control.LoadXML(OldXMLConfig);
+                        UserInfo.SetInfo("Loaded the config");
+                    }
+                }
+            }
 
-            ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
-            ImageQueue.StopRunning = false;
+            // Capsuled in a method, so I can put it in a seperate thread
+            void RestartCam()
+            {
+                // Closes the thread and joins it to the current
+                ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
+                ImageQueue.StopRunning = true;
+                WorkerThread.Join();
 
-            StartCapture();
+                // Closes the camera
+                Cam.Exit();
 
-            // Reloading all of the control elements
-            Control.RemoveAllControls();
-            ToolCon.Children.Remove(ConfigCon);
-            ToolCon.Children.Remove(AnalysisCon);
-            ConfigCon = new ConfigStepCon(ToolCon);
-            AnalysisCon = new AnalysisStepCon(ToolCon);
-            SetVisibillity(ConfigCon, ConfigConBtn);
+                // Initializes a new thread and a new camera
+                InitializeCam(false);
 
-            UserInfo.SetInfo("Reloaded the cam");
+                ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
+                ImageQueue.StopRunning = false;
+
+                StartCapture();
+            }
         }
 
         // Freezes the cam
-        private void FreezeCamClick(object sender, RoutedEventArgs e)
+        void FreezeCamClick(object sender, RoutedEventArgs e)
         {
             Cam.Acquisition.Freeze();
             ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
@@ -280,7 +318,7 @@ namespace MicroscopeGUI
         }
 
         // Starts the camera live feed again
-        private void LiveFeedClick(object sender, RoutedEventArgs e)
+        void LiveFeedClick(object sender, RoutedEventArgs e)
         {
             Cam.Acquisition.Capture();
             ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
@@ -288,24 +326,30 @@ namespace MicroscopeGUI
             UserInfo.SetInfo("Started the live feed");
         }
 
-        private void MeasureBtnClick(object sender, RoutedEventArgs e)
+        void MeasureBtnClick(object sender, RoutedEventArgs e)
         {
             if (MeasureBtn.Background == Brushes.LightBlue)
+            {
+                UserInfo.SetInfo("You can now measure");
                 MeasureBtn.Background = Brushes.Transparent;
+            }
             else
+            {
+                UserInfo.SetInfo("Draw a line to measure the distance");
                 MeasureBtn.Background = Brushes.LightBlue;
+            }
 
             ZoomDisplay.ToggleMode();
         }
 
-        private void ConfigConToggle(object sender, RoutedEventArgs e) =>
+        void ConfigConToggle(object sender, RoutedEventArgs e) =>
             ToggleItemVisibillity((MenuItem)sender, ToolCon, "ConfigConActivated");
 
-        private void ImgGalleryToggle(object sender, RoutedEventArgs e) =>
+        void ImgGalleryToggle(object sender, RoutedEventArgs e) =>
             ToggleItemVisibillity((MenuItem)sender, ImgGalleryCon, "ImgGalleryActivated");
 
         // Toggles the visibillity of a UI Elements and with it the color of the specified MenuItem
-        private void ToggleItemVisibillity(MenuItem Sender, UIElement Element, string ValName)
+        void ToggleItemVisibillity(MenuItem Sender, UIElement Element, string ValName)
         {
             if (Element.Visibility == Visibility.Visible)
             {

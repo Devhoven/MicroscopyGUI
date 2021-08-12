@@ -18,19 +18,20 @@ namespace MicroscopeGUI
         }
 
         static Label _InfoLabel;
-        static Timer TextTimer = new Timer(4000);
+        static Timer TextTimer = new Timer(6000);
 
         // Creates a timer, which will delete the text after a few seconds
         public static void SetInfo(string Text)
         {
             _InfoLabel.Content = Text;
-            _InfoLabel.Visibility = System.Windows.Visibility.Visible;
             TextTimer.Stop();
 
             TextTimer.Elapsed += (s, e) =>
             {
-                UI.CurrentDispatcher.Invoke(() => _InfoLabel.Content = string.Empty);
-                UI.CurrentDispatcher.Invoke(() => _InfoLabel.Visibility = System.Windows.Visibility.Collapsed);
+                UI.CurrentDispatcher.Invoke(() =>
+                {
+                    _InfoLabel.Content = string.Empty;
+                });
                 TextTimer.Stop();
             };
             TextTimer.Start();

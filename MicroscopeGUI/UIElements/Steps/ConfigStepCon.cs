@@ -23,9 +23,11 @@ namespace MicroscopeGUI.UIElements.Steps
         {
             int RowCount = 0;
 
+            UpdatingSliderControl FPSSlider = null;
             SliderControlInt BrightnessSlider = null;
             SliderControlInt ColorTemperatureSlider = null;
             SliderControl MasterGainSlider = null;
+            SliderControl ExposureSlider = null;
 
             UI.Cam.AutoFeatures.Software.Shutter.GetEnable(out bool ShutterEnabled);
             new CheckBoxControl("Auto Shutter", ShutterEnabled,
@@ -58,13 +60,12 @@ namespace MicroscopeGUI.UIElements.Steps
             this, RowCount++);
 
 
-            UI.Cam.Timing.Framerate.GetFrameRateRange(out double FPSMin, out double FPSMax, out _);
-            UI.Cam.Timing.Framerate.Get(out double CurrentFPS);
-            UpdatingSliderControl FPSSlider = null;
-            FPSSlider = new UpdatingSliderControl("FPS", (int)FPSMin, (int)FPSMax, (int)CurrentFPS,
+            UI.Cam.Timing.Framerate.GetDefault(out double CurrentFPS);
+            UI.Cam.Timing.Framerate.GetFrameRateRange(out double FPSMin, out double FPSMax, out double FPSIncrement);
+            FPSSlider = new UpdatingSliderControl("FPS", FPSMin, FPSMax, CurrentFPS, FPSIncrement,
                 new RPCEventHandler(delegate (object o, RPCEventArgs a)
                 {
-                    UI.Cam.Timing.Framerate.Set(((Slider)o).Value);
+                    UI.Cam.Timing.Framerate.Set(((Slider)o).Value, out double NewFPS);
                 }),
                 new EventHandler(delegate (object o, EventArgs a)
                 {
@@ -113,12 +114,20 @@ namespace MicroscopeGUI.UIElements.Steps
             this, RowCount++);
 
 
-            UI.Cam.Timing.Exposure.Get(out double CurrentExposure);
-            UI.Cam.Timing.Exposure.GetRange(out double MinExposure, out double MaxExposure, out _);
-            new SliderControl("Exposure", MinExposure, MaxExposure, CurrentExposure,
+            UI.Cam.Timing.Exposure.GetDefault(out double CurrentExposure);
+            UI.Cam.Timing.Exposure.GetRange(out double MinExposure, out double MaxExposure, out double ExposureIncrement);
+            ExposureSlider = new UpdatingSliderControl("Exposure", MinExposure, MaxExposure, CurrentExposure, ExposureIncrement,
                 new RPCEventHandler(delegate (object o, RPCEventArgs a)
                 {
                     UI.Cam.Timing.Exposure.Set(((Slider)o).Value);
+                }),
+                new EventHandler(delegate (object o, EventArgs a)
+                {
+                    UI.Cam.Timing.Exposure.Get(out double CurrentExposure);
+                    UI.Cam.Timing.Exposure.GetRange(out double MinExposure, out double MaxExposure, out _);
+                    ExposureSlider.SetValue(CurrentExposure);
+                    ExposureSlider.Slider.Minimum = MinExposure;
+                    ExposureSlider.Slider.Maximum = MaxExposure;
                 }),
             this, RowCount++);
 

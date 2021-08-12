@@ -21,54 +21,64 @@
     <Window.Resources>
         <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey }" Color="White"/>
     </Window.Resources>
+
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-        
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="Auto"/>
-        </Grid.ColumnDefinitions>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
 
-        <Label Content="Measure Tools:" FontSize="17" Grid.Row="0" Grid.Column="0"/>
-        <Border Background="#FF2D2D30" CornerRadius="5" Grid.Row="1" Grid.Column="0">
-            <StackPanel Margin="5">
-                <DockPanel Margin="0 0 0 5">
-                    <Label Content="Line Color:"/>
-                    <xctk:ColorPicker x:Name="LineColorPicker" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Content="Measure Tools:" FontSize="17" Grid.Row="0" Grid.Column="0"/>
+            <Border Background="#FF2D2D30" CornerRadius="5" Grid.Row="1" Grid.Column="0">
+                <StackPanel Margin="5">
+                    <DockPanel Margin="0 0 0 5">
+                        <Label Content="Line Color:"/>
+                        <xctk:ColorPicker x:Name="LineColorPicker" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0"
                                       SelectedColorChanged="LineColorPickerColorChanged" ShowDropDownButton="False" Width="50"/>
-                </DockPanel>
+                    </DockPanel>
 
-                <DockPanel Margin="0 0 0 5">
-                    <Label Content="Line Thickness:"/>
-                    <TextBox x:Name="LineThicknessTextBox" PreviewTextInput="CheckIfNumeric" TextChanged="LineThicknessChanged"
-                             Height="23" Width="48" HorizontalAlignment="Right"
+                    <DockPanel Margin="0 0 0 5">
+                        <Label Content="Line Thickness:"/>
+                        <TextBox x:Name="LineThicknessTextBox" PreviewTextInput="CheckIfNumeric" TextChanged="LineThicknessChanged"
+                             Height="23" Width="50" HorizontalAlignment="Right"
                              Background="Transparent" BorderBrush="LightBlue"/>
-                </DockPanel>
+                    </DockPanel>
 
-                <DockPanel>
-                    <Label Content="Line Text Color:"/>
-                    <xctk:ColorPicker x:Name="LineTextColorPicker" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0"
+                    <DockPanel>
+                        <Label Content="Line Text Color:"/>
+                        <xctk:ColorPicker x:Name="LineTextColorPicker" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0"
                                       SelectedColorChanged="LineTextColorPickerColorChanged" ShowDropDownButton="False" Width="50"/>
-                </DockPanel>
-            </StackPanel>
-        </Border>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
 
-        <Label Content="Image Gallery:" FontSize="17" Margin="20 0 0 0" Grid.Row="0" Grid.Column="1"/>
-        <Border Background="#FF2D2D30" Margin="20 0 0 0" CornerRadius="5" Grid.Row="1" Grid.Column="1">
-            <StackPanel Margin="5">
-                <DockPanel>
-                    <Label Content="Path:"/>
-                    <Border BorderBrush="LightBlue" Background="Transparent" HorizontalAlignment="Right">
-                        <TextBlock x:Name="PathTextBlock" HorizontalAlignment="Center" TextWrapping="Wrap" 
+            <Label Content="Image Gallery:" FontSize="17" Margin="20 0 0 0" Grid.Row="0" Grid.Column="1"/>
+            <Border Background="#FF2D2D30" Margin="20 0 0 0" CornerRadius="5" Grid.Row="1" Grid.Column="1">
+                <StackPanel Margin="5">
+                    <DockPanel>
+                        <Label Content="Path:"/>
+                        <Border BorderBrush="LightBlue" Background="Transparent" HorizontalAlignment="Right">
+                            <TextBlock x:Name="PathTextBlock" HorizontalAlignment="Center" TextWrapping="Wrap" 
                                MaxWidth="150" Width="Auto" Height="Auto" Foreground="White" Margin="0 5 0 0"/>
-                    </Border>
-                </DockPanel>
-            </StackPanel>
-        </Border>
+                        </Border>
+                    </DockPanel>
+                </StackPanel>
+            </Border>
+        </Grid>
+
+        <Grid Grid.Row="1">
+        </Grid>
     </Grid>
 </Window>
     

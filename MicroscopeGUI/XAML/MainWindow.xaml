@@ -95,7 +95,6 @@
                                 <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                             </MenuItem.Icon>
                         </MenuItem>
-                        
                     </MenuItem>
                     <MenuItem Header="_Misc.">
                         <MenuItem Header="Histogram" Click="HistClick" Foreground="Black">
@@ -110,42 +109,27 @@
                         </MenuItem>
                     </MenuItem>
                 </Menu>
-                
-                <!--Got this from https://stackoverflow.com/a/1601994/9241163-->
-                <Label  Name="InfoLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Collapsed" FontSize="15" Grid.Column="1">
-                    <Label.Style>
-                        <Style TargetType="{x:Type Label}">
-                            <Style.Triggers>
-                                <Trigger Property="Visibility" Value="Visible">
-                                    <Trigger.EnterActions>
-                                        <BeginStoryboard>
-                                            <Storyboard>
-                                                <DoubleAnimation Storyboard.TargetProperty="Opacity" Duration="00:00:03" BeginTime="00:00:01" From="1.0" To="0.0" />
-                                            </Storyboard>
-                                        </BeginStoryboard>
-                                    </Trigger.EnterActions>
-                                </Trigger>
-                            </Style.Triggers>
-                        </Style>
-                    </Label.Style>
-                    Display Text
-                </Label>
+
+                <Label  Name="InfoLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible" FontSize="15" Grid.Column="1"/>   
 
                 <Menu DockPanel.Dock="Top" Grid.Column="2" Background="Transparent" Margin="2 2 2 2">
                     <MenuItem x:Name="MeasureBtn" Click="MeasureBtnClick">
                         <MenuItem.Header>
                             <Image Source="/Assets/Icons/Measure.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </MenuItem.Header>
+                        <MenuItem.ToolTip>Switching between setting the measure factor and measuring</MenuItem.ToolTip>
                     </MenuItem>
                     <MenuItem x:Name="ConfigConToggleBtn" Background="LightBlue" Click="ConfigConToggle">
                         <MenuItem.Header>
                             <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </MenuItem.Header>
+                        <MenuItem.ToolTip>Toggles the visibillity of the left container</MenuItem.ToolTip>
                     </MenuItem>
                     <MenuItem x:Name="ImgGalleryToggleBtn" Background="LightBlue" Click="ImgGalleryToggle">
                         <MenuItem.Header>
                             <Image Source="/Assets/Icons/ImageGallery.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </MenuItem.Header>
+                        <MenuItem.ToolTip>Toggles the visibillity of the right container</MenuItem.ToolTip>
                     </MenuItem>
                 </Menu>
             </Grid>
@@ -165,23 +149,23 @@
                 </Grid.ColumnDefinitions>
 
                 <!--Grid for the buttons-->
-                <Grid x:Name="StepBtnCon" Grid.Row="0" Margin="0 0 0 10">
+                <Grid x:Name="StepBtnCon" Margin="0 0 0 10" Grid.Row="0">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*"/>
                         <ColumnDefinition Width="1*"/>
                     </Grid.ColumnDefinitions>
 
                     <!--Step Buttons-->
-                    <Button x:Name="ConfigConBtn" Content="Config" Grid.Column="0" Click="ConfigBtnClick" BorderThickness="0" 
-                    Margin="5 5 5 5" Background="LightBlue" FontSize="15">
+                    <Button x:Name="ConfigConBtn" Content="Config" Click="ConfigBtnClick" BorderThickness="0" Grid.Column="0" 
+                            Margin="5 5 5 5" Background="LightBlue" FontSize="15">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="5"/>
                             </Style>
                         </Button.Resources>
                     </Button>
-                    <Button x:Name="AnalysisConBtn" Content="Analysis" Grid.Column="1" Click="AnalysisBtnClick" BorderThickness="0"
-                     Margin="5 5 5 5" Background="LightBlue" FontSize="15">
+                    <Button x:Name="AnalysisConBtn" Content="Analysis" Click="AnalysisBtnClick" BorderThickness="0" Grid.Column="1"
+                            Margin="5 5 5 5" Background="LightBlue" FontSize="15">
                         <Button.Resources>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="CornerRadius" Value="5"/>

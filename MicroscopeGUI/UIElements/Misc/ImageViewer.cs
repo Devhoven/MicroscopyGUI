@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -72,9 +73,9 @@ namespace MicroscopeGUI
             ChildCount = 0;
 
             MouseDown += ChildMouseDown;
+            MouseMove += ChildMouseMove;
             MouseUp += ChildMouseUp;
             MouseWheel += ChildMouseWheel;
-            MouseMove += ChildMouseMove;
         }
 
         public void Reset()
@@ -96,9 +97,13 @@ namespace MicroscopeGUI
         public void ToggleMode()
         {
             if (CurrentMode == MeasureMode.Rectangle)
+            {
                 CurrentMode = MeasureMode.MeasureFactor;
+            }
             else
+            {
                 CurrentMode = MeasureMode.Rectangle;
+            }
         }
 
         #region Child Events
@@ -114,7 +119,6 @@ namespace MicroscopeGUI
             }
             else if (e.ChangedButton == MouseButton.Left)
             {
-                var tt = GetTranslateTransform(_Child);
                 DrawStart = e.GetPosition(_Child);
                 Cursor = Cursors.Hand;
                 _Child.CaptureMouse();
@@ -132,6 +136,10 @@ namespace MicroscopeGUI
             }
             else if (e.ChangedButton == MouseButton.Left)
             {
+                // Returns the position of the mouse relative to the image
+                // Has to be saved here, otherwise it will take the position of after the input box xD
+                Point CurrentMousePos = e.GetPosition(_Child);
+
                 _Child.ReleaseMouseCapture();
                 Cursor = Cursors.Arrow;
 
@@ -145,13 +153,12 @@ namespace MicroscopeGUI
                     {
                         double Measurement = double.Parse(InputDialog.InputBox.Text);
 
-                        // Returns the position of the mouse relative to the image
-                        Point CurrentMousePos = e.GetPosition(_Child);
-
                         double SizeFactor = GetScreenToPixelFactor();
                         int PixelLength = (int)Math.Round((CurrentMousePos - DrawStart).Length * SizeFactor);
 
-                        PixelPerMeasurement = PixelLength / Measurement;
+                        (double X, double Y, double Width, double Height) = GetRectangle(DrawStart, CurrentMousePos);
+
+                        PixelPerMeasurement = Measurement / PixelLength;
                     }
 
                     // Removing the old elements, except the image, since we don't need the line anymore
