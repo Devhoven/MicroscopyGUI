@@ -1,15 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Windows.Media.Imaging;
 
-namespace MicroscopeGUI.Helper
+namespace MicroscopeGUI
 {
     static class MetadataEditor
     {
         // Created through the help of https://dev.exiv2.org/projects/exiv2/wiki/The_Metadata_in_PNG_files
-        static unsafe void AddiTXt(FileStream Stream, string Key, string Text)
+        public static unsafe void AddiTXt(FileStream Stream, string Key, string Text)
         {
-            // Saving the old lenght, since a new one is going to be set, and we still need it
+            // Saving the old lenght, since a new one is going to be set and we still need it
             long OldLength = Stream.Length;
 
             // The second part of the png chunk, the "Chunk Type"
@@ -26,22 +28,24 @@ namespace MicroscopeGUI.Helper
             Array.Copy(KeyData, Data, KeyData.Length);
             // After that, 5 bytes are skipped for the flags etc. and then the text is added
             Array.Copy(TextData, 0, Data, KeyData.Length + 5, TextData.Length);
-            //for (int i = KeyData.Length + 5; i < Data.Length; i++)
-            //    Data[i] = TextData[i - KeyData.Length - 5];
 
             // Retreiving the 4 byte representation of the length of the data
-            byte[] Bytes = BitConverter.GetBytes(Data.Length);
+            byte[] Bytes = BitConverter.GetBytes(Data.Length); 
+
+            // Getting the position of the first IDAT chunk, so we can put the text before that
+            int IDATPos = SearchForBytePattern(Stream, Encoding.ASCII.GetBytes("IDAT"));
 
             // Saving the end chunk, since they have to be moved to the end again 
-            byte[] Ending = new byte[12];
-            Stream.Position = OldLength - 12;
-            Stream.Read(Ending, 0, 12);
+            // + 4, because of the length part of the IDAT chunk
+            byte[] Ending = new byte[OldLength - IDATPos + 4];
+            Stream.Position = IDATPos - 4;
+            Stream.Read(Ending, 0, Ending.Length);
 
             // Extending the array about the length of the chunk (12 bytes for the other 3 parts)
             Stream.SetLength(OldLength + Data.Length + 12);
 
             // Going to the start of the new chunk
-            Stream.Position = OldLength - 12;
+            Stream.Position = IDATPos - 4;
 
             // Writing the length of the data part into the chunk
             // Reversed, since the most significant bit has to be on the left side
@@ -71,6 +75,62 @@ namespace MicroscopeGUI.Helper
 
             // Writing the ending to the end of the stream again
             Stream.Write(Ending);
+        }
+
+        // Simple seraching algorithm for a byte pattern
+        static int SearchForBytePattern(Stream Stream, byte[] Pattern)
+        {
+            long StreamEnd = Stream.Length - Pattern.Length + 1;
+
+            for (int i = 0; i < StreamEnd; i++)
+            {
+                if (Stream.ReadByte() != Pattern[0]) 
+                    continue;
+
+                for (int j = 1; j < Pattern.Length; j++)
+                {
+                    if (Stream.ReadByte() != Pattern[j])
+                    {
+                        Stream.Position = i + 1;
+                        break;
+                    }
+                    if (j == 1) 
+                        return i;
+                }
+            }
+
+            return -1;
+        }
+
+        // Filters all of the iTXt key - value pairs out of a stream, with the help of the BitmapMetadata-class
+        public static Dictionary<string, string> GetValuePairs(FileStream Stream)
+        {
+            Dictionary<string, string> Values = new Dictionary<string, string>();
+
+            BitmapSource img = BitmapFrame.Create(Stream);
+            BitmapMetadata md = (BitmapMetadata)img.Metadata;
+
+            object CurrentKey;
+            object CurrentValue;
+            int Index = 0;
+
+            // If there are multiple iTXt chunks, they are numbered and can be filtered with and '[N]' in front of the iTXt
+            // I am using this to go through all of the iTXt chunks 
+            // If there are no more chunks, the GetQuery function is going to return null, which is the point I'm going to stop the search
+            while (true)
+            {
+                CurrentKey = md.GetQuery("/[" + Index + "]iTXt/Keyword");
+                if (CurrentKey is null)
+                    break;
+
+                CurrentValue = md.GetQuery("/[" + Index + "]iTXt/TextEntry");
+
+                Values.Add((string)CurrentKey, (string)CurrentValue);
+
+                Index++;
+            } 
+
+            return Values;
         }
 
         // Stolen from https://gist.github.com/martin31821/6a4736521043233bf7cdc05aa785149d

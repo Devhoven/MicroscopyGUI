@@ -13,6 +13,7 @@ using MicroscopeGUI.UIElements.Steps;
 using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
 using Button = System.Windows.Controls.Button;
+using System.Collections.Generic;
 
 namespace MicroscopeGUI
 {
@@ -46,13 +47,6 @@ namespace MicroscopeGUI
             UserInfo.InfoLabel = InfoLabel;
 
             Closing += GUIClosing;
-
-            //using (FileStream fs = new FileStream("C:/Users/MEINS/Pictures/BinaryTest.png", FileMode.Open, FileAccess.Read, FileShare.Read))
-            //{
-            //    BitmapSource img = BitmapFrame.Create(fs);
-            //    BitmapMetadata md = (BitmapMetadata)img.Metadata;
-            //    object date = md.GetQuery("/[2]iTXt/TextEntry");
-            //}
 
             StartCapture();
         }
