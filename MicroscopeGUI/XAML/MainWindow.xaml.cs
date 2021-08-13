@@ -63,7 +63,6 @@ namespace MicroscopeGUI
             // Camera initialization
             Cam = new Camera();
             StatusRet = Cam.Init();
-            Cam.Information.SetEnableErrorReport(true);
 
             // Initializing the thread, which runs the image queue
             WorkerThread = new Thread(ImageQueue.Run);
