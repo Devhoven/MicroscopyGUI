@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d"
-        Width="220" Height="169" ResizeMode="NoResize" Icon="/Assets/Microscope.ico">
+        Width="235" Height="169" ResizeMode="NoResize" Icon="/Assets/Microscope.ico">
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -14,8 +14,8 @@
         </Grid.Background>
 
         <StackPanel>
-            <TextBlock Text="Enter the measurement:" Margin="5 20 5 15" HorizontalAlignment="Center" FontSize="15" Foreground="White"/>
-            <TextBox x:Name="InputBox" MinWidth="150" MaxWidth="169" FontSize="15"
+            <TextBlock Text="Enter the measurement in mm:" Margin="5 20 5 15" HorizontalAlignment="Center" FontSize="15" Foreground="White"/>
+            <TextBox x:Name="InputBox" Width="169" FontSize="15"
                      PreviewTextInput="CheckIfNumeric" KeyDown="InputKeyDown"
                      HorizontalAlignment="Center" VerticalAlignment="Center" Background="#FF434346" Foreground="White"/>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

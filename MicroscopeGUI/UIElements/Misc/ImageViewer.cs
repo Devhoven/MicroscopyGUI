@@ -20,8 +20,9 @@ namespace MicroscopeGUI
         // How many childs are in the canvas, except the image
         int ChildCount;
 
+        bool MeasureStraight = false;
         MeasureMode CurrentMode = MeasureMode.Rectangle;
-        enum MeasureMode
+        public enum MeasureMode
         {
             Rectangle,
             MeasureFactor
@@ -76,6 +77,9 @@ namespace MicroscopeGUI
             MouseMove += ChildMouseMove;
             MouseUp += ChildMouseUp;
             MouseWheel += ChildMouseWheel;
+
+            (Application.Current.MainWindow as UI).KeyDown += ChildKeyDown;
+            (Application.Current.MainWindow as UI).KeyUp += ChildKeyUp;
         }
 
         public void Reset()
@@ -94,17 +98,8 @@ namespace MicroscopeGUI
             }
         }
 
-        public void ToggleMode()
-        {
-            if (CurrentMode == MeasureMode.Rectangle)
-            {
-                CurrentMode = MeasureMode.MeasureFactor;
-            }
-            else
-            {
-                CurrentMode = MeasureMode.Rectangle;
-            }
-        }
+        public void SetMeasureMode(MeasureMode NewMode) =>
+            CurrentMode = NewMode;
 
         #region Child Events
         private void ChildMouseDown(object sender, MouseButtonEventArgs e)
@@ -156,9 +151,13 @@ namespace MicroscopeGUI
                         double SizeFactor = GetScreenToPixelFactor();
                         int PixelLength = (int)Math.Round((CurrentMousePos - DrawStart).Length * SizeFactor);
 
-                        (double X, double Y, double Width, double Height) = GetRectangle(DrawStart, CurrentMousePos);
-
                         PixelPerMeasurement = Measurement / PixelLength;
+
+                        (Application.Current.MainWindow as UI).MeasureBtn.Background = Brushes.Transparent;
+
+                        CurrentMode = MeasureMode.Rectangle;
+
+                        UserInfo.SetInfo("You can now measure again");
                     }
 
                     // Removing the old elements, except the image, since we don't need the line anymore
@@ -222,8 +221,23 @@ namespace MicroscopeGUI
                 tt.Y = absoluteY - relative.Y * st.ScaleY;
             }
         }
+
+        private void ChildKeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.R)
+                Reset();
+            else if (e.Key == Key.LeftShift && CurrentMode == MeasureMode.MeasureFactor)
+                MeasureStraight = true;
+        }
+
+        private void ChildKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.LeftShift)
+                MeasureStraight = false;
+        }
         #endregion
 
+        // Renders a rectangle out of a point and two positive lengths
         void RenderRectangle(double X, double Y, double Width, double Height)
         {
             // If the width and height are zero => The user only clicked on the canvas
@@ -248,13 +262,13 @@ namespace MicroscopeGUI
             RenderOptions.SetEdgeMode(Rect, EdgeMode.Aliased);
             TextBlock WidthDisplay = new TextBlock()
             {
-                Text = Math.Round(PixelWidth * PixelPerMeasurement, 2).ToString(),
+                Text = Math.Round(PixelWidth * PixelPerMeasurement, 2).ToString() + " mm",
                 FontSize = 20,
                 Foreground = Settings.LineTextColor
             };
             TextBlock HeightDisplay = new TextBlock()
             {
-                Text = Math.Round(PixelHeight * PixelPerMeasurement, 2).ToString(),
+                Text = Math.Round(PixelHeight * PixelPerMeasurement, 2).ToString() + " mm",
                 FontSize = 20,
                 Foreground = Settings.LineTextColor
             };
@@ -282,10 +296,23 @@ namespace MicroscopeGUI
             ChildCount = 3;
         }
 
+        // Renders a line between two points
         void RenderLine(Point p1, Point p2)
         {
             if (p1.Equals(p2))
                 return;
+
+            if (MeasureStraight)
+            {
+                // Just checks in what region the mouse is relative to the old point and straightens it out
+                Vector Between = p2 - p1;
+                Between.Normalize();
+                double Angle = Math.Abs(Vector.AngleBetween(Between, new Vector(1, 0)));
+                if (Angle < 45 || Angle > 135)
+                    p2.Y = p1.Y;
+                else
+                    p2.X = p1.X;
+            }
 
             Line Line = new Line()
             {
@@ -321,10 +348,10 @@ namespace MicroscopeGUI
 
             return (p1.X, p1.Y, Math.Abs(Width), Math.Abs(Height));
         }
-
+        
+        // Calculates the factor which converts the "screen" lengths to actual pixel lengths
         double GetScreenToPixelFactor()
         {
-            // Calculates the factor which converts the "screen" lengths to actual pixel lengths
             double ActualWidth = (double)_Child.Children[0].GetValue(Image.ActualWidthProperty);
             return ImageQueue.Width / ActualWidth;
         }

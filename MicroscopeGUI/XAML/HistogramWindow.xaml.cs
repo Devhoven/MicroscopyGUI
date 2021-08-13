@@ -57,8 +57,7 @@ namespace MicroscopeGUI
             WpfPlot1.Plot.AddBar(ValuesR, System.Drawing.Color.Red).BorderLineWidth = 0;
             WpfPlot1.Plot.AddBar(ValuesG, System.Drawing.Color.Green).BorderLineWidth = 0;
             WpfPlot1.Plot.AddBar(ValuesB, System.Drawing.Color.Blue).BorderLineWidth = 0;
-            WpfPlot1.Plot.SetAxisLimitsX(0, 255);
-            WpfPlot1.Plot.SetAxisLimitsY(0, 100000);
+            WpfPlot1.Plot.SetAxisLimits(0, 255, 0);
             WpfPlot1.Plot.XLabel("Pixel Value");
             WpfPlot1.Plot.YLabel("Number of Pixels");
         }

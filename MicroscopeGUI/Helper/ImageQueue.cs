@@ -15,6 +15,7 @@ using System.Windows.Interop;
 using System.Windows;
 using System.Globalization;
 using uEye.Types;
+using System.Diagnostics;
 
 namespace MicroscopeGUI
 {
@@ -36,8 +37,14 @@ namespace MicroscopeGUI
         // Are holding the current width and height of the image
         public static int Width = 1280, Height = 1028;
 
+        static Stopwatch HistogramTimer;
+
+        static int FailCount = 0;
+
         public static void Run()
         {
+            HistogramTimer = new Stopwatch();
+            HistogramTimer.Start();
             while (!StopRunning)
             {
                 // Skips the loop if the image is frozen or the camera is shut
@@ -47,13 +54,16 @@ namespace MicroscopeGUI
                 CurrentCamStatus = UI.Cam.Memory.Sequence.WaitForNextImage(10000, out int MemID, out _);
                 if (CurrentCamStatus == Status.Success)
                 {
-                    // Getting the values of the histogram
-                    UI.Cam.Image.GetHistogram(MemID, ColorMode.BGR8Packed, out Histogram);
+                    FailCount = 0;
+
+                    // Getting the values of the histogram, every 100 ms
+                    if (HistogramTimer.ElapsedMilliseconds >= 100)
+                    {
+                        UI.Cam.Image.GetHistogram(MemID, ColorMode.BGR8Packed, out Histogram);
+                        HistogramTimer.Restart();
+                    }
 
                     UI.Cam.Memory.GetSize(MemID, out Width, out Height);
-
-                    // Conversion to a bitmap
-                    UI.Cam.Memory.Lock(MemID);
 
                     // Converting it to a bitmap, since you can dispose it
                     // When you do it directly with an array, you get a lot of gc calls
@@ -73,12 +83,18 @@ namespace MicroscopeGUI
                     // If that happened, it skips to the next iteration of the loop and does not break out of it
                     if (Mode != ImgQueueMode.Live)
                         continue;
+
+                    FailCount++;
+
+                    if (FailCount < 10)
+                        continue;
+
                     // Displaying the NoCam Image if you can't receive an image anymore
                     UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Render,
                             new Action(() =>
                                 {
                                     UI.OldXMLConfig = Control.GetXMLString();
-                                    UserInfo.SetInfo("Camera disconnected (" + Enum.GetName(typeof(Status), CurrentCamStatus) + ")");
+                                    UserInfo.SetUrgentInfo("Camera disconnected (" + Enum.GetName(typeof(Status), CurrentCamStatus) + ")");
                                     UI.CurrentFrame.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"));
                                 }
                            ));

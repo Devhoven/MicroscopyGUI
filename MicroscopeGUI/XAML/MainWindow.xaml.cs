@@ -26,7 +26,7 @@ namespace MicroscopeGUI
         public static Dispatcher CurrentDispatcher;
 
         public static string OldXMLConfig;
-        
+
         Thread WorkerThread;
         int[] MemoryIDs;
 
@@ -48,8 +48,6 @@ namespace MicroscopeGUI
             CurrentFrame = CurrentFrameCon;
             CurrentDispatcher = Dispatcher;
             FrameEffects = EffectShader;
-
-            UserInfo.InfoLabel = InfoLabel;
             
             Closing += GUIClosing;
 
@@ -81,7 +79,7 @@ namespace MicroscopeGUI
                 if (SetErrorImage)
                 {
                     CurrentFrameCon.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"));
-                    InfoLabel.Content = "ERROR: " + Enum.GetName(typeof(Status), StatusRet) + "(" + (int)StatusRet + ")";
+                    UserInfo.SetUrgentInfo("ERROR: " + Enum.GetName(typeof(Status), StatusRet) + "(" + (int)StatusRet + ")");
                 }
                 ImageQueue.StopRunning = true;
             }
@@ -191,6 +189,8 @@ namespace MicroscopeGUI
         void HistClick(object sender, RoutedEventArgs e)
         {
             HistogramPopup = new HistogramWindow();
+            // So the window always stays on top of the main window
+            HistogramPopup.Owner = this;
             HistogramPopup.Show();
         }
 
@@ -330,16 +330,16 @@ namespace MicroscopeGUI
         {
             if (MeasureBtn.Background == Brushes.LightBlue)
             {
-                UserInfo.SetInfo("You can now measure");
+                UserInfo.SetInfo("You can now measure again");
                 MeasureBtn.Background = Brushes.Transparent;
+                ZoomDisplay.SetMeasureMode(ImageViewer.MeasureMode.Rectangle);
             }
             else
             {
-                UserInfo.SetInfo("Draw a line to measure the distance");
+                UserInfo.SetInfo("Draw a line to measure", Brushes.LightGreen, Brushes.Black);
                 MeasureBtn.Background = Brushes.LightBlue;
+                ZoomDisplay.SetMeasureMode(ImageViewer.MeasureMode.MeasureFactor);
             }
-
-            ZoomDisplay.ToggleMode();
         }
 
         void ConfigConToggle(object sender, RoutedEventArgs e) =>

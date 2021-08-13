@@ -15,16 +15,14 @@ namespace MicroscopeGUI
 {
     public partial class FactorInputBox : Window
     {
-        static readonly Regex NumRegex = new Regex("[^0-9.]+"); // Regex that matches disallowed text
+        static readonly Regex NumRegex = new Regex("[^0-9.,]+"); // Regex that matches disallowed text
         public bool Aborted = true;
 
         public FactorInputBox()
         {
             InitializeComponent();
 
-            Point ScreenMousePos = Mouse.GetPosition(Application.Current.MainWindow);
-            Left = ScreenMousePos.X;
-            Top = ScreenMousePos.Y;
+            WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
             InputBox.Focus();
         }
@@ -33,28 +31,26 @@ namespace MicroscopeGUI
         private void CheckIfNumeric(object sender, TextCompositionEventArgs e) =>
             e.Handled = NumRegex.IsMatch(e.Text);
 
-        private void SubmitClick(object sender, RoutedEventArgs e)
+        private void SubmitClick(object sender, RoutedEventArgs e) =>
+            SubmitForm();
+
+        private void InputKeyDown(object sender, KeyEventArgs e)
         {
-            // Won't submit until there is something in the InputBox
-            if (InputBox.Text != string.Empty)
-            {
-                Aborted = false;
-                Close();
-            }
+            if (e.Key == Key.Enter)
+                SubmitForm();
         }
 
         private void AbortClick(object sender, RoutedEventArgs e) =>
             Close();
 
-        private void InputKeyDown(object sender, KeyEventArgs e)
+        void SubmitForm()
         {
-            if (e.Key == Key.Enter)
+            // Won't submit until there is something in the InputBox
+            if (InputBox.Text != string.Empty)
             {
-                if (InputBox.Text != string.Empty)
-                {
-                    Aborted = false;
-                    Close();
-                }
+                InputBox.Text.Replace(',', '.');
+                Aborted = false;
+                Close();
             }
         }
     }

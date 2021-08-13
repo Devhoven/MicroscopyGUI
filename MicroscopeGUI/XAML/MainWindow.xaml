@@ -110,8 +110,10 @@
                     </MenuItem>
                 </Menu>
 
-                <Label  Name="InfoLabel" HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="Visible" FontSize="15" Grid.Column="1"/>   
-
+                <Border x:Name="InfoLabelBorder" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+                    <Label x:Name="InfoLabel" FontSize="15"/>
+                </Border>
+                
                 <Menu DockPanel.Dock="Top" Grid.Column="2" Background="Transparent" Margin="2 2 2 2">
                     <MenuItem x:Name="MeasureBtn" Click="MeasureBtnClick">
                         <MenuItem.Header>
