@@ -15,7 +15,7 @@ namespace MicroscopeGUI
 {
     public partial class FactorInputBox : Window
     {
-        static readonly Regex NumRegex = new Regex("[^0-9.,]+"); // Regex that matches disallowed text
+        static readonly Regex NumRegex = new Regex("[^0-9.,]+"); // Regex that only allows numbers, a dot and a comma
         public bool Aborted = true;
 
         public FactorInputBox()
@@ -48,6 +48,7 @@ namespace MicroscopeGUI
             // Won't submit until there is something in the InputBox
             if (InputBox.Text != string.Empty)
             {
+                // Replacing the ',' with a '.' since the double.Parse()-function only accepts a '.' 
                 InputBox.Text.Replace(',', '.');
                 Aborted = false;
                 Close();

@@ -36,9 +36,10 @@ namespace MicroscopeGUI
         public static ImgQueueMode Mode = ImgQueueMode.Live;
         // Are holding the current width and height of the image
         public static int Width = 1280, Height = 1028;
-
+        // Is used for the histogram, so it won't be updated every frame, which would result in flickering 
         static Stopwatch HistogramTimer;
-
+        // Counts how many images failed continuously to reach the computer
+        // Implemented for error tolerance, since sometimes sent frames would get lost, which would cause the software to fail
         static int FailCount = 0;
 
         public static void Run()
@@ -84,8 +85,9 @@ namespace MicroscopeGUI
                     if (Mode != ImgQueueMode.Live)
                         continue;
 
+                    // Counts one up if something went wrong
                     FailCount++;
-
+                    // If 10 frames fail continuously the ImageQueue won't continue
                     if (FailCount < 10)
                         continue;
 
@@ -94,7 +96,7 @@ namespace MicroscopeGUI
                             new Action(() =>
                                 {
                                     UI.OldXMLConfig = Control.GetXMLString();
-                                    UserInfo.SetUrgentInfo("Camera disconnected (" + Enum.GetName(typeof(Status), CurrentCamStatus) + ")");
+                                    UserInfo.SetErrorInfo("Camera disconnected (" + Enum.GetName(typeof(Status), CurrentCamStatus) + ")");
                                     UI.CurrentFrame.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"));
                                 }
                            ));
