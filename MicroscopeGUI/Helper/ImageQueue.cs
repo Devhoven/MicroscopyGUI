@@ -52,7 +52,7 @@ namespace MicroscopeGUI
                 if (Mode == ImgQueueMode.Frozen || !UI.Cam.Memory.IsOpened)
                     continue;
                 // Waits for the next image and returns the memory ID if a new image was sent by the cam
-                CurrentCamStatus = UI.Cam.Memory.Sequence.WaitForNextImage(100, out int MemID, out _);
+                CurrentCamStatus = UI.Cam.Memory.Sequence.WaitForNextImage(500, out int MemID, out _);
                 if (CurrentCamStatus == Status.Success)
                 {
                     FailCount = 0;
@@ -87,9 +87,10 @@ namespace MicroscopeGUI
 
                     // Counts one up if something went wrong
                     FailCount++;
-                    UI.CurrentDispatcher.Invoke(() => UserInfo.SetInfo(FailCount + " frames were lost"));
+                    if (FailCount > 20)
+                        UI.CurrentDispatcher.Invoke(() => UserInfo.SetInfo(FailCount + " frames were lost"));
                     // If 10 frames fail continuously the ImageQueue won't continue
-                    if (FailCount < 10)
+                    if (FailCount < 100)
                         continue;
 
                     // Enabling error reports from the uEye Library

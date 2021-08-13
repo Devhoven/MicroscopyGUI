@@ -11,6 +11,9 @@ namespace MicroscopeGUI
         // Created through the help of https://dev.exiv2.org/projects/exiv2/wiki/The_Metadata_in_PNG_files
         public static unsafe void AddiTXt(FileStream Stream, string Key, string Text)
         {
+            // If the stream was used before, it won't start at pos 0 and thus runs danger that the IDAT-chunk won't be found
+            Stream.Position = 0;
+
             // Saving the old lenght, since a new one is going to be set and we still need it
             long OldLength = Stream.Length;
 
@@ -125,7 +128,8 @@ namespace MicroscopeGUI
 
                 CurrentValue = md.GetQuery("/[" + Index + "]iTXt/TextEntry");
 
-                Values.Add((string)CurrentKey, (string)CurrentValue);
+                if (!Values.ContainsKey((string)CurrentKey))
+                    Values.Add((string)CurrentKey, (string)CurrentValue);
 
                 Index++;
             } 

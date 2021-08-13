@@ -204,15 +204,9 @@ namespace MicroscopeGUI
         // Saves the current frame
         void SaveClick(object sender, RoutedEventArgs e)
         {
-            SaveFileDialog SaveDialog = new SaveFileDialog();
-            SaveDialog.Title = "Save file";
-            SaveDialog.Filter = "Png|*.png";
-
-            if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
-                MetadataPopup = new MetaDataWindow(SaveDialog.FileName);
-                MetadataPopup.Show();
-            }
+            MetadataPopup = new MetaDataWindow();
+            MetadataPopup.Owner = this;
+            MetadataPopup.Show();
         }
 
         // Saves a config

@@ -17,6 +17,7 @@ using Microsoft.Win32;
 using Ookii.Dialogs.Wpf;
 using System.Drawing;
 using Image = System.Windows.Controls.Image;
+using System.IO;
 
 namespace MicroscopeGUI
 {
@@ -59,7 +60,7 @@ namespace MicroscopeGUI
                 {
                     BitmapImage BmpImg = new BitmapImage();
                     BmpImg.BeginInit();
-                    BmpImg.CacheOption = BitmapCacheOption.None;
+                    BmpImg.CacheOption = BitmapCacheOption.OnLoad;
                     BmpImg.UriSource = new Uri(Path);
                     BmpImg.EndInit();
                     Image NewImg = new Image()
@@ -74,6 +75,14 @@ namespace MicroscopeGUI
                     Children.Add(NewImg);
 
                     NewImg.MouseLeftButtonDown += OnImageClick;
+                    NewImg.ContextMenu = new ContextMenu();
+                    MenuItem ValueEditItem = new MenuItem()
+                    {
+                        Header = "Hehe",
+                        
+                    };
+                    ValueEditItem.Click += MetadataViewClick;
+                    NewImg.ContextMenu.Items.Add(ValueEditItem);
                     NewImg.Cursor = Cursors.Hand;
                 }
             }
@@ -83,6 +92,20 @@ namespace MicroscopeGUI
             // But it is fine like this, since there is no memory leak now
             GC.Collect();
             GC.WaitForPendingFinalizers();
+        }
+
+        private void MetadataViewClick(object sender, RoutedEventArgs e)
+        {
+            MenuItem Sender = sender as MenuItem;
+            Image OriginalSource = (Sender.Parent as ContextMenu).PlacementTarget as Image;
+            string OriginalPath = (OriginalSource.Source as BitmapImage).UriSource.OriginalString;
+
+            using (FileStream Stream = new FileStream(OriginalPath, FileMode.Open, FileAccess.ReadWrite))
+            {
+                MetaDataWindow MetadataPopup = new MetaDataWindow(OriginalPath, MetadataEditor.GetValuePairs(Stream));
+                MetadataPopup.Owner = Application.Current.MainWindow;
+                MetadataPopup.Show();
+            }
         }
 
         void OnImageClick(object o, MouseButtonEventArgs e)

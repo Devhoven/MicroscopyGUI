@@ -16,10 +16,11 @@ using System.Windows;
 using System.Windows.Data;
 using System.Globalization;
 using Size = System.Windows.Size;
+using System.Windows.Controls;
 
 namespace MicroscopeGUI
 {
-    static class Extensions
+    public static class Extensions
     {
         static WriteableBitmap FrameSource = new WriteableBitmap(1280, 1028, 100, 100, PixelFormats.Bgr24, BitmapPalettes.WebPalette);
 
