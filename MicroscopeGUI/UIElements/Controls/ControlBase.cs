@@ -26,8 +26,8 @@ namespace MicroscopeGUI
 
         public virtual bool Enable
         {
-            get { return _Enable; }
-            set { _Enable = value; }
+            get => _Enable;
+            set => _Enable = value;
         }
 
         protected Control(Grid Parent)

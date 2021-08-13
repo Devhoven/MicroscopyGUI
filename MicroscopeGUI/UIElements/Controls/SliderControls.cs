@@ -36,7 +36,15 @@ namespace MicroscopeGUI
         public override bool Enable
         {
             get => Slider.IsEnabled;
-            set => Slider.IsEnabled = value;
+            set
+            {
+                // If it gets disabled, the foreground color is set to gray
+                if (value)
+                    Label.Foreground = Brushes.White;
+                else
+                    Label.Foreground = Brushes.Gray;
+                Slider.IsEnabled = value;
+            }
         }
 
         public SliderControl(string Name, double Min, double Max, double StartVal, RoutedPropertyChangedEventHandler<double> ValueChangedEvent,
