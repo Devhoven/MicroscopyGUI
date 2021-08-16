@@ -20,6 +20,7 @@ namespace MicroscopeGUI
         public HistogramControl(WpfPlot HistogramPlot)
         {
             this.HistogramPlot = HistogramPlot;
+            this.HistogramPlot.Plot.Frameless();
         }
 
         // Seperates the r g b values from the histogram and adds them onto the plot
