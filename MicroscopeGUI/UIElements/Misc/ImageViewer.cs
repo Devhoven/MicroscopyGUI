@@ -280,7 +280,7 @@ namespace MicroscopeGUI
         {
             if(e.Key == Key.R)
                 Reset();
-            else if (e.Key == Key.LeftShift && CurrentMode == MeasureMode.MeasureFactor)
+            else if (e.Key == Key.LeftShift && CurrentMode != MeasureMode.Rectangle)
                 MeasureStraight = true;
         }
 
@@ -350,6 +350,32 @@ namespace MicroscopeGUI
             ChildCount = 3;
         }
 
+        // Renders a line between two points and shows the length
+        void RenderLineWithLength(Point p1, Point p2)
+        {
+            RenderLine(p1, p2);
+
+            double SizeFactor = GetScreenToPixelFactor();
+            TextBlock LengthDisplay = new TextBlock()
+            {
+
+                Text = Math.Round((p2 - p1).Length * SizeFactor * PixelPerMeasurement, 2).ToString() + " mm",
+                FontSize = 20,
+                Foreground = Settings.LineTextColor
+            };
+
+            Size RenderedSize = LengthDisplay.GetElementPixelSize();
+            Canvas.SetLeft(LengthDisplay, p1.X - RenderedSize.Width / 2);
+            if (p1.Y < p2.Y)
+                Canvas.SetTop(LengthDisplay, p1.Y - LengthDisplay.FontSize - 10);
+            else
+                Canvas.SetTop(LengthDisplay, p1.Y);
+
+            _Child.Children.Add(LengthDisplay);
+
+            ChildCount++;
+        }
+
         // Renders a line between two points
         void RenderLine(Point p1, Point p2)
         {
@@ -377,61 +403,12 @@ namespace MicroscopeGUI
                 Stroke = Settings.LineColor,
                 StrokeThickness = Settings.LineThickness
             };
+            // Disables aliasing on the line 
+            RenderOptions.SetEdgeMode(Line, EdgeMode.Aliased);
 
             _Child.Children.Add(Line);
 
             ChildCount = 1;
-        }
-
-        // Renders a line between two points and shows the length
-        void RenderLineWithLength(Point p1, Point p2)
-        {
-            RenderLine(p1, p2);
-
-            TextBlock LengthDisplay = new TextBlock()
-            {
-                Text = Math.Round((p1 - p2).Length * PixelPerMeasurement, 2).ToString() + " mm",
-                FontSize = 20,
-                Foreground = Settings.LineTextColor
-            };
-
-            Size RenderedSize = LengthDisplay.GetElementPixelSize();
-            Canvas.SetLeft(LengthDisplay, p1.X - RenderedSize.Width / 2);
-            if (p1.Y < p2.Y)
-                Canvas.SetTop(LengthDisplay, p1.Y - LengthDisplay.FontSize - 10);
-            else
-                Canvas.SetTop(LengthDisplay, p1.Y);
-
-            _Child.Children.Add(LengthDisplay);
-
-            ChildCount++;
-        }
-
-        // Removing the old elements, except the image 
-        void RemoveChilds()
-        {
-            _Child.Children.RemoveRange(1, ChildCount);
-            ChildCount = 0;
-        }
-
-        // Constructs a rectangle out of two points
-        (double, double, double, double) GetRectangle(Point p1, Point p2)
-        {
-            double Width = p2.X - p1.X;
-            double Height = p2.Y - p1.Y;
-            if (Width < 0)
-                p1.X = p2.X;
-            if (Height < 0)
-                p1.Y = p2.Y;
-
-            return (p1.X, p1.Y, Math.Abs(Width), Math.Abs(Height));
-        }
-        
-        // Calculates the factor which converts the "screen" lengths to actual pixel lengths
-        double GetScreenToPixelFactor()
-        {
-            double ActualWidth = (double)_Child.Children[0].GetValue(Image.ActualWidthProperty);
-            return ImageQueue.Width / ActualWidth;
         }
     }
 }

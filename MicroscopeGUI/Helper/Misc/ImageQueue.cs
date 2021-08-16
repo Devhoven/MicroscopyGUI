@@ -92,8 +92,11 @@ namespace MicroscopeGUI
 
                     // Counts one up if something went wrong
                     FailCount++;
-                    if (FailCount > 20)
+                    if (FailCount >= 69)
+                        UI.CurrentDispatcher.Invoke(() => UserInfo.SetErrorInfo(FailCount + " frames were lost"));
+                    else if (FailCount > 20)
                         UI.CurrentDispatcher.Invoke(() => UserInfo.SetInfo(FailCount + " frames were lost"));
+
                     // If 10 frames fail continuously the ImageQueue won't continue
                     if (FailCount < 100)
                         continue;
@@ -108,7 +111,7 @@ namespace MicroscopeGUI
                                 {
                                     UI.OldXMLConfig = Control.GetXMLString();
                                     UserInfo.SetErrorInfo("Camera disconnected (" + Enum.GetName(typeof(Status), CurrentCamStatus) + ")");
-                                    UI.CurrentFrame.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"));
+                                    UI.CurrentFrame.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCamConnected.png"));
                                 }
                            ));
                     break;

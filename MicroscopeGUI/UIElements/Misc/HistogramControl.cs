@@ -27,7 +27,6 @@ namespace MicroscopeGUI
             this.HistogramPlot.Plot.Grid(false);
             this.HistogramPlot.Plot.Frameless();
             this.HistogramPlot.Plot.Style(ScottPlot.Style.Gray2);
-
         }
 
         // Seperates the r g b values from the histogram and adds them onto the plot
