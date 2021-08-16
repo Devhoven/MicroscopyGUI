@@ -148,6 +148,11 @@ namespace MicroscopeGUI
             if (ImageQueue.CurrentCamStatus == Status.SUCCESS)
                 Cam.Exit();
         }
+
+        private void ExitClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
     }
 
     // Class for all of the ui element events
