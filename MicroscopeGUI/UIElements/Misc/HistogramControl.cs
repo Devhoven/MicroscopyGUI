@@ -20,7 +20,14 @@ namespace MicroscopeGUI
         public HistogramControl(WpfPlot HistogramPlot)
         {
             this.HistogramPlot = HistogramPlot;
+
+            // Design for the HistogramPlot
             this.HistogramPlot.Plot.Frameless();
+            this.HistogramPlot.Plot.SetAxisLimits(0, 255);
+            this.HistogramPlot.Plot.Grid(false);
+            this.HistogramPlot.Plot.Frameless();
+            this.HistogramPlot.Plot.Style(ScottPlot.Style.Gray2);
+
         }
 
         // Seperates the r g b values from the histogram and adds them onto the plot
@@ -38,8 +45,6 @@ namespace MicroscopeGUI
             HistogramPlot.Plot.AddBar(ValuesR, System.Drawing.Color.Red).BorderLineWidth = 0;
             HistogramPlot.Plot.AddBar(ValuesG, System.Drawing.Color.Green).BorderLineWidth = 0;
             HistogramPlot.Plot.AddBar(ValuesB, System.Drawing.Color.Blue).BorderLineWidth = 0;
-            HistogramPlot.Plot.SetAxisLimits(0, 255);
-            HistogramPlot.Plot.Frameless();
             HistogramPlot.Render();
         }
     }
