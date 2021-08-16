@@ -77,7 +77,7 @@ namespace MicroscopeGUI
             {
                 if (SetErrorImage)
                 {
-                    CurrentFrameCon.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"));
+                    CurrentFrameCon.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCamConnected2.jpg"));
                     UserInfo.SetErrorInfo("ERROR: " + Enum.GetName(typeof(Status), StatusRet) + "(" + (int)StatusRet + ")");
                 }
                 ImageQueue.StopRunning = true;
