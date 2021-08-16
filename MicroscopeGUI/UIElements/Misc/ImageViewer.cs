@@ -25,6 +25,7 @@ namespace MicroscopeGUI
         public enum MeasureMode
         {
             Rectangle,
+            Line,
             MeasureFactor
         }
 
@@ -73,6 +74,8 @@ namespace MicroscopeGUI
 
             ChildCount = 0;
 
+            InitializeContextMenu();
+
             MouseDown += ChildMouseDown;
             MouseMove += ChildMouseMove;
             MouseUp += ChildMouseUp;
@@ -80,6 +83,57 @@ namespace MicroscopeGUI
 
             (Application.Current.MainWindow as UI).KeyDown += ChildKeyDown;
             (Application.Current.MainWindow as UI).KeyUp += ChildKeyUp;
+        }
+
+        void InitializeContextMenu()
+        {
+            ContextMenu = new ContextMenu();
+            MenuItem RectangleMeasureItem = new MenuItem()
+            {
+                Header = "Measure with a rectangle",
+                Icon = new Image
+                {
+                    Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Icons/Rectangle.png"))
+                }
+            };
+            MenuItem LineMeasureItem = new MenuItem()
+            {
+                Header = "Measure with a line",
+                Icon = new Image
+                {
+                    Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Icons/Line.png"))
+                }
+            };
+            MenuItem MeasureFactorItem = new MenuItem()
+            {
+                Header = "Measure the factor",
+                Icon = new Image
+                {
+                    Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Icons/Measure.png"))
+                }
+            };
+
+            RectangleMeasureItem.Click += (o, e) =>
+            {
+                UserInfo.SetInfo("You can now measure with a rectangle");
+                SetMeasureMode(MeasureMode.Rectangle);
+            };
+
+            LineMeasureItem.Click += (o, e) =>
+            {
+                UserInfo.SetInfo("You can now measure with a line");
+                SetMeasureMode(MeasureMode.Line);
+            };
+
+            MeasureFactorItem.Click += (o, e) =>
+            {
+                UserInfo.SetInfo("Draw a line where you want to measure");
+                SetMeasureMode(MeasureMode.MeasureFactor);
+            };
+
+            ContextMenu.Items.Add(RectangleMeasureItem);
+            ContextMenu.Items.Add(LineMeasureItem);
+            ContextMenu.Items.Add(MeasureFactorItem);
         }
 
         public void Reset()
@@ -118,8 +172,6 @@ namespace MicroscopeGUI
                 Cursor = Cursors.Hand;
                 _Child.CaptureMouse();
             }
-            else if (e.ChangedButton == MouseButton.Right)
-                Reset();
         }
 
         private void ChildMouseUp(object sender, MouseButtonEventArgs e)
@@ -153,8 +205,6 @@ namespace MicroscopeGUI
 
                         PixelPerMeasurement = Measurement / PixelLength;
 
-                        (Application.Current.MainWindow as UI).MeasureBtn.Background = Brushes.Transparent;
-
                         CurrentMode = MeasureMode.Rectangle;
 
                         UserInfo.SetInfo("You can now measure again");
@@ -181,7 +231,11 @@ namespace MicroscopeGUI
                     (double X, double Y, double Width, double Height) = GetRectangle(DrawStart, CurrentMousePos);
                     RenderRectangle(X, Y, Width, Height);
                 }
-                else if(CurrentMode == MeasureMode.MeasureFactor)
+                else if (CurrentMode == MeasureMode.Line)
+                {
+                    RenderLineWithLength(DrawStart, CurrentMousePos);
+                }
+                else if (CurrentMode == MeasureMode.MeasureFactor)
                 {
                     RenderLine(DrawStart, CurrentMousePos);
                 }
@@ -327,6 +381,30 @@ namespace MicroscopeGUI
             _Child.Children.Add(Line);
 
             ChildCount = 1;
+        }
+
+        // Renders a line between two points and shows the length
+        void RenderLineWithLength(Point p1, Point p2)
+        {
+            RenderLine(p1, p2);
+
+            TextBlock LengthDisplay = new TextBlock()
+            {
+                Text = Math.Round((p1 - p2).Length * PixelPerMeasurement, 2).ToString() + " mm",
+                FontSize = 20,
+                Foreground = Settings.LineTextColor
+            };
+
+            Size RenderedSize = LengthDisplay.GetElementPixelSize();
+            Canvas.SetLeft(LengthDisplay, p1.X - RenderedSize.Width / 2);
+            if (p1.Y < p2.Y)
+                Canvas.SetTop(LengthDisplay, p1.Y - LengthDisplay.FontSize - 10);
+            else
+                Canvas.SetTop(LengthDisplay, p1.Y);
+
+            _Child.Children.Add(LengthDisplay);
+
+            ChildCount++;
         }
 
         // Removing the old elements, except the image 

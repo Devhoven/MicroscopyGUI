@@ -44,7 +44,7 @@ namespace MicroscopeGUI
             VistaFolderBrowserDialog Dialog = new VistaFolderBrowserDialog();
             if (Dialog.ShowDialog().GetValueOrDefault())
             {
-                LoadImagesFromFolder(System.IO.Directory.GetFiles(Dialog.SelectedPath));
+                LoadImagesFromFolder(Directory.GetFiles(Dialog.SelectedPath));
                 RegistryManager.SetValue("ImgGalleryPath", Dialog.SelectedPath);
                 Settings.ImgGalleryPath = Dialog.SelectedPath;
                 UserInfo.SetInfo("Set the path to " + Settings.ImgGalleryPath);

@@ -37,13 +37,16 @@
     <None Remove="Assets\Icons\Freeze.png" />
     <None Remove="Assets\Icons\Histogram.png" />
     <None Remove="Assets\Icons\ImageGallery.png" />
+    <None Remove="Assets\Icons\Line.png" />
     <None Remove="Assets\Icons\LiveFeed.png" />
     <None Remove="Assets\Icons\Measure.png" />
     <None Remove="Assets\Icons\Microscope.png" />
+    <None Remove="Assets\Icons\Rectangle.png" />
     <None Remove="Assets\Icons\Restart.png" />
     <None Remove="Assets\Icons\Save.png" />
     <None Remove="Assets\Icons\Settings.png" />
     <None Remove="Assets\Microscope.ico" />
+    <None Remove="Assets\NoCamConnected.png" />
     <None Remove="Histogram.png" />
     <None Remove="Shader\Compiled\EffectShader.ps" />
     <None Remove="Shader\FragmentShader.ps" />
@@ -82,13 +85,16 @@
     <Resource Include="Assets\Icons\Freeze.png" />
     <Resource Include="Assets\Icons\Histogram.png" />
     <Resource Include="Assets\Icons\ImageGallery.png" />
+    <Resource Include="Assets\Icons\Line.png" />
     <Resource Include="Assets\Icons\LiveFeed.png" />
     <Resource Include="Assets\Icons\Measure.png" />
     <Resource Include="Assets\Icons\Microscope.png" />
+    <Resource Include="Assets\Icons\Rectangle.png" />
     <Resource Include="Assets\Icons\Restart.png" />
     <Resource Include="Assets\Icons\Save.png" />
     <Resource Include="Assets\Icons\Settings.png" />
     <Resource Include="Assets\Microscope.ico" />
+    <Resource Include="Assets\NoCamConnected.png" />
     <Resource Include="XAML\ScrollBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Resource>

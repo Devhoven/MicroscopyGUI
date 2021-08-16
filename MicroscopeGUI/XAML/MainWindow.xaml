@@ -97,7 +97,7 @@
                         </MenuItem>
                     </MenuItem>
                     <MenuItem Header="_Misc.">
-                        <MenuItem Header="Histogram" Click="HistClick" Foreground="Black">
+                        <MenuItem Header="Histogram" Click="HistogrammClick" Foreground="Black">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/Histogram.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                             </MenuItem.Icon>
@@ -115,12 +115,6 @@
                 </Border>
                 
                 <Menu DockPanel.Dock="Top" Grid.Column="2" Background="Transparent" Margin="2 2 2 2">
-                    <MenuItem x:Name="MeasureBtn" Click="MeasureBtnClick">
-                        <MenuItem.Header>
-                            <Image Source="/Assets/Icons/Measure.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                        </MenuItem.Header>
-                        <MenuItem.ToolTip>Switching between setting the measure factor and measuring</MenuItem.ToolTip>
-                    </MenuItem>
                     <MenuItem x:Name="ConfigConToggleBtn" Background="LightBlue" Click="ConfigConToggle">
                         <MenuItem.Header>
                             <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -143,6 +137,7 @@
             <Grid x:Name="ToolCon" Margin="5 5 5 5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="50"/>
+                    <RowDefinition Height="55"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
@@ -175,6 +170,14 @@
                         </Button.Resources>
                     </Button>
                 </Grid>
+                <Button BorderThickness="0" Content="Save Frame" Click="SaveClick"
+                        Margin="5 5 5 10" Background="LightBlue" FontSize="18" Grid.Row="1">
+                    <Button.Resources>
+                        <Style TargetType="{x:Type Border}">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
             </Grid>
         </Border>
 

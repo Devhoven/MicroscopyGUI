@@ -77,7 +77,7 @@ namespace MicroscopeGUI
             {
                 if (SetErrorImage)
                 {
-                    CurrentFrameCon.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCamConnected2.jpg"));
+                    CurrentFrameCon.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCamConnected.png"));
                     UserInfo.SetErrorInfo("ERROR: " + Enum.GetName(typeof(Status), StatusRet) + "(" + (int)StatusRet + ")");
                 }
                 ImageQueue.StopRunning = true;
@@ -107,8 +107,8 @@ namespace MicroscopeGUI
 
         void InitializeUIComponents()
         {
-            ConfigCon = new ConfigStepCon(ToolCon);
-            AnalysisCon = new AnalysisStepCon(ToolCon);
+            ConfigCon = new ConfigStepCon(ToolCon, 2);
+            AnalysisCon = new AnalysisStepCon(ToolCon, 2);
             int Selected = RegistryManager.GetIntVal("CurrentConfigStep");
 
             if (Selected == 1)
@@ -185,7 +185,7 @@ namespace MicroscopeGUI
         }
 
         // Opens the histogram window
-        void HistClick(object sender, RoutedEventArgs e)
+        void HistogrammClick(object sender, RoutedEventArgs e)
         {
             HistogramPopup = new HistogramWindow();
             // So the window always stays on top of the main window
@@ -317,22 +317,6 @@ namespace MicroscopeGUI
             ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
 
             UserInfo.SetInfo("Started the live feed");
-        }
-
-        void MeasureBtnClick(object sender, RoutedEventArgs e)
-        {
-            if (MeasureBtn.Background == Brushes.LightBlue)
-            {
-                UserInfo.SetInfo("You can now measure again");
-                MeasureBtn.Background = Brushes.Transparent;
-                ZoomDisplay.SetMeasureMode(ImageViewer.MeasureMode.Rectangle);
-            }
-            else
-            {
-                UserInfo.SetInfo("Draw a line to measure", Brushes.LightGreen, Brushes.Black);
-                MeasureBtn.Background = Brushes.LightBlue;
-                ZoomDisplay.SetMeasureMode(ImageViewer.MeasureMode.MeasureFactor);
-            }
         }
 
         void ConfigConToggle(object sender, RoutedEventArgs e) =>
