@@ -157,7 +157,7 @@ namespace MicroscopeGUI
 
             public TextBox KeyTextBox;
             public TextBox ValueTextBox;
-            StackPanel Parent;
+            new StackPanel Parent;
 
             public DataEntry(StackPanel Parent, string Key, string Value, bool KeyEditable = false, bool ValueEditable = false)
             {
