@@ -53,7 +53,7 @@ namespace MicroscopeGUI
         {
             if (e.Key == Key.Enter)
             {
-                DataEntry NewEntry = new DataEntry(string.Empty, string.Empty, true, true);
+                DataEntry NewEntry = new DataEntry(MetadataCon, string.Empty, string.Empty, true, true);
                 MetadataCon.Children.Add(NewEntry);
                 NewEntry.KeyTextBox.Focus();
                 Entries.Add(NewEntry);
@@ -82,14 +82,12 @@ namespace MicroscopeGUI
         void AddDataEntries(Dictionary<string, string> KeyValuePairs)
         {
             foreach(KeyValuePair<string, string> Pair in KeyValuePairs)
-            {
                 AddDataEntry(Pair.Key, Pair.Value, true);
-            }
         }
 
         DataEntry AddDataEntry(string Key, string Value, bool ValueEditable = false)
         {
-            DataEntry NewEntry = new DataEntry(Key, Value, false, ValueEditable);
+            DataEntry NewEntry = new DataEntry(MetadataCon, Key, Value, false, ValueEditable);
             MetadataCon.Children.Add(NewEntry);
             Entries.Add(NewEntry);
             return NewEntry;
@@ -159,9 +157,12 @@ namespace MicroscopeGUI
 
             public TextBox KeyTextBox;
             public TextBox ValueTextBox;
+            new StackPanel Parent;
 
-            public DataEntry(string Key, string Value, bool KeyEditable = false, bool ValueEditable = false)
+            public DataEntry(StackPanel Parent, string Key, string Value, bool KeyEditable = false, bool ValueEditable = false)
             {
+                this.Parent = Parent;
+
                 KeyTextBox = new TextBox()
                 {
                     Text = Key,
@@ -188,12 +189,25 @@ namespace MicroscopeGUI
                     Height = 40
                 };
 
+                KeyTextBox.PreviewKeyDown += KeyTextBoxKeyDown;
+
                 Children.Add(KeyTextBox);
                 SetDock(KeyTextBox, Dock.Left);
                 Children.Add(ValueTextBox);
                 SetDock(ValueTextBox, Dock.Right);
 
                 Count++;
+            }
+
+            private void KeyTextBoxKeyDown(object sender, KeyEventArgs e)
+            {
+                if (e.Key == System.Windows.Input.Key.Back)
+                {
+                    if ((sender as TextBox).Text == string.Empty)
+                    {
+                        Parent.Children.Remove(this);
+                    }
+                }
             }
         }
     }
