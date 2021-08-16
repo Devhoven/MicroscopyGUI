@@ -14,7 +14,6 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using RPCEventHandler = System.Windows.RoutedPropertyChangedEventHandler<double>;
 using RPCEventArgs = System.Windows.RoutedPropertyChangedEventArgs<double>;
-using ImgQueueMode = MicroscopeGUI.ImageQueue.ImgQueueMode;
 
 namespace MicroscopeGUI.UIElements.Steps
 {

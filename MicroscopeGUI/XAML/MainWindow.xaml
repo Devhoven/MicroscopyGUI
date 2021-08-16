@@ -99,13 +99,13 @@
 
                 <Menu Background="Transparent" Margin="5 2 2 2"
                       HorizontalAlignment="Left" VerticalAlignment="Center" DockPanel.Dock="Top" Grid.Column="1">
-                    <MenuItem Click="LiveFeedClick" Background="LightBlue">
+                    <MenuItem x:Name="LiveFeedBtn" Click="LiveFeedClick" Background="LightBlue">
                         <MenuItem.Header>
                             <Image Source="/Assets/Icons/LiveFeed.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </MenuItem.Header>
                         <MenuItem.ToolTip>Starts the live feed of the camera</MenuItem.ToolTip>
                     </MenuItem>
-                    <MenuItem Click="FreezeCamClick" Background="LightBlue">
+                    <MenuItem x:Name="FreezeCamBtn" Click="FreezeCamClick" Background="Transparent" >
                         <MenuItem.Header>
                             <Image Source="/Assets/Icons/Freeze.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </MenuItem.Header>
@@ -113,7 +113,7 @@
                     </MenuItem>
                 </Menu>
 
-                <Border x:Name="InfoLabelBorder" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2">
+                <Border x:Name="InfoLabelBorder" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.ColumnSpan="4">
                     <Label x:Name="InfoLabel" FontSize="15"/>
                 </Border>
 

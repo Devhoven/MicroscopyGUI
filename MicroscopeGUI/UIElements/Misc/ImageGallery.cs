@@ -18,6 +18,7 @@ using Ookii.Dialogs.Wpf;
 using System.Drawing;
 using Image = System.Windows.Controls.Image;
 using System.IO;
+using Brushes = System.Windows.Media.Brushes;
 
 namespace MicroscopeGUI
 {
@@ -130,6 +131,9 @@ namespace MicroscopeGUI
             {
                 ImageQueue.Mode = ImageQueue.ImgQueueMode.ViewingAnotherImage;
                 UI.CurrentFrame.Source = ((Image)o).Source;
+                UI Window = Application.Current.MainWindow as UI;
+                Window.LiveFeedBtn.Background = Brushes.Transparent;
+                Window.FreezeCamBtn.Background = Brushes.LightBlue;
             }
         }
     }

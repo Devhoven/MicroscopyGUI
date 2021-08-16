@@ -158,6 +158,7 @@ namespace MicroscopeGUI
                 InitializeCam(false);
 
                 ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
+
                 ImageQueue.StopRunning = false;
 
                 StartCapture();
@@ -169,6 +170,8 @@ namespace MicroscopeGUI
         {
             Cam.Acquisition.Freeze();
             ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
+            LiveFeedBtn.Background = Brushes.Transparent;
+            FreezeCamBtn.Background = Brushes.LightBlue;
 
             UserInfo.SetInfo("Freezed the camera");
         }
@@ -178,6 +181,8 @@ namespace MicroscopeGUI
         {
             Cam.Acquisition.Capture();
             ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
+            LiveFeedBtn.Background = Brushes.LightBlue;
+            FreezeCamBtn.Background = Brushes.Transparent;
 
             UserInfo.SetInfo("Started the live feed");
         }
