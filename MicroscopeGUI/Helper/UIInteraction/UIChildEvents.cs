@@ -171,7 +171,7 @@ namespace MicroscopeGUI
             Cam.Acquisition.Freeze();
             ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
             LiveFeedBtn.Background = Brushes.Transparent;
-            FreezeCamBtn.Background = Brushes.LightBlue;
+            FreezeCamBtn.Background = Brushes.LightSkyBlue;
 
             UserInfo.SetInfo("Freezed the camera");
         }
@@ -181,7 +181,7 @@ namespace MicroscopeGUI
         {
             Cam.Acquisition.Capture();
             ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
-            LiveFeedBtn.Background = Brushes.LightBlue;
+            LiveFeedBtn.Background = Brushes.LightSkyBlue;
             FreezeCamBtn.Background = Brushes.Transparent;
 
             UserInfo.SetInfo("Started the live feed");
@@ -205,7 +205,7 @@ namespace MicroscopeGUI
             else
             {
                 Element.Visibility = Visibility.Visible;
-                Sender.Background = Brushes.LightBlue;
+                Sender.Background = Brushes.LightSkyBlue;
                 RegistryManager.SetValue(ValName, true);
             }
         }
