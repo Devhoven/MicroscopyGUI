@@ -119,7 +119,15 @@ namespace MicroscopeGUI
             }
             else
             {
-                // Lil cheat, since I can't be bothered anymore
+                // Small cheat for removing the metadata, since I can't be bothered anymore
+                // It is creating a new bitmap from the original image and saves it again
+                // This new image does not have any medatada
+                // So we delete the old file and rename the temporary file to be the old / new one
+                string TempPath = OriginalPath.Substring(0, OriginalPath.IndexOf(".png")) + "-temp.png";
+                using (Bitmap Bmp = new Bitmap(OriginalPath)) 
+                    Bmp.Save(TempPath);
+                File.Delete(OriginalPath);
+                File.Move(TempPath, OriginalPath);
 
                 using (FileStream Stream = new FileStream(OriginalPath, FileMode.Open, FileAccess.ReadWrite))
                 {
