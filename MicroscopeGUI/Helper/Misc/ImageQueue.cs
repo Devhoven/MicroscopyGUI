@@ -57,11 +57,16 @@ namespace MicroscopeGUI
                 {
                     FailCount = 0;
 
-                    // Getting the values of the histogram, every 100 ms
-                    if (HistogramTimer.ElapsedMilliseconds >= 100)
+                    // Getting the values of the histogram, every 30 ms
+                    if (HistogramTimer.ElapsedMilliseconds >= 30)
                     {
                         UI.Cam.Image.GetHistogram(MemID, ColorMode.BGR8Packed, out Histogram);
                         HistogramTimer.Restart();
+
+                        UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background, new Action(() =>
+                        {
+                            UI.HistogramControl.UpdateHistogram();
+                        }));
                     }
 
                     UI.Cam.Memory.GetSize(MemID, out Width, out Height);

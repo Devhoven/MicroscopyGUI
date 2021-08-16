@@ -9,30 +9,21 @@ using System.Windows.Threading;
 
 namespace MicroscopeGUI
 {
-    class HistogramControl
+    public class HistogramControl
     {
         // Contain the seperated r g b values from the histogram
         double[] ValuesR = new double[255];
         double[] ValuesG = new double[255];
         double[] ValuesB = new double[255];
 
-        // Calls an event in the interval that is given to it
-        DispatcherTimer UpdateTimer;
-
         WpfPlot HistogramPlot;
         public HistogramControl(WpfPlot HistogramPlot)
         {
             this.HistogramPlot = HistogramPlot;
-
-            // Setting the interval and starting the Timer
-            UpdateTimer = new DispatcherTimer();
-            UpdateTimer.Interval = new TimeSpan(500000);
-            UpdateTimer.Tick += ImageQueueFrameChange;
-            UpdateTimer.Start();
         }
 
         // Seperates the r g b values from the histogram and adds them onto the plot
-        private void ImageQueueFrameChange(object sender, EventArgs e)
+        public void UpdateHistogram()
         {
             Array.Copy(ImageQueue.Histogram, 0, ValuesR, 0, 255);
 

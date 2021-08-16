@@ -92,7 +92,6 @@
     <Resource Include="Assets\Icons\Exit.png" />
     <Resource Include="Assets\Icons\Folder.png" />
     <Resource Include="Assets\Icons\Freeze.png" />
-    <Resource Include="Assets\Icons\Config.png" />
     <Resource Include="Assets\Icons\Histogram.png" />
     <Resource Include="Assets\Icons\LeftCon.png" />
     <Resource Include="Assets\Icons\Line.png" />

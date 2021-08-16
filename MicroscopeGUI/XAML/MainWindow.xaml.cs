@@ -25,6 +25,8 @@ namespace MicroscopeGUI
         public static CustomShader FrameEffects;
         public static Dispatcher CurrentDispatcher;
 
+        public static HistogramControl HistogramControl;
+
         public static string OldXMLConfig;
 
         Thread WorkerThread;
@@ -32,6 +34,7 @@ namespace MicroscopeGUI
 
         ConfigStepCon ConfigCon;
         AnalysisStepCon AnalysisCon;
+
 
         MetaDataWindow MetadataPopup;
 
@@ -107,7 +110,7 @@ namespace MicroscopeGUI
         {
             ConfigCon = new ConfigStepCon(ToolCon);
             AnalysisCon = new AnalysisStepCon(ToolCon);
-            new HistogramControl(HistogramPlot);
+            HistogramControl = new HistogramControl(HistogramPlot);
             int Selected = RegistryManager.GetIntVal("CurrentConfigStep");
 
             if (Selected == 1)
