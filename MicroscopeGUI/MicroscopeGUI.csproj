@@ -32,17 +32,20 @@
   
   <ItemGroup>
     <None Remove="Assets\ConfigIcon.png" />
+    <None Remove="Assets\Icons\Delete.png" />
+    <None Remove="Assets\Icons\Edit.png" />
     <None Remove="Assets\Icons\Exit.png" />
     <None Remove="Assets\Icons\Folder.png" />
     <None Remove="Assets\Icons\Freeze.png" />
     <None Remove="Assets\Icons\Histogram.png" />
-    <None Remove="Assets\Icons\ImageGallery.png" />
+    <None Remove="Assets\Icons\LeftCon.png" />
     <None Remove="Assets\Icons\Line.png" />
     <None Remove="Assets\Icons\LiveFeed.png" />
     <None Remove="Assets\Icons\Measure.png" />
     <None Remove="Assets\Icons\Microscope.png" />
     <None Remove="Assets\Icons\Rectangle.png" />
     <None Remove="Assets\Icons\Restart.png" />
+    <None Remove="Assets\Icons\RightCon.png" />
     <None Remove="Assets\Icons\Save.png" />
     <None Remove="Assets\Icons\Settings.png" />
     <None Remove="Assets\Microscope.ico" />
@@ -80,17 +83,20 @@
 
   <ItemGroup>
     <Resource Include="Assets\Icons\Config.png" />
+    <Resource Include="Assets\Icons\Delete.png" />
+    <Resource Include="Assets\Icons\Edit.png" />
     <Resource Include="Assets\Icons\Exit.png" />
     <Resource Include="Assets\Icons\Folder.png" />
     <Resource Include="Assets\Icons\Freeze.png" />
     <Resource Include="Assets\Icons\Histogram.png" />
-    <Resource Include="Assets\Icons\ImageGallery.png" />
+    <Resource Include="Assets\Icons\LeftCon.png" />
     <Resource Include="Assets\Icons\Line.png" />
     <Resource Include="Assets\Icons\LiveFeed.png" />
     <Resource Include="Assets\Icons\Measure.png" />
     <Resource Include="Assets\Icons\Microscope.png" />
     <Resource Include="Assets\Icons\Rectangle.png" />
     <Resource Include="Assets\Icons\Restart.png" />
+    <Resource Include="Assets\Icons\RightCon.png" />
     <Resource Include="Assets\Icons\Save.png" />
     <Resource Include="Assets\Icons\Settings.png" />
     <Resource Include="Assets\Microscope.ico" />

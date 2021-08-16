@@ -120,14 +120,14 @@
                 <Menu DockPanel.Dock="Top" Background="Transparent" Margin="2" Grid.Column="3">
                     <MenuItem x:Name="ConfigConToggleBtn" Background="LightSkyBlue" Click="ConfigConToggle">
                         <MenuItem.Header>
-                            <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Image Source="/Assets/Icons/LeftCon.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </MenuItem.Header>
                         <MenuItem.ToolTip>Toggles the visibillity of the left container</MenuItem.ToolTip>
                     </MenuItem>
 
                     <MenuItem x:Name="ImgGalleryToggleBtn" Background="LightSkyBlue" Click="ImgGalleryToggle">
                         <MenuItem.Header>
-                            <Image Source="/Assets/Icons/ImageGallery.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            <Image Source="/Assets/Icons/RightCon.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </MenuItem.Header>
                         <MenuItem.ToolTip>Toggles the visibillity of the right container</MenuItem.ToolTip>
                     </MenuItem>

@@ -79,11 +79,19 @@ namespace MicroscopeGUI
                     NewImg.ContextMenu = new ContextMenu();
                     MenuItem ValueEditItem = new MenuItem()
                     {
-                        Header = "Edit Metadata"
+                        Header = "Edit Metadata",
+                        Icon = new Image
+                        {
+                            Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Icons/Edit.png"))
+                        }
                     };
                     MenuItem DeleteImageItem = new MenuItem()
                     {
-                        Header = "Delete Image"
+                        Header = "Delete Image",
+                        Icon = new Image
+                        {
+                            Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Icons/Delete.png"))
+                        }
                     };
                     ValueEditItem.Click += MetadataViewClick;
                     DeleteImageItem.Click += DeleteImageClick;
