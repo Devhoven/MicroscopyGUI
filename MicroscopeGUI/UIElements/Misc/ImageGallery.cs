@@ -35,7 +35,7 @@ namespace MicroscopeGUI
             Settings.ImgGalleryPath = Path;
             if (Path != string.Empty)
             {
-                string[] FilePaths = System.IO.Directory.GetFiles(Path);
+                string[] FilePaths = Directory.GetFiles(Path);
                 LoadImagesFromFolder(FilePaths);
             }
         }
@@ -133,7 +133,7 @@ namespace MicroscopeGUI
                 UI.CurrentFrame.Source = ((Image)o).Source;
                 UI Window = Application.Current.MainWindow as UI;
                 Window.LiveFeedBtn.Background = Brushes.Transparent;
-                Window.FreezeCamBtn.Background = Brushes.LightBlue;
+                Window.FreezeCamBtn.Background = Brushes.LightSkyBlue;
             }
         }
     }
