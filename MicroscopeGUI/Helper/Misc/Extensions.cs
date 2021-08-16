@@ -17,6 +17,9 @@ using System.Windows.Data;
 using System.Globalization;
 using Size = System.Windows.Size;
 using System.Windows.Controls;
+using System.Drawing.Drawing2D;
+using Image = System.Drawing.Image;
+using Matrix = System.Windows.Media.Matrix;
 
 namespace MicroscopeGUI
 {
@@ -66,6 +69,27 @@ namespace MicroscopeGUI
                 element.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
 
             return (Size)transformToDevice.Transform((Vector)element.DesiredSize);
+        }
+
+        // This is from https://www.codeproject.com/Articles/191424/Resizing-an-Image-On-The-Fly-using-NET
+        public static Image Resize(this Image image, int Width, int Height)
+        {
+            int newWidth;
+            int newHeight;
+            int originalWidth = image.Width;
+            int originalHeight = image.Height;
+            float percentWidth = Width / (float)originalWidth;
+            float percentHeight = Height / (float)originalHeight;
+            float percent = percentHeight < percentWidth ? percentHeight : percentWidth;
+            newWidth = (int)(originalWidth * percent);
+            newHeight = (int)(originalHeight * percent);
+            System.Drawing.Image newImage = new Bitmap(newWidth, newHeight);
+            using (Graphics graphicsHandle = Graphics.FromImage(newImage))
+            {
+                graphicsHandle.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                graphicsHandle.DrawImage(image, 0, 0, newWidth, newHeight);
+            }
+            return newImage;
         }
     }
 }
