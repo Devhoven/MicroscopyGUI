@@ -28,8 +28,6 @@
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
   </PropertyGroup>
-  
-  
   <ItemGroup>
     <None Remove="Assets\ConfigIcon.png" />
     <None Remove="Assets\Icons\Delete.png" />
