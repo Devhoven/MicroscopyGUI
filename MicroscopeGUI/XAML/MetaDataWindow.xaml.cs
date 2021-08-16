@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml;
+using Application = System.Windows.Application;
 using Brushes = System.Windows.Media.Brushes;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using TextBox = System.Windows.Controls.TextBox;
@@ -35,6 +36,8 @@ namespace MicroscopeGUI
             AddDataEntry("Comment", "", true).ValueTextBox.Focus();
 
             KeyDown += MetaDataWindowKeyDown;
+
+            Closed += WindowClosing;
         }
 
         public MetaDataWindow(string OriginalPath, Dictionary<string, string> KeyValuePairs)
@@ -46,8 +49,13 @@ namespace MicroscopeGUI
             AddDataEntries(KeyValuePairs);
 
             KeyDown += MetaDataWindowKeyDown;
+
+            Closed += WindowClosing;
         }
 
+        // So the main window does not get unfocused
+        private void WindowClosing(object sender, EventArgs e) =>
+            Owner.Activate();
 
         private void MetaDataWindowKeyDown(object sender, KeyEventArgs e)
         {
@@ -69,7 +77,7 @@ namespace MicroscopeGUI
             XmlElement Root = Document.DocumentElement;
             XmlNodeList Nodes = Root.ChildNodes;
 
-            // Going through all of the nodes inside the root node 
+            // Going through all of the nodes inside the root node except the ones for post processing
             foreach (XmlNode Node in Nodes)
             {
                 if (Node.Name == "Contrast")
@@ -112,6 +120,10 @@ namespace MicroscopeGUI
                             MetadataEditor.AddiTXt(Stream, Entry.Key, Entry.Value);
                         }
                     }
+
+                    string FolderPath = SaveDialog.FileName.Substring(0, SaveDialog.FileName.LastIndexOf("\\"));
+                    (Application.Current.MainWindow as UI).ImgGallery.UpdatePath(FolderPath);
+
                     Close();
                 }
             }

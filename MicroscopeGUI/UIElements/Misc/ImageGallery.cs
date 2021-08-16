@@ -22,12 +22,14 @@ using Brushes = System.Windows.Media.Brushes;
 
 namespace MicroscopeGUI
 {
-    class ImageGallery : StackPanel
+    partial class ImageGallery : StackPanel
     {
         static Thickness ImgBoxMargin = new Thickness()
         {
             Bottom = 5
         };
+
+        FileSystemWatcher Watcher;
 
         public ImageGallery()
         {
@@ -37,6 +39,8 @@ namespace MicroscopeGUI
             {
                 string[] FilePaths = Directory.GetFiles(Path);
                 LoadImagesFromFolder(FilePaths);
+
+                InitializeWatcher(Path);
             }
         }
 
@@ -45,11 +49,16 @@ namespace MicroscopeGUI
             VistaFolderBrowserDialog Dialog = new VistaFolderBrowserDialog();
             if (Dialog.ShowDialog().GetValueOrDefault())
             {
-                LoadImagesFromFolder(Directory.GetFiles(Dialog.SelectedPath));
-                RegistryManager.SetValue("ImgGalleryPath", Dialog.SelectedPath);
-                Settings.ImgGalleryPath = Dialog.SelectedPath;
-                UserInfo.SetInfo("Set the path to " + Settings.ImgGalleryPath);
+                UpdatePath(Dialog.SelectedPath);
             }
+        }
+
+        public void UpdatePath(string NewPath)
+        {
+            LoadImagesFromFolder(Directory.GetFiles(NewPath));
+            RegistryManager.SetValue("ImgGalleryPath", NewPath);
+            Settings.ImgGalleryPath = NewPath;
+            UserInfo.SetInfo("Set the path to " + Settings.ImgGalleryPath);
         }
 
         private void LoadImagesFromFolder(string[] FilePaths)
@@ -59,45 +68,14 @@ namespace MicroscopeGUI
             {
                 if (Path.ToLower().EndsWith(".png"))
                 {
-                    BitmapImage BmpImg = new BitmapImage();
-                    BmpImg.BeginInit();
-                    BmpImg.CacheOption = BitmapCacheOption.OnLoad;
-                    BmpImg.UriSource = new Uri(Path);
-                    BmpImg.EndInit();
-                    Image NewImg = new Image()
-                    {
-                        Source = BmpImg,
-                        Width = 180,
-                        Height = 180,
-                        Margin = ImgBoxMargin,
-                        ToolTip = Path.Substring(Path.LastIndexOf("\\") + 1)
-                    };
+                    Image NewImg = GetImage(Path);
                     
-                    Children.Add(NewImg);
+                    AddImageContextMenu(NewImg);
 
                     NewImg.MouseLeftButtonDown += OnImageClick;
-                    NewImg.ContextMenu = new ContextMenu();
-                    MenuItem ValueEditItem = new MenuItem()
-                    {
-                        Header = "Edit Metadata",
-                        Icon = new Image
-                        {
-                            Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Icons/Edit.png"))
-                        }
-                    };
-                    MenuItem DeleteImageItem = new MenuItem()
-                    {
-                        Header = "Delete Image",
-                        Icon = new Image
-                        {
-                            Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Icons/Delete.png"))
-                        }
-                    };
-                    ValueEditItem.Click += MetadataViewClick;
-                    DeleteImageItem.Click += DeleteImageClick;
-                    NewImg.ContextMenu.Items.Add(ValueEditItem);
-                    NewImg.ContextMenu.Items.Add(DeleteImageItem);
                     NewImg.Cursor = Cursors.Hand;
+
+                    Children.Add(NewImg);
                 }
             }
 
@@ -106,6 +84,48 @@ namespace MicroscopeGUI
             // But it is fine like this, since there is no memory leak now
             GC.Collect();
             GC.WaitForPendingFinalizers();
+        }
+
+        Image GetImage(string Path)
+        {
+            BitmapImage BmpImg = new BitmapImage();
+            BmpImg.BeginInit();
+            BmpImg.CacheOption = BitmapCacheOption.OnLoad;
+            BmpImg.UriSource = new Uri(Path);
+            BmpImg.EndInit();
+            return new Image()
+            {
+                Source = BmpImg,
+                Width = 180,
+                Height = 180,
+                Margin = ImgBoxMargin,
+                ToolTip = Path.Substring(Path.LastIndexOf("\\") + 1)
+            };
+        }
+
+        void AddImageContextMenu(Image NewImg)
+        {
+            NewImg.ContextMenu = new ContextMenu();
+            MenuItem ValueEditItem = new MenuItem()
+            {
+                Header = "Edit Metadata",
+                Icon = new Image
+                {
+                    Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Icons/Edit.png"))
+                }
+            };
+            MenuItem DeleteImageItem = new MenuItem()
+            {
+                Header = "Delete Image",
+                Icon = new Image
+                {
+                    Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Icons/Delete.png"))
+                }
+            };
+            ValueEditItem.Click += MetadataViewClick;
+            DeleteImageItem.Click += DeleteImageClick;
+            NewImg.ContextMenu.Items.Add(ValueEditItem);
+            NewImg.ContextMenu.Items.Add(DeleteImageItem);
         }
 
         private void MetadataViewClick(object sender, RoutedEventArgs e)
@@ -143,6 +163,30 @@ namespace MicroscopeGUI
                 Window.LiveFeedBtn.Background = Brushes.Transparent;
                 Window.FreezeCamBtn.Background = Brushes.LightSkyBlue;
             }
+        }
+    }
+
+    // Only handels the FileSystemWatcher for the image gallery
+    partial class ImageGallery : StackPanel
+    {
+        // Initializes the FileSystemWatcher 
+        void InitializeWatcher(string Path)
+        {
+            Watcher = new FileSystemWatcher(Path);
+
+            Watcher.Created += Watcher_Changed;
+            Watcher.Deleted += Watcher_Changed;
+            Watcher.Renamed += Watcher_Changed;
+
+            Watcher.Filter = "*.png";
+            Watcher.IncludeSubdirectories = false;
+            Watcher.EnableRaisingEvents = true;
+        }
+
+        private void Watcher_Changed(object sender, FileSystemEventArgs e)
+        {
+            string FolderPath = e.FullPath.Substring(0, e.FullPath.LastIndexOf("\\"));
+            UI.CurrentDispatcher.Invoke(() => LoadImagesFromFolder(Directory.GetFiles(FolderPath)));
         }
     }
 }
