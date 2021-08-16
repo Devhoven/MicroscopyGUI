@@ -192,10 +192,22 @@ namespace MicroscopeGUI
         // Opens the histogram window
         void HistogrammClick(object sender, RoutedEventArgs e)
         {
+
+            if (WpfPlot1.Visibility == Visibility.Hidden)
+            {
+                WpfPlot1.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                WpfPlot1.Visibility = Visibility.Hidden;
+            }
+            
+            
             HistogramPopup = new HistogramWindow();
             // So the window always stays on top of the main window
             HistogramPopup.Owner = this;
             HistogramPopup.Show();
+            
         }
 
         // Opens the settings

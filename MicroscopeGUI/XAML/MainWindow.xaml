@@ -139,11 +139,15 @@
                     <RowDefinition Height="50"/>
                     <RowDefinition Height="55"/>
                     <RowDefinition Height="1*"/>
+                    <RowDefinition Height="Auto"/>
                 </Grid.RowDefinitions>
 
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
+
+                <Frame  Grid.Row="2" x:Name="CenterFrame" VerticalAlignment="Stretch" VerticalContentAlignment="Center" 
+                        HorizontalAlignment="Stretch"  HorizontalContentAlignment="Center" Source="HistogramWindow.xaml" Background="DarkGray" />
 
                 <!--Grid for the buttons-->
                 <Grid x:Name="StepBtnCon" Margin="0 0 0 10" Grid.Row="0">

@@ -150,6 +150,7 @@ namespace MicroscopeGUI.UIElements.Steps
                     UI.Cam.BlackLevel.Offset.Set((int)((Slider)o).Value);
                 }),
             this, RowCount++);
+
         }
     }
 }
