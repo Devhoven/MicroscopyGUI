@@ -165,14 +165,16 @@
                         </Button.Resources>
                     </Button>
                 </Grid>
+                
                 <Button BorderThickness="0" Content="Save Frame" Click="SaveClick"
-                        Margin="5 5 5 10" Background="LightBlue" FontSize="18" Grid.Row="1">
+                        Margin="5 5 5 10" Background="LightSkyBlue" FontSize="18" Grid.Row="1">
                     <Button.Resources>
                         <Style TargetType="{x:Type Border}">
                             <Setter Property="CornerRadius" Value="5"/>
                         </Style>
                     </Button.Resources>
                 </Button>
+               
                 <StackPanel Grid.Row="3">
                     <Label Content="Histogram:" FontSize="15"/>
                     <WpfPlot x:Name="HistogramPlot" Height="150" Width="200" Margin="5"/>
