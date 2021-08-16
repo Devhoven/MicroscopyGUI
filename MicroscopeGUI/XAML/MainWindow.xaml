@@ -62,6 +62,12 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator/>
+                        <MenuItem Header="_Settings" Click="SettingsClick" Foreground="Black">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Settings.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator/>
                         <MenuItem Header="_Exit" Foreground="Black" Click="ExitClick">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/Exit.png" RenderOptions.BitmapScalingMode="HighQuality"/>
@@ -93,18 +99,6 @@
                         <MenuItem Header="_Load Cam Config" Click="ConfigLoadClick" Foreground="Black">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </MenuItem>
-                    <MenuItem Header="_Misc.">
-                        <MenuItem Header="Histogram" Click="HistogrammClick" Foreground="Black">
-                            <MenuItem.Icon>
-                                <Image Source="/Assets/Icons/Histogram.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="Settings" Click="SettingsClick" Foreground="Black">
-                            <MenuItem.Icon>
-                                <Image Source="/Assets/Icons/Settings.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
@@ -146,9 +140,6 @@
                     <ColumnDefinition Width="200"/>
                 </Grid.ColumnDefinitions>
 
-                <Frame  Grid.Row="2" x:Name="CenterFrame" VerticalAlignment="Stretch" VerticalContentAlignment="Center" 
-                        HorizontalAlignment="Stretch"  HorizontalContentAlignment="Center" Source="HistogramWindow.xaml" Background="DarkGray" />
-
                 <!--Grid for the buttons-->
                 <Grid x:Name="StepBtnCon" Margin="0 0 0 10" Grid.Row="0">
                     <Grid.ColumnDefinitions>
@@ -182,6 +173,10 @@
                         </Style>
                     </Button.Resources>
                 </Button>
+                <StackPanel Grid.Row="3">
+                    <Label Content="Histogram:" FontSize="15"/>
+                    <WpfPlot x:Name="HistogramPlot" Height="150" Width="200" Margin="5"/>
+                </StackPanel>
             </Grid>
         </Border>
 

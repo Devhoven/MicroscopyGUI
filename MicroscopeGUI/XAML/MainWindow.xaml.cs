@@ -33,7 +33,7 @@ namespace MicroscopeGUI
         ConfigStepCon ConfigCon;
         AnalysisStepCon AnalysisCon;
 
-        HistogramWindow HistogramPopup;
+        HistogramControl HistogramWindow;
 
         MetaDataWindow MetadataPopup;
 
@@ -109,6 +109,7 @@ namespace MicroscopeGUI
         {
             ConfigCon = new ConfigStepCon(ToolCon, 2);
             AnalysisCon = new AnalysisStepCon(ToolCon, 2);
+            HistogramWindow = new HistogramControl(HistogramPlot);
             int Selected = RegistryManager.GetIntVal("CurrentConfigStep");
 
             if (Selected == 1)
@@ -133,8 +134,6 @@ namespace MicroscopeGUI
 
         void GUIClosing(object sender, System.ComponentModel.CancelEventArgs e)
         {
-            if (!(HistogramPopup is null))
-                HistogramPopup.Close();
             if (!(MetadataPopup is null))
                 MetadataPopup.Close();
             CloseCamera();
@@ -149,10 +148,6 @@ namespace MicroscopeGUI
                 Cam.Exit();
         }
 
-        private void ExitClick(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
     }
 
     // Class for all of the ui element events
@@ -189,27 +184,6 @@ namespace MicroscopeGUI
             Btn.Background = Brushes.LightSkyBlue;
         }
 
-        // Opens the histogram window
-        void HistogrammClick(object sender, RoutedEventArgs e)
-        {
-
-            if (WpfPlot1.Visibility == Visibility.Hidden)
-            {
-                WpfPlot1.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                WpfPlot1.Visibility = Visibility.Hidden;
-            }
-            
-            
-            HistogramPopup = new HistogramWindow();
-            // So the window always stays on top of the main window
-            HistogramPopup.Owner = this;
-            HistogramPopup.Show();
-            
-        }
-
         // Opens the settings
         void SettingsClick(object sender, RoutedEventArgs e)
         {
@@ -225,6 +199,10 @@ namespace MicroscopeGUI
             MetadataPopup.Owner = this;
             MetadataPopup.Show();
         }
+
+        // Exits the application
+        private void ExitClick(object sender, RoutedEventArgs e) =>
+            Close();
 
         // Saves a config
         void ConfigSaveClick(object sender, RoutedEventArgs e)
