@@ -46,25 +46,15 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <Menu Grid.Column="0" Grid.ColumnSpan="2" FontSize="15" Margin="5 0 0 0" Background="Transparent" Foreground="White" VerticalAlignment="Center">
+                <Menu Grid.Column="0" FontSize="15" Margin="5 0 0 0" Background="Transparent" Foreground="White" VerticalAlignment="Center">
                     <MenuItem Header="_File">
                         <MenuItem Header="_Save current frame" Click="SaveClick" Foreground="Black">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/Save.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="_Change Image Gallery Folder" Click="ChangeDirClick" Foreground="Black">
-                            <MenuItem.Icon>
-                                <Image Source="/Assets/Icons/Folder.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <Separator/>
-                        <MenuItem Header="_Settings" Click="SettingsClick" Foreground="Black">
-                            <MenuItem.Icon>
-                                <Image Source="/Assets/Icons/Settings.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator/>
@@ -74,20 +64,17 @@
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
-                    <MenuItem Header="_Camera">
+
+                    <MenuItem Header="_Settings">
+                        <MenuItem Header="_Settings" Click="SettingsClick" Foreground="Black">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Settings.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                        <Separator/>
                         <MenuItem Header="_Restart Camera" Click="ReloadCamClick" Foreground="Black">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/Restart.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="_Start Live Feed" Click="LiveFeedClick" Foreground="Black">
-                            <MenuItem.Icon>
-                                <Image Source="/Assets/Icons/LiveFeed.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="_Freeze Camera" Click="FreezeCamClick" Foreground="Black">
-                            <MenuItem.Icon>
-                                <Image Source="/Assets/Icons/Freeze.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator/>
@@ -101,20 +88,43 @@
                                 <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                             </MenuItem.Icon>
                         </MenuItem>
+                        <Separator/>
+                        <MenuItem Header="_Change Image Gallery Folder" Click="ChangeDirClick" Foreground="Black">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Folder.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
                     </MenuItem>
                 </Menu>
 
-                <Border x:Name="InfoLabelBorder" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="1">
+                <Menu Background="Transparent" Margin="5 2 2 2"
+                      HorizontalAlignment="Left" VerticalAlignment="Center" DockPanel.Dock="Top" Grid.Column="1">
+                    <MenuItem Click="LiveFeedClick" Background="LightBlue">
+                        <MenuItem.Header>
+                            <Image Source="/Assets/Icons/LiveFeed.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Header>
+                        <MenuItem.ToolTip>Starts the live feed of the camera</MenuItem.ToolTip>
+                    </MenuItem>
+                    <MenuItem Click="FreezeCamClick" Background="LightBlue">
+                        <MenuItem.Header>
+                            <Image Source="/Assets/Icons/Freeze.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                        </MenuItem.Header>
+                        <MenuItem.ToolTip>Freezes the live feed of the camera</MenuItem.ToolTip>
+                    </MenuItem>
+                </Menu>
+
+                <Border x:Name="InfoLabelBorder" CornerRadius="5" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Column="2">
                     <Label x:Name="InfoLabel" FontSize="15"/>
                 </Border>
-                
-                <Menu DockPanel.Dock="Top" Grid.Column="2" Background="Transparent" Margin="2 2 2 2">
+
+                <Menu DockPanel.Dock="Top" Background="Transparent" Margin="2" Grid.Column="3">
                     <MenuItem x:Name="ConfigConToggleBtn" Background="LightBlue" Click="ConfigConToggle">
                         <MenuItem.Header>
                             <Image Source="/Assets/Icons/Config.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                         </MenuItem.Header>
                         <MenuItem.ToolTip>Toggles the visibillity of the left container</MenuItem.ToolTip>
                     </MenuItem>
+                    
                     <MenuItem x:Name="ImgGalleryToggleBtn" Background="LightBlue" Click="ImgGalleryToggle">
                         <MenuItem.Header>
                             <Image Source="/Assets/Icons/ImageGallery.png" RenderOptions.BitmapScalingMode="HighQuality"/>

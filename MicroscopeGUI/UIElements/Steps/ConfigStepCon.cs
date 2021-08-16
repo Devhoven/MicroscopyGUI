@@ -19,7 +19,7 @@ namespace MicroscopeGUI.UIElements.Steps
 {
     class ConfigStepCon : StepCon
     {
-        public ConfigStepCon(Grid Parent, int Row = 1) : base(Parent, Row)
+        public ConfigStepCon(Grid Parent, int Row = 2) : base(Parent, Row)
         {
             int RowCount = 0;
 

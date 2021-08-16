@@ -20,7 +20,7 @@ namespace MicroscopeGUI.UIElements.Steps
 {
     class AnalysisStepCon : StepCon
     {
-        public AnalysisStepCon(Grid Parent, int Row = 1) : base(Parent, Row)
+        public AnalysisStepCon(Grid Parent, int Row = 2) : base(Parent, Row)
         {
             int RowCount = 0;
 

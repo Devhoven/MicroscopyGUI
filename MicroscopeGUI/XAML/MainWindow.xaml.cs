@@ -33,8 +33,6 @@ namespace MicroscopeGUI
         ConfigStepCon ConfigCon;
         AnalysisStepCon AnalysisCon;
 
-        HistogramControl HistogramWindow;
-
         MetaDataWindow MetadataPopup;
 
         public UI()
@@ -107,9 +105,9 @@ namespace MicroscopeGUI
 
         void InitializeUIComponents()
         {
-            ConfigCon = new ConfigStepCon(ToolCon, 2);
-            AnalysisCon = new AnalysisStepCon(ToolCon, 2);
-            HistogramWindow = new HistogramControl(HistogramPlot);
+            ConfigCon = new ConfigStepCon(ToolCon);
+            AnalysisCon = new AnalysisStepCon(ToolCon);
+            new HistogramControl(HistogramPlot);
             int Selected = RegistryManager.GetIntVal("CurrentConfigStep");
 
             if (Selected == 1)
