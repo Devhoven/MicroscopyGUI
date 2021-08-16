@@ -77,7 +77,7 @@ namespace MicroscopeGUI
             {
                 if (SetErrorImage)
                 {
-                    CurrentFrameCon.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCamConnected2.jpg"));
+                    CurrentFrameCon.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCamConnected.jpg"));
                     UserInfo.SetErrorInfo("ERROR: " + Enum.GetName(typeof(Status), StatusRet) + "(" + (int)StatusRet + ")");
                 }
                 ImageQueue.StopRunning = true;
@@ -147,6 +147,11 @@ namespace MicroscopeGUI
             // So, if the cam crashed or got pulled out in the process, the programm will still close correctly
             if (ImageQueue.CurrentCamStatus == Status.SUCCESS)
                 Cam.Exit();
+        }
+
+        private void ExitClick(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 

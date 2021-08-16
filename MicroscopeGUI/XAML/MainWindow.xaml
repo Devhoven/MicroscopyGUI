@@ -62,7 +62,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator/>
-                        <MenuItem Header="_Exit" Foreground="Black">
+                        <MenuItem Header="_Exit" Foreground="Black" Click="ExitClick">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/Exit.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
