@@ -202,6 +202,7 @@ namespace MicroscopeGUI
                 };
 
                 KeyTextBox.PreviewKeyDown += KeyTextBoxKeyDown;
+                ValueTextBox.PreviewKeyDown += ValueTextBoxKeyDown;
 
                 Children.Add(KeyTextBox);
                 SetDock(KeyTextBox, Dock.Left);
@@ -211,13 +212,31 @@ namespace MicroscopeGUI
                 Count++;
             }
 
+            private void ValueTextBoxKeyDown(object sender, KeyEventArgs e)
+            {
+                if (e.Key == System.Windows.Input.Key.Back)
+                {
+                    if ((sender as TextBox).Text == string.Empty)
+                    {
+                        KeyTextBox.Focus();
+                    }
+                }
+            }
+
             private void KeyTextBoxKeyDown(object sender, KeyEventArgs e)
             {
                 if (e.Key == System.Windows.Input.Key.Back)
                 {
                     if ((sender as TextBox).Text == string.Empty)
                     {
-                        Parent.Children.Remove(this);
+                        int Index = Parent.Children.IndexOf(this);
+                        // Removing the current element
+                        Parent.Children.RemoveAt(Index);
+                        // If this is not the last element, focus the value text box from the entry before
+                        if (Index > 0)
+                        {
+                            (Parent.Children[Index - 1] as DataEntry).ValueTextBox.Focus();
+                        }
                     }
                 }
             }
