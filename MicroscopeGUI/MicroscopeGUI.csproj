@@ -44,8 +44,6 @@
     <None Remove="Assets\Icons\Save.png" />
     <None Remove="Assets\Icons\Settings.png" />
     <None Remove="Assets\Microscope.ico" />
-    <None Remove="Assets\NoCamConnected.jpg" />
-    <None Remove="Assets\NoCamConnected2.jpg" />
     <None Remove="Histogram.png" />
     <None Remove="Shader\Compiled\EffectShader.ps" />
     <None Remove="Shader\FragmentShader.ps" />
@@ -91,9 +89,6 @@
     <Resource Include="Assets\Icons\Save.png" />
     <Resource Include="Assets\Icons\Settings.png" />
     <Resource Include="Assets\Microscope.ico" />
-    <Resource Include="Assets\NoCam.png" />
-    <Resource Include="Assets\NoCamConnected.jpg" />
-    <Resource Include="Assets\NoCamConnected2.jpg" />
     <Resource Include="XAML\ScrollBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Resource>

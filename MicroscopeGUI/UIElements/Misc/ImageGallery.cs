@@ -66,8 +66,8 @@ namespace MicroscopeGUI
                     Image NewImg = new Image()
                     {
                         Source = BmpImg,
-                        Width = 150,
-                        Height = 150,
+                        Width = 180,
+                        Height = 180,
                         Margin = ImgBoxMargin,
                         ToolTip = Path.Substring(Path.LastIndexOf("\\") + 1)
                     };
@@ -78,11 +78,16 @@ namespace MicroscopeGUI
                     NewImg.ContextMenu = new ContextMenu();
                     MenuItem ValueEditItem = new MenuItem()
                     {
-                        Header = "Hehe",
-                        
+                        Header = "Edit Metadata"
+                    };
+                    MenuItem DeleteImageItem = new MenuItem()
+                    {
+                        Header = "Delete Image"
                     };
                     ValueEditItem.Click += MetadataViewClick;
+                    DeleteImageItem.Click += DeleteImageClick;
                     NewImg.ContextMenu.Items.Add(ValueEditItem);
+                    NewImg.ContextMenu.Items.Add(DeleteImageItem);
                     NewImg.Cursor = Cursors.Hand;
                 }
             }
@@ -106,6 +111,17 @@ namespace MicroscopeGUI
                 MetadataPopup.Owner = Application.Current.MainWindow;
                 MetadataPopup.Show();
             }
+        }
+
+        private void DeleteImageClick(object sender, RoutedEventArgs e)
+        {
+            MenuItem Sender = sender as MenuItem;
+            Image OriginalSource = (Sender.Parent as ContextMenu).PlacementTarget as Image;
+            string OriginalPath = (OriginalSource.Source as BitmapImage).UriSource.OriginalString;
+
+            File.Delete(OriginalPath);
+
+            Children.Remove(OriginalSource);
         }
 
         void OnImageClick(object o, MouseButtonEventArgs e)
