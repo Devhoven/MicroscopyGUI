@@ -46,7 +46,7 @@ To delete one of the images, [right-click](https://user-images.githubusercontent
 ## Keybinds
 <pre>
 RMB:                   Select measuring tool
-Shift + LMB:           Measure in a straight line
+Shift + LMB:           Alternative measuring mode
 Middle mouse button:   Move image
 Mousewheel:            Zoom in on image
 RMB on Image Gallery:  Edit metadata or delete image 
@@ -59,7 +59,5 @@ CTRL + SHIFT + S:      Save config
 CTRL + O:              Load config
 CTRL + L:              Activate live feed
 CTRL + F:              Freeze camera
-Left arrow key:        Open config menu
-Right arrow key:       Open analysis menu
 ESC:                   Close any window
 </pre>
