@@ -56,8 +56,10 @@ F1:                    Open settings
 F5:                    Reload Camera
 CTRL + S:              Save image
 CTRL + SHIFT + S:      Save config
-CTRL + O:              Load Config
+CTRL + O:              Load config
 CTRL + L:              Active live feed
 CTRL + F:              Freezes the camera
+Left arrow key:        Opens config menu
+Right arrow key:       Opens analysis menu
 ESC:                   Close windows
 </pre>
