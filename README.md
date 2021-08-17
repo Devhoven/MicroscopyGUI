@@ -2,6 +2,7 @@
 This program is used to give the user a digital interface to process and work with images captured by a uEye camera in regards to microscopy. 
 
 It is separated into 3 distinct workspaces: The "Controlpanel", the "Image viewer" and the "Image Gallery"
+![GUIScreenshot](https://user-images.githubusercontent.com/74535078/129679506-115af088-4316-46bd-9fcc-c677359742ce.PNG)
 
 ## Controlpanel:
 This is where the user can pre-/postprocess the image with the help of various settings. The processing can either be done on the live camera feed or on a freezeframe of the current image, which can be toggled at the top of the screen. 
@@ -20,6 +21,7 @@ With the scroll wheel, the image can be digitally zoomed in/out, however, it is 
 The right mouse button click will open up a [popup](https://user-images.githubusercontent.com/74535078/129575532-65981763-877c-4159-aa08-f3193cd1fef2.png) in which the user can select their preferred measuring tool (either a rectangle, a line, or a size calibration with the help of a predetermined size factor).
 
 With the left mouse button click the user now can measure distances with the before selected tool and with a single left mouse button click, the measurement can be removed.
+![Measuring](https://user-images.githubusercontent.com/74535078/129679637-603d19df-318e-4d77-b099-4a04d914b72e.PNG)
 
 ## Image Gallery
 
@@ -33,9 +35,12 @@ By hovering long enough over one image, its name is going to show up as a toolti
 To delete one of the images, [right-click](https://user-images.githubusercontent.com/74535078/129578381-9e50dc02-70d1-46fb-be63-cfe3eeb3319e.png) on the image and press the delete button. With this, the user can also edit the metadata of any given image.
 
 ## Keybinds
-
-* R: Resets Image to the original position
-* Right-click on Image viewer: select measuring tool
-* Middle mouse button: moves image
-* Left click on Image viewer: remove measuring
-* Right-click on Image Gallery: edit metadata or delete image 
+<pre>
+* R:                     Resets image to original position
+* RMB on Image viewer:   Select measuring tool
+* Middle mouse button:   Moves image
+* Mousewheel:            Zooming
+* LMB on Image viewer:   Remove measuring
+* Shift + LMB:           Measure in a straight line
+* RMB on Image Gallery:  Edit metadata or delete image 
+</pre>
