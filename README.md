@@ -47,19 +47,19 @@ To delete one of the images, [right-click](https://user-images.githubusercontent
 <pre>
 RMB:                   Select measuring tool
 Shift + LMB:           Measure in a straight line
-Middle mouse button:   Moves image
-Mousewheel:            Zoomes image
+Middle mouse button:   Move image
+Mousewheel:            Zoom in on image
 RMB on Image Gallery:  Edit metadata or delete image 
 
-R:                     Resets image to original position
-F1:                    Opens settings
-F5:                    Reloads Camera
-CTRL + S:              Saves image
-CTRL + SHIFT + S:      Saves config
-CTRL + O:              Loads config
-CTRL + L:              Activates live feed
-CTRL + F:              Freezes the camera
-Left arrow key:        Opens config menu
-Right arrow key:       Opens analysis menu
-ESC:                   Closes windows
+R:                     Reset image position
+F1:                    Open settings
+F5:                    Reload Camera
+CTRL + S:              Save image
+CTRL + SHIFT + S:      Save config
+CTRL + O:              Load config
+CTRL + L:              Activate live feed
+CTRL + F:              Freeze camera
+Left arrow key:        Open config menu
+Right arrow key:       Open analysis menu
+ESC:                   Close any window
 </pre>
