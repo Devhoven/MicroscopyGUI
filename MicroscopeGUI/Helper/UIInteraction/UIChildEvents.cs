@@ -23,10 +23,6 @@ namespace MicroscopeGUI
                 SettingsClick(null, null);
             else if (e.Key == System.Windows.Input.Key.Escape)
                 Close();
-            else if (e.Key == System.Windows.Input.Key.Left)
-                ConfigBtnClick(null, null);
-            else if (e.Key == System.Windows.Input.Key.Right)
-                AnalysisBtnClick(null, null);
             // If Ctrl is pressed
             else if (e.KeyboardDevice.Modifiers.HasFlag(System.Windows.Input.ModifierKeys.Control))
             {
@@ -64,33 +60,6 @@ namespace MicroscopeGUI
         // Changes the directory of the image gallery
         void ChangeDirClick(object sender, RoutedEventArgs e) =>
             ImgGallery.UpdatePath();
-
-        // Makes the config step visible
-        void ConfigBtnClick(object sender, RoutedEventArgs e)
-        {
-            SetVisibillity(ConfigCon, ConfigConBtn);
-            RegistryManager.SetValue("CurrentConfigStep", 0);
-        }
-
-        // Makes the analysis step visible
-        void AnalysisBtnClick(object sender, RoutedEventArgs e)
-        {
-            SetVisibillity(AnalysisCon, AnalysisConBtn);
-            RegistryManager.SetValue("CurrentConfigStep", 1);
-        }
-
-        // Sets the visibillity of the containers and changes the color of the buttons
-        void SetVisibillity(StepCon Con, Button Btn)
-        {
-            ConfigCon.Visibility = Visibility.Hidden;
-            AnalysisCon.Visibility = Visibility.Hidden;
-
-            ConfigConBtn.Background = Brushes.Transparent;
-            AnalysisConBtn.Background = Brushes.Transparent;
-
-            Con.Visibility = Visibility.Visible;
-            Btn.Background = Brushes.LightSkyBlue;
-        }
 
         // Opens the settings
         void SettingsClick(object sender, RoutedEventArgs e)

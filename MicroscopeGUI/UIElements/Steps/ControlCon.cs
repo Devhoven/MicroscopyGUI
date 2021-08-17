@@ -5,12 +5,11 @@ using System.Windows.Controls;
 
 namespace MicroscopeGUI.UIElements.Steps
 {
-    class StepCon : Grid
+    class ControlCon : Grid
     {
-        internal StepCon(Grid Parent, int Row = 1)
+        internal ControlCon(StackPanel Parent, int Row = 1)
         {
             Parent.Children.Add(this);
-            Grid.SetRow(this, Row);
         }
     }
 }

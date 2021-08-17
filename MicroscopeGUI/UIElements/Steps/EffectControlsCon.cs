@@ -17,9 +17,9 @@ using RPCEventArgs = System.Windows.RoutedPropertyChangedEventArgs<double>;
 
 namespace MicroscopeGUI.UIElements.Steps
 {
-    class AnalysisStepCon : StepCon
+    class EffectControlsCon : ControlCon
     {
-        public AnalysisStepCon(Grid Parent, int Row = 2) : base(Parent, Row)
+        public EffectControlsCon(StackPanel Parent, int Row = 0) : base(Parent, Row)
         {
             int RowCount = 0;
 

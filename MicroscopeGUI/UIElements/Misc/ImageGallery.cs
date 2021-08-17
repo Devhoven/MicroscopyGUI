@@ -100,7 +100,7 @@ namespace MicroscopeGUI
                 {
                     Source = BmpImg,
                     Width = 180,
-                    Height = 180,
+                    MaxHeight = 180,
                     Margin = ImgBoxMargin,
                     ToolTip = Path.Substring(Path.LastIndexOf("\\") + 1)
                 };

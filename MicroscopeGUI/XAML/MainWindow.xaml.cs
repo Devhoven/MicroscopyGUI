@@ -26,8 +26,8 @@ namespace MicroscopeGUI
         Thread WorkerThread;
         int[] MemoryIDs;
 
-        ConfigStepCon ConfigCon;
-        AnalysisStepCon AnalysisCon;
+        ConfigControlsCon ConfigElements;
+        EffectControlsCon EffectElements;
 
 
         MetaDataWindow MetadataPopup;
@@ -120,11 +120,10 @@ namespace MicroscopeGUI
             {
                 // Reloading all of the control elements
                 Control.RemoveAllControls();
-                ToolCon.Children.Remove(ConfigCon);
-                ToolCon.Children.Remove(AnalysisCon);
-                ConfigCon = new ConfigStepCon(ToolCon);
-                AnalysisCon = new AnalysisStepCon(ToolCon);
-                SetVisibillity(ConfigCon, ConfigConBtn);
+                ConfigCon.Children.Remove(ConfigElements);
+                EffectCon.Children.Remove(EffectElements);
+                ConfigElements = new ConfigControlsCon(ConfigCon);
+                EffectElements = new EffectControlsCon(EffectCon);
 
                 UserInfo.SetInfo("Reloaded the cam");
 
@@ -163,15 +162,15 @@ namespace MicroscopeGUI
 
         void InitializeUIComponents()
         {
-            ConfigCon = new ConfigStepCon(ToolCon);
-            AnalysisCon = new AnalysisStepCon(ToolCon);
+            ConfigElements = new ConfigControlsCon(ConfigCon);
+            EffectElements = new EffectControlsCon(EffectCon);
             HistogramControl = new HistogramControl(HistogramPlot);
             int Selected = RegistryManager.GetIntVal("CurrentConfigStep");
 
-            if (Selected == 1)
-                SetVisibillity(AnalysisCon, AnalysisConBtn);
-            else
-                SetVisibillity(ConfigCon, ConfigConBtn);
+            //if (Selected == 1)
+            //    SetVisibillity(AnalysisCon, AnalysisConBtn);
+            //else
+            //    SetVisibillity(ConfigCon, ConfigConBtn);
 
             bool ConfigConActivated = RegistryManager.GetBoolVal("ConfigConActivated");
             if (!ConfigConActivated)

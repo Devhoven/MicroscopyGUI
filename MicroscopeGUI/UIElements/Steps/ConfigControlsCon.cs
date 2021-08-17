@@ -17,9 +17,9 @@ using RPCEventArgs = System.Windows.RoutedPropertyChangedEventArgs<double>;
 
 namespace MicroscopeGUI.UIElements.Steps
 {
-    class ConfigStepCon : StepCon
+    class ConfigControlsCon : ControlCon
     {
-        public ConfigStepCon(Grid Parent, int Row = 2) : base(Parent, Row)
+        public ConfigControlsCon(StackPanel Parent, int Row = 0) : base(Parent, Row)
         {
             int RowCount = 0;
 
@@ -58,6 +58,26 @@ namespace MicroscopeGUI.UIElements.Steps
                     MasterGainSlider.Enable = !(bool)((CheckBox)o).IsChecked;
                 }),
             this, RowCount++);
+
+            Separator AutoSliderSeparator = new Separator()
+            {
+                Margin = new Thickness()
+                {
+                    Left = 5,
+                    Top = 10,
+                    Right = 5,
+                    Bottom = 10
+                }
+            };
+
+            RowDefinition CheckBoxRowDefinition = new RowDefinition()
+            {
+                Height = GridLength.Auto
+            };
+            RowDefinitions.Add(CheckBoxRowDefinition);
+
+            Children.Add(AutoSliderSeparator);
+            Grid.SetRow(AutoSliderSeparator, RowCount++);
 
 
             UI.Cam.Timing.Framerate.GetDefault(out double CurrentFPS);
