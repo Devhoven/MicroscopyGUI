@@ -95,6 +95,7 @@
                                 <Image Source="/Assets/Icons/Folder.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
                         </MenuItem>
+
                     </MenuItem>
 
                     <MenuItem Header="_Help">
@@ -103,7 +104,17 @@
                                 <Image Source="/Assets/Icons/Github.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
                         </MenuItem>
+
+                        <MenuItem Header="blabalbal" Click="OpenGithubPage" Foreground="Black">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Github.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+
                     </MenuItem>
+
+                    
+
                 </Menu>
 
                 <Menu Background="Transparent" Margin="5 2 2 2"

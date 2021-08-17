@@ -5,12 +5,18 @@
     <Compile Update="XAML\FactorInputBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="XAML\KeybindWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="XAML\SettingsWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Update="XAML\FactorInputBox.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="XAML\KeybindWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="XAML\MainWindow.xaml">

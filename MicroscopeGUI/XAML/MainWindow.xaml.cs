@@ -31,6 +31,7 @@ namespace MicroscopeGUI
 
 
         MetaDataWindow MetadataPopup;
+        KeybindWindow KeybindPopup;
 
         public UI()
         {
@@ -48,6 +49,7 @@ namespace MicroscopeGUI
             Closing += GUIClosing;
 
             StartCapture();
+
         }
 
         // The bool is for the reloading cam feature
@@ -201,6 +203,11 @@ namespace MicroscopeGUI
             // So, if the cam crashed or got pulled out in the process, the programm will still close correctly
             if (ImageQueue.CurrentCamStatus == Status.SUCCESS)
                 Cam.Exit();
+        }
+
+        private void OpenKeybindWindow(object sender, RoutedEventArgs e)
+        {
+            KeybindPopup = new KeybindWindow();
         }
     }
 }
