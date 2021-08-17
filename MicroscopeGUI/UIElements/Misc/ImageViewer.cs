@@ -410,5 +410,33 @@ namespace MicroscopeGUI
 
             ChildCount = 1;
         }
+
+
+        // Removing the old elements, except the image 
+        void RemoveChilds()
+        {
+            _Child.Children.RemoveRange(1, ChildCount);
+            ChildCount = 0;
+        }
+
+        // Constructs a rectangle out of two points
+        (double, double, double, double) GetRectangle(Point p1, Point p2)
+        {
+            double Width = p2.X - p1.X;
+            double Height = p2.Y - p1.Y;
+            if (Width < 0)
+                p1.X = p2.X;
+            if (Height < 0)
+                p1.Y = p2.Y;
+
+            return (p1.X, p1.Y, Math.Abs(Width), Math.Abs(Height));
+        }
+
+        // Calculates the factor which converts the "screen" lengths to actual pixel lengths
+        double GetScreenToPixelFactor()
+        {
+            double ActualWidth = (double)_Child.Children[0].GetValue(Image.ActualWidthProperty);
+            return ImageQueue.Width / ActualWidth;
+        }
     }
 }
