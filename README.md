@@ -1,9 +1,12 @@
 # MicrosopyGUI
 This program is used to give the user a digital interface to process and work with images captured by a uEye camera in regards to microscopy. 
 
-It is separated into 3 distinct workspaces: The "Controlpanel", the "Image Viewer" and the "Image Gallery".
-![GUIScreenshot](https://user-images.githubusercontent.com/74535078/129679506-115af088-4316-46bd-9fcc-c677359742ce.PNG)
-![AndererTumor](https://user-images.githubusercontent.com/74535078/129680899-ea09e08f-7245-457f-9d13-1142ca62d761.PNG)
+It is separated into 3 distinct workspaces: The "Controlpanel", the "Image Viewer" and the "Image Gallery".  
+
+<p>
+  <img width="48%" src="https://user-images.githubusercontent.com/74535078/129679506-115af088-4316-46bd-9fcc-c677359742ce.PNG"/>
+  <img align="right" width="48%" src="https://user-images.githubusercontent.com/74535078/129680899-ea09e08f-7245-457f-9d13-1142ca62d761.PNG"/>
+</p> <br>
 
 ## Controlpanel:
 This is where the user can pre-/postprocess the image with the help of various settings. The processing can either be done on the live camera feed or on a freezeframe of the current image, which can be toggled at the top of the screen. 
@@ -21,7 +24,8 @@ With the scroll wheel, the image can be digitally zoomed in/out, however, it is 
 
 The right mouse button click will open up a [popup](https://user-images.githubusercontent.com/74535078/129575532-65981763-877c-4159-aa08-f3193cd1fef2.png) in which the user can select their preferred measuring tool (either a rectangle, a line, or a size calibration with the help of a predetermined size factor).
 
-With the left mouse button click the user now can measure distances with the before selected tool and with a single left mouse button click, the measurement can be removed.
+With the left mouse button click the user now can measure distances with the before selected tool and with a single left mouse button click, the measurement can be removed.  
+
 ![Measuring](https://user-images.githubusercontent.com/74535078/129679637-603d19df-318e-4d77-b099-4a04d914b72e.PNG)
 
 ## Image Gallery
