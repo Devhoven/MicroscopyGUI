@@ -66,6 +66,8 @@ namespace MicroscopeGUI
                 NewEntry.KeyTextBox.Focus();
                 Entries.Add(NewEntry);
             }
+            else if (e.Key == Key.Escape)
+                Close();
         }
 
         void AddDataEntries(string XML)

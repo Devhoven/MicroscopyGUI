@@ -1,26 +1,55 @@
-﻿using uEye;
-using System;
-using System.IO;
+﻿using System.IO;
 using System.Text;
-using uEye.Defines;
 using System.Windows;
-using System.Threading;
 using System.Windows.Forms;
 using System.Windows.Controls;
-using System.Windows.Threading;
-using System.Windows.Media.Imaging;
 using MicroscopeGUI.UIElements.Steps;
-using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
-using MessageBox = System.Windows.MessageBox;
 using Button = System.Windows.Controls.Button;
-using Application = System.Windows.Application;
+using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 
 namespace MicroscopeGUI
 {
     // Class for all of the ui element events
     public partial class UI : Window
     {
+        // Used for key bindings
+        private void UIKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.F5)
+                ReloadCamera();
+            else if (e.Key == System.Windows.Input.Key.F1)
+                SettingsClick(null, null);
+            else if (e.Key == System.Windows.Input.Key.Escape)
+                Close();
+            else if (e.Key == System.Windows.Input.Key.Left)
+                ConfigBtnClick(null, null);
+            else if (e.Key == System.Windows.Input.Key.Right)
+                AnalysisBtnClick(null, null);
+            // If Ctrl is pressed
+            else if (e.KeyboardDevice.Modifiers.HasFlag(System.Windows.Input.ModifierKeys.Control))
+            {
+                // Ctrl+S
+                if (e.Key == System.Windows.Input.Key.S)
+                {
+                    // Ctrl+Shift+S
+                    if (e.KeyboardDevice.Modifiers.HasFlag(System.Windows.Input.ModifierKeys.Shift))
+                        ConfigSaveClick(null, null);
+                    else
+                        SaveClick(null, null);
+                }
+                // Ctrl+O
+                else if (e.Key == System.Windows.Input.Key.O)
+                    ConfigLoadClick(null, null);
+                // Ctrl+L
+                else if (e.Key == System.Windows.Input.Key.L)
+                    LiveFeedClick(null, null);
+                // Ctrl+F
+                else if (e.Key == System.Windows.Input.Key.F)
+                    FreezeCamClick(null, null);
+            }
+        }
+
         // Changes the directory of the image gallery
         void ChangeDirClick(object sender, RoutedEventArgs e) =>
             ImgGallery.UpdatePath();
@@ -107,62 +136,7 @@ namespace MicroscopeGUI
         // Closes all the stuff the camera set up (Except the ring buffer) and initializes it again
         void ReloadCamClick(object sender, RoutedEventArgs e)
         {
-            UserInfo.SetInfo("Reloading the cam...");
-
-            // Starts a new thread with the camera restarting logic inthere
-            Thread RestartThread = new Thread(RestartCam);
-            RestartThread.Start();
-            // Tries to join the thread together with the normal one again
-            // When this is done, the Join method waits for 10 seconds till the thread is finished
-            // If it hasn't finished until then, the restarting is aborted
-            if (!RestartThread.Join(TimeSpan.FromSeconds(10)))
-            {
-                RestartThread.Interrupt();
-                UserInfo.SetInfo("Aborted reloading the cam, since it took too long ( > 10 seconds), check if everything is plugged in correctly");
-            }
-            else
-            {
-                // Reloading all of the control elements
-                Control.RemoveAllControls();
-                ToolCon.Children.Remove(ConfigCon);
-                ToolCon.Children.Remove(AnalysisCon);
-                ConfigCon = new ConfigStepCon(ToolCon);
-                AnalysisCon = new AnalysisStepCon(ToolCon);
-                SetVisibillity(ConfigCon, ConfigConBtn);
-
-                UserInfo.SetInfo("Reloaded the cam");
-
-                if (!(OldXMLConfig is null))
-                {
-                    MessageBoxResult Result = MessageBox.Show("There is a saved config from before the camera crashed\nDo you want to load it?", "Question", MessageBoxButton.YesNo);
-                    if (Result == MessageBoxResult.Yes)
-                    {
-                        Control.LoadXML(OldXMLConfig);
-                        UserInfo.SetInfo("Loaded the config");
-                    }
-                }
-            }
-
-            // Capsuled in a method, so I can put it in a seperate thread
-            void RestartCam()
-            {
-                // Closes the thread and joins it to the current
-                ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
-                ImageQueue.StopRunning = true;
-                WorkerThread.Join();
-
-                // Closes the camera
-                Cam.Exit();
-
-                // Initializes a new thread and a new camera
-                InitializeCam(false);
-
-                ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
-
-                ImageQueue.StopRunning = false;
-
-                StartCapture();
-            }
+            ReloadCamera();
         }
 
         // Freezes the cam

@@ -1,20 +1,14 @@
 ﻿using uEye;
 using System;
-using System.IO;
-using System.Text;
 using uEye.Defines;
 using System.Windows;
 using System.Threading;
-using System.Windows.Forms;
-using System.Windows.Controls;
 using System.Windows.Threading;
 using System.Windows.Media.Imaging;
 using MicroscopeGUI.UIElements.Steps;
 using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
 using MessageBox = System.Windows.MessageBox;
-using Button = System.Windows.Controls.Button;
-using Application = System.Windows.Application;
 
 namespace MicroscopeGUI
 {
@@ -49,9 +43,10 @@ namespace MicroscopeGUI
             CurrentFrame = CurrentFrameCon;
             CurrentDispatcher = Dispatcher;
             FrameEffects = EffectShader;
-            
-            Closing += GUIClosing;
 
+            PreviewKeyDown += UIKeyDown;
+            Closing += GUIClosing;
+            
             StartCapture();
         }
 
@@ -106,6 +101,66 @@ namespace MicroscopeGUI
             WorkerThread.Start();
         }
 
+        void ReloadCamera()
+        {
+            UserInfo.SetInfo("Reloading the cam...");
+
+            // Starts a new thread with the camera restarting logic inthere
+            Thread RestartThread = new Thread(RestartCam);
+            RestartThread.Start();
+            // Tries to join the thread together with the normal one again
+            // When this is done, the Join method waits for 10 seconds till the thread is finished
+            // If it hasn't finished until then, the restarting is aborted
+            if (!RestartThread.Join(TimeSpan.FromSeconds(10)))
+            {
+                RestartThread.Interrupt();
+                UserInfo.SetInfo("Aborted reloading the cam, since it took too long ( > 10 seconds), check if everything is plugged in correctly");
+            }
+            else
+            {
+                // Reloading all of the control elements
+                Control.RemoveAllControls();
+                ToolCon.Children.Remove(ConfigCon);
+                ToolCon.Children.Remove(AnalysisCon);
+                ConfigCon = new ConfigStepCon(ToolCon);
+                AnalysisCon = new AnalysisStepCon(ToolCon);
+                SetVisibillity(ConfigCon, ConfigConBtn);
+
+                UserInfo.SetInfo("Reloaded the cam");
+
+                if (!(OldXMLConfig is null))
+                {
+                    MessageBoxResult Result = MessageBox.Show("There is a saved config from before the camera crashed\nDo you want to load it?", "Question", MessageBoxButton.YesNo);
+                    if (Result == MessageBoxResult.Yes)
+                    {
+                        Control.LoadXML(OldXMLConfig);
+                        UserInfo.SetInfo("Loaded the config");
+                    }
+                }
+            }
+
+            // Capsuled in a method, so I can put it in a seperate thread
+            void RestartCam()
+            {
+                // Closes the thread and joins it to the current
+                ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
+                ImageQueue.StopRunning = true;
+                WorkerThread.Join();
+
+                // Closes the camera
+                Cam.Exit();
+
+                // Initializes a new thread and a new camera
+                InitializeCam(false);
+
+                ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
+
+                ImageQueue.StopRunning = false;
+
+                StartCapture();
+            }
+        }
+
         void InitializeUIComponents()
         {
             ConfigCon = new ConfigStepCon(ToolCon);
@@ -148,6 +203,5 @@ namespace MicroscopeGUI
             if (ImageQueue.CurrentCamStatus == Status.SUCCESS)
                 Cam.Exit();
         }
-
     }
 }

@@ -88,6 +88,15 @@ namespace MicroscopeGUI
         void InitializeContextMenu()
         {
             ContextMenu = new ContextMenu();
+
+            MenuItem ResetImageItem = new MenuItem()
+            {
+                Header = "Reset Image Viewer",
+                Icon = new Image
+                {
+                    Source = new BitmapImage(new Uri("pack://application:,,,/Assets/Icons/Restart.png"))
+                }
+            };
             MenuItem RectangleMeasureItem = new MenuItem()
             {
                 Header = "Measure with a rectangle",
@@ -113,6 +122,11 @@ namespace MicroscopeGUI
                 }
             };
 
+            ResetImageItem.Click += (o, e) =>
+            {
+                Reset();
+            };
+
             RectangleMeasureItem.Click += (o, e) =>
             {
                 UserInfo.SetInfo("You can now measure with a rectangle");
@@ -130,7 +144,9 @@ namespace MicroscopeGUI
                 UserInfo.SetInfo("Draw a line where you want to measure");
                 SetMeasureMode(MeasureMode.MeasureFactor);
             };
-
+            
+            ContextMenu.Items.Add(ResetImageItem);
+            ContextMenu.Items.Add(new Separator());
             ContextMenu.Items.Add(RectangleMeasureItem);
             ContextMenu.Items.Add(LineMeasureItem);
             ContextMenu.Items.Add(MeasureFactorItem);

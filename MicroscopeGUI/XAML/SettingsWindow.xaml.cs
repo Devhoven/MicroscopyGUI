@@ -21,6 +21,12 @@ namespace MicroscopeGUI
         {
             InitializeComponent();
 
+            PreviewKeyDown += (o, e) =>
+            {
+                if (e.Key == Key.Escape)
+                    Close();
+            };
+
             LineColorPicker.SelectedColor = Settings.LineColor.Color;
             LineThicknessTextBox.Text = Settings.LineThickness.ToString();
             LineTextColorPicker.SelectedColor = Settings.LineTextColor.Color;

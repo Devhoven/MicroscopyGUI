@@ -17,6 +17,7 @@
             <SolidColorBrush x:Key="ConBackground" Color="#FF434346" Opacity="0.5"/>
         </ResourceDictionary>
     </Window.Resources>
+
     <Window.Style>
         <Style TargetType="{x:Type Window}">
             <Setter Property="FontSize" Value="14"/>
@@ -52,13 +53,13 @@
 
                 <Menu Grid.Column="0" FontSize="15" Margin="5 0 0 0" Background="Transparent" Foreground="White" VerticalAlignment="Center">
                     <MenuItem Header="_File">
-                        <MenuItem Header="_Save current frame" Click="SaveClick" Foreground="Black">
+                        <MenuItem Header="_Save current frame" Click="SaveClick" Foreground="Black" InputGestureText="Ctrl+S">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/Save.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator/>
-                        <MenuItem Header="_Exit" Foreground="Black" Click="ExitClick">
+                        <MenuItem Header="_Exit" Foreground="Black" Click="ExitClick" InputGestureText="ESC">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/Exit.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
@@ -66,13 +67,13 @@
                     </MenuItem>
 
                     <MenuItem Header="_Settings">
-                        <MenuItem Header="_Settings" Click="SettingsClick" Foreground="Black">
+                        <MenuItem Header="Open Settings _Menu" Click="SettingsClick" Foreground="Black" InputGestureText="F1">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/Settings.png" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator/>
-                        <MenuItem Header="_Restart Camera" Click="ReloadCamClick" Foreground="Black">
+                        <MenuItem Header="_Restart Camera" Click="ReloadCamClick" Foreground="Black" InputGestureText="F5">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/Restart.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
@@ -83,7 +84,7 @@
                                 <Image Source="/Assets/Icons/SaveConfig.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
                         </MenuItem>
-                        <MenuItem Header="_Load Cam Config" Click="ConfigLoadClick" Foreground="Black">
+                        <MenuItem Header="_Load Cam Config" Click="ConfigLoadClick" Foreground="Black" InputGestureText="Ctrl+O">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/LoadConfig.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>

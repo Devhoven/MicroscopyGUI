@@ -24,6 +24,12 @@ namespace MicroscopeGUI
 
             WindowStartupLocation = WindowStartupLocation.CenterScreen;
 
+            PreviewKeyDown += (o, e) =>
+            {
+                if (e.Key == Key.Escape)
+                    Close();
+            };
+
             InputBox.Focus();
         }
 
