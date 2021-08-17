@@ -59,25 +59,24 @@ namespace MicroscopeGUI.UIElements.Steps
                 }),
             this, RowCount++);
 
+            // A separator between the auto functions and the rest
             Separator AutoSliderSeparator = new Separator()
             {
                 Margin = new Thickness()
                 {
-                    Left = 5,
+                    Left = 2,
                     Top = 10,
-                    Right = 5,
+                    Right = 2,
                     Bottom = 10
                 }
             };
-
             RowDefinition CheckBoxRowDefinition = new RowDefinition()
             {
                 Height = GridLength.Auto
             };
             RowDefinitions.Add(CheckBoxRowDefinition);
-
             Children.Add(AutoSliderSeparator);
-            Grid.SetRow(AutoSliderSeparator, RowCount++);
+            SetRow(AutoSliderSeparator, RowCount++);
 
 
             UI.Cam.Timing.Framerate.GetDefault(out double CurrentFPS);
@@ -170,7 +169,6 @@ namespace MicroscopeGUI.UIElements.Steps
                     UI.Cam.BlackLevel.Offset.Set((int)((Slider)o).Value);
                 }),
             this, RowCount++);
-
         }
     }
 }
