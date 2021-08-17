@@ -21,6 +21,5 @@ namespace MicroscopeGUI
         {
             InitializeComponent();
         }
-
     }
 }

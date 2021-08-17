@@ -2,10 +2,10 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="XAML\FactorInputBox.xaml.cs">
+    <Compile Update="XAML\KeybindWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="XAML\KeybindWindow.xaml.cs">
+    <Compile Update="XAML\FactorInputBox.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="XAML\SettingsWindow.xaml.cs">
@@ -13,10 +13,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="XAML\FactorInputBox.xaml">
+    <Page Update="XAML\KeybindWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="XAML\KeybindWindow.xaml">
+    <Page Update="XAML\FactorInputBox.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="XAML\MainWindow.xaml">

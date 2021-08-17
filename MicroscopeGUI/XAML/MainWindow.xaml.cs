@@ -193,6 +193,8 @@ namespace MicroscopeGUI
         {
             if (!(MetadataPopup is null))
                 MetadataPopup.Close();
+            if (!(KeybindPopup is null))
+                KeybindPopup.Close();
             CloseCamera();
         }
 
@@ -208,6 +210,7 @@ namespace MicroscopeGUI
         private void OpenKeybindWindow(object sender, RoutedEventArgs e)
         {
             KeybindPopup = new KeybindWindow();
+            KeybindPopup.Show();
         }
     }
 }

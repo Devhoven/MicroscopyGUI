@@ -3,10 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MicroscopeGUI.XAML"
+        xmlns:local="clr-namespace:MicroscopeGUI"
         mc:Ignorable="d"
-        Title="Keybinds" Height="500" Width="400">
-    
+        Title="Keybinds" Height="530" Width="400"
+        ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+
     <Grid>
         <Grid.Background>
             <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
@@ -17,7 +18,7 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
-            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="Auto"/>
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -39,8 +40,10 @@
             <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <Label Content="Key:" Grid.Row="0" Grid.Column="0" FontSize="15"
-               Foreground="White" HorizontalAlignment="Center"/>
+        <Label Grid.Row="0" Grid.Column="0" FontSize="15"
+               Foreground="White" HorizontalAlignment="Center" FontWeight="Bold">
+            <TextBlock Text="Key:" TextDecorations="Underline"/>
+        </Label>
         <Label Content="RMB:" Grid.Row="1" Grid.Column="0" FontSize="15" 
                Foreground="White" HorizontalAlignment="Center"/>
         <Label Content="SHIFT + LMB:   " Grid.Row="2" Grid.Column="0" FontSize="15" 
@@ -71,8 +74,10 @@
                Foreground="White" HorizontalAlignment="Center"/>
 
 
-        <Label Content="Function:" Grid.Row="0" Grid.Column="1" FontSize="15" 
-               Foreground="White" HorizontalAlignment="Center"/>
+        <Label Grid.Row="0" Grid.Column="1" FontSize="15" 
+               Foreground="White" HorizontalAlignment="Center" FontWeight="Bold">
+            <TextBlock Text="Function:" TextDecorations="Underline"/>
+        </Label>
         <Label Content="Select measuring tool" Grid.Row="1" Grid.Column="1" FontSize="15" 
                Foreground="White" HorizontalAlignment="Center"/>
         <Label Content="Measure in a straight line" Grid.Row="2" Grid.Column="1" FontSize="15" 
