@@ -1,8 +1,9 @@
 # MicrosopyGUI
 This program is used to give the user a digital interface to process and work with images captured by a uEye camera in regards to microscopy. 
 
-It is separated into 3 distinct workspaces: The "Controlpanel", the "Image viewer" and the "Image Gallery"
+It is separated into 3 distinct workspaces: The "Controlpanel", the "Image Viewer" and the "Image Gallery".
 ![GUIScreenshot](https://user-images.githubusercontent.com/74535078/129679506-115af088-4316-46bd-9fcc-c677359742ce.PNG)
+![AndererTumor](https://user-images.githubusercontent.com/74535078/129680899-ea09e08f-7245-457f-9d13-1142ca62d761.PNG)
 
 ## Controlpanel:
 This is where the user can pre-/postprocess the image with the help of various settings. The processing can either be done on the live camera feed or on a freezeframe of the current image, which can be toggled at the top of the screen. 
@@ -11,7 +12,7 @@ Once the user is satisfied with the quality of the image, they can save the imag
 
 At the bottom of the Controlpanel is the histogram located, which displays the amount of red, green and blue pixels of the current image on the y-axis and their corresponding intensity in the range of 0-255 on the x-axis.
 
-##  Image viewer:
+##  Image Viewer:
 
 This is the most important segment of this software since this is where the live camera feed/the frozen frame, on which the processing occurs, is displayed.
 The image can be dragged around while holding down the middle mouse button and it returns to its initial position with the press of the R key.
@@ -28,7 +29,7 @@ With the left mouse button click the user now can measure distances with the bef
 The Image Gallery contains all of the images which are in the folder that is currently chosen.
 The path of the current folder can be viewed in the setting tab of the menu bar and changed with the "Change Image Gallery Folder" tab.
 
-By double-clicking any of the shown images, the image itself will be displayed in the Image viewer for further postprocessing or analysis.
+By double-clicking any of the shown images, the image itself will be displayed in the Image Viewer for further postprocessing or analysis.
 
 By hovering long enough over one image, its name is going to show up as a tooltip.
 
@@ -37,10 +38,10 @@ To delete one of the images, [right-click](https://user-images.githubusercontent
 ## Keybinds
 <pre>
 * R:                     Resets image to original position
-* RMB on Image viewer:   Select measuring tool
+* RMB on Image Viewer:   Select measuring tool
 * Middle mouse button:   Moves image
 * Mousewheel:            Zooming
-* LMB on Image viewer:   Remove measuring
+* LMB on Image Viewer:   Remove measuring
 * Shift + LMB:           Measure in a straight line
 * RMB on Image Gallery:  Edit metadata or delete image 
 </pre>
