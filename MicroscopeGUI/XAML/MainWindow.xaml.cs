@@ -46,7 +46,7 @@ namespace MicroscopeGUI
 
             PreviewKeyDown += UIKeyDown;
             Closing += GUIClosing;
-            
+
             StartCapture();
         }
 

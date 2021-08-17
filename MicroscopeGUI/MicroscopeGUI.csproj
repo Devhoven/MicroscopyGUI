@@ -42,6 +42,7 @@
     <None Remove="Assets\Icons\Exit.png" />
     <None Remove="Assets\Icons\Folder.png" />
     <None Remove="Assets\Icons\Freeze.png" />
+    <None Remove="Assets\Icons\Github.png" />
     <None Remove="Assets\Icons\Histogram.png" />
     <None Remove="Assets\Icons\LeftCon.png" />
     <None Remove="Assets\Icons\Line.png" />
@@ -96,6 +97,7 @@
     <Resource Include="Assets\Icons\Exit.png" />
     <Resource Include="Assets\Icons\Folder.png" />
     <Resource Include="Assets\Icons\Freeze.png" />
+    <Resource Include="Assets\Icons\Github.png" />
     <Resource Include="Assets\Icons\Histogram.png" />
     <Resource Include="Assets\Icons\LeftCon.png" />
     <Resource Include="Assets\Icons\Line.png" />

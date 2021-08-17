@@ -7,6 +7,7 @@ using MicroscopeGUI.UIElements.Steps;
 using Brushes = System.Windows.Media.Brushes;
 using Button = System.Windows.Controls.Button;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using System.Diagnostics;
 
 namespace MicroscopeGUI
 {
@@ -48,6 +49,16 @@ namespace MicroscopeGUI
                 else if (e.Key == System.Windows.Input.Key.F)
                     FreezeCamClick(null, null);
             }
+        }
+
+        // Opens the webbrowser and loads the github page of the project
+        private void OpenGithubPage(object sender, RoutedEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/Devhoven/MicrosopyGUI",
+                UseShellExecute = true
+            });
         }
 
         // Changes the directory of the image gallery

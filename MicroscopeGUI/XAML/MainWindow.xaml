@@ -79,7 +79,7 @@
                             </MenuItem.Icon>
                         </MenuItem>
                         <Separator/>
-                        <MenuItem Header="_Save Cam Config" Click="ConfigSaveClick" Foreground="Black">
+                        <MenuItem Header="_Save Cam Config" Click="ConfigSaveClick" Foreground="Black" InputGestureText="Ctrl+Shift+S">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/SaveConfig.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
@@ -93,6 +93,14 @@
                         <MenuItem Header="_Change Image Gallery Folder" Click="ChangeDirClick" Foreground="Black">
                             <MenuItem.Icon>
                                 <Image Source="/Assets/Icons/Folder.png" RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </MenuItem.Icon>
+                        </MenuItem>
+                    </MenuItem>
+
+                    <MenuItem Header="_Help">
+                        <MenuItem Header="_Github Page" Click="OpenGithubPage" Foreground="Black">
+                            <MenuItem.Icon>
+                                <Image Source="/Assets/Icons/Github.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
                         </MenuItem>
                     </MenuItem>
