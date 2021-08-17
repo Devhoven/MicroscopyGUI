@@ -6,7 +6,7 @@ It is separated into 3 distinct workspaces: The "Controlpanel", the "Image Viewe
 <p>
   <img width="48%" src="https://user-images.githubusercontent.com/74535078/129679506-115af088-4316-46bd-9fcc-c677359742ce.PNG"/>
   <img align="right" width="48%" src="https://user-images.githubusercontent.com/74535078/129680899-ea09e08f-7245-457f-9d13-1142ca62d761.PNG"/>
-</p> <br>
+</p>
 
 ## Controlpanel:
 This is where the user can pre-/postprocess the image with the help of various settings. The processing can either be done on the live camera feed or on a freezeframe of the current image, which can be toggled at the top of the screen. 
