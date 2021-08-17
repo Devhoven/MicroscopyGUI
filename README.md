@@ -11,7 +11,7 @@ It is separated into 3 distinct workspaces: The "Control Panel", the "Image View
 ## Control Panel:
 This is where the user can configure the camera settings or add post processing effects to the image. The post processing can either be done on the live camera feed or on a frozen frame of the live feed, which can be toggled at the top of the screen. 
 
-Once the user is satisfied with the quality of the image, they can save the image by clicking the "Save Frame" button or saving it through the menu bar under File -> Save Current Frame. Additionally, all of the slider values will be saved in the [metadata](https://user-images.githubusercontent.com/74535078/129571256-ea9d4cba-2f76-4c79-bc6d-88285dfc61f5.PNG) of the image and the user can add more metadata by using the enter key or delete redundant metadata by using backspace.
+Once the user is satisfied with the quality of the image, they can save the image by clicking the "Save Frame" button or by saving it through the menu bar under File -> Save Current Frame. Additionally, all of the slider values will be saved in the [metadata](https://user-images.githubusercontent.com/74535078/129571256-ea9d4cba-2f76-4c79-bc6d-88285dfc61f5.PNG) of the image and the user can add more metadata by using the enter key or delete redundant metadata by using backspace.
 
 At the bottom of the Control Panel is the histogram located, which displays the amount of red, green and blue pixels of the current image on the y-axis and their corresponding intensity in the range of 0-255 on the x-axis.
 
