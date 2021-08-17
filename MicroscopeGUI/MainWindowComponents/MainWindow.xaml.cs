@@ -5,7 +5,6 @@ using System.Windows;
 using System.Threading;
 using System.Windows.Threading;
 using System.Windows.Media.Imaging;
-using MicroscopeGUI.UIElements.Steps;
 using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
 using MessageBox = System.Windows.MessageBox;

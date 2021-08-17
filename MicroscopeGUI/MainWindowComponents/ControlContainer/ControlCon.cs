@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Windows.Controls;
 
-namespace MicroscopeGUI.UIElements.Steps
+namespace MicroscopeGUI
 {
     class ControlCon : Grid
     {

@@ -15,7 +15,7 @@ using System.Windows.Shapes;
 using RPCEventHandler = System.Windows.RoutedPropertyChangedEventHandler<double>;
 using RPCEventArgs = System.Windows.RoutedPropertyChangedEventArgs<double>;
 
-namespace MicroscopeGUI.UIElements.Steps
+namespace MicroscopeGUI
 {
     class EffectControlsCon : ControlCon
     {
