@@ -1,11 +1,5 @@
-﻿using ScottPlot;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Threading;
+﻿using System;
+using ScottPlot;
 
 namespace MicroscopeGUI
 {

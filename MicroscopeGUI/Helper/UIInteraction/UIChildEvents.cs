@@ -3,9 +3,7 @@ using System.Text;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Controls;
-using MicroscopeGUI.UIElements.Steps;
 using Brushes = System.Windows.Media.Brushes;
-using Button = System.Windows.Controls.Button;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using System.Diagnostics;
 

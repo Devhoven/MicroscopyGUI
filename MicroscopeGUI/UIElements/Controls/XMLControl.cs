@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Xml;
-using System.Text;
-using System.Text.Json;
 using System.IO;
-using System.Windows;
-using System.Windows.Controls;
 
 namespace MicroscopeGUI
 {
