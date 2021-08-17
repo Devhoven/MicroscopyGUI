@@ -103,12 +103,7 @@
                                 <Image Source="/Assets/Icons/Github.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
                         </MenuItem>
-
-                        <MenuItem Header="blabalbal" Click="OpenGithubPage" Foreground="Black">
-                            <MenuItem.Icon>
-                                <Image Source="/Assets/Icons/Github.png" RenderOptions.BitmapScalingMode="HighQuality"/>
-                            </MenuItem.Icon>
-                        </MenuItem>
+                        <MenuItem Header="_Keybinds" Click="OpenKeybindWindow" Foreground="Black"/>
                     </MenuItem>
                 </Menu>
 
