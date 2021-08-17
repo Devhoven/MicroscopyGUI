@@ -28,37 +28,25 @@
         </ResourceDictionary>
     </Window.Resources>
     <DockPanel>
-        <ScrollViewer x:Name="MetadataScrollViewer" VerticalScrollBarVisibility="Visible" 
-                      Height="480" DockPanel.Dock="Top" ClipToBounds="True" Panel.ZIndex="0">
+        <ScrollViewer x:Name="MetadataScrollViewer" VerticalScrollBarVisibility="Auto" 
+                    Height="480" DockPanel.Dock="Top" Panel.ZIndex="0">
             <StackPanel x:Name="MetadataCon"/>
         </ScrollViewer>
 
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Left" VerticalAlignment="Center"
                     DockPanel.Dock="Bottom" Panel.ZIndex="1">
-            <Button Background="LightBlue" Click="SaveImgClick" 
-                        Width="150" Height="40" BorderThickness="0" Margin="5">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
+            <Button Background="#FF434346" Click="SaveImgClick" 
+                        Width="180" Height="40" BorderThickness="0" Margin="10 5 5 5">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="/Assets/Icons/Save.png" Height="25" RenderOptions.BitmapScalingMode="HighQuality"/>
-                    <TextBlock Foreground="Black">Save the image</TextBlock>
+                    <TextBlock Foreground="White">Save image</TextBlock>
                 </StackPanel>
             </Button>
 
-            <Button Background="LightBlue" VerticalAlignment="Bottom" Click="CancelClick"
-                        Width="150" Height="40" BorderThickness="0" Margin="5">
-                <Button.Resources>
-                    <Style TargetType="{x:Type Border}">
-                        <Setter Property="CornerRadius" Value="5"/>
-                    </Style>
-                </Button.Resources>
+            <Button Background="#FF2f2f30" VerticalAlignment="Bottom" Click="CancelClick"
+                        Width="180" Height="40" BorderThickness="0" Margin="5">
                 <StackPanel Orientation="Horizontal">
-                    <Image Source="/Assets/Icons/Exit.png" Height="25" RenderOptions.BitmapScalingMode="HighQuality"/>
-                    <TextBlock Foreground="Black">Cancel</TextBlock>
+                    <TextBlock Foreground="White">Cancel</TextBlock>
                 </StackPanel>
             </Button>
         </StackPanel>

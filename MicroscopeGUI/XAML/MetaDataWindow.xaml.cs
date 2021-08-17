@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Xml;
 using Application = System.Windows.Application;
+using Brush = System.Windows.Media.Brush;
 using Brushes = System.Windows.Media.Brushes;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using TextBox = System.Windows.Controls.TextBox;
@@ -27,29 +28,29 @@ namespace MicroscopeGUI
 
         string OriginalPath = null;
 
-        public MetaDataWindow()
+        public MetaDataWindow() 
         {
-            InitializeComponent();
+            Initialize();
 
             AddDataEntries(Control.GetXMLString());
 
             AddDataEntry("Comment", "", true).ValueTextBox.Focus();
-
-            KeyDown += MetaDataWindowKeyDown;
-
-            Closed += WindowClosing;
         }
 
         public MetaDataWindow(string OriginalPath, Dictionary<string, string> KeyValuePairs)
         {
-            InitializeComponent();
+            Initialize();
 
             this.OriginalPath = OriginalPath;
 
             AddDataEntries(KeyValuePairs);
+        }
+
+        void Initialize()
+        {
+            InitializeComponent();
 
             KeyDown += MetaDataWindowKeyDown;
-
             Closed += WindowClosing;
         }
 
@@ -123,6 +124,7 @@ namespace MicroscopeGUI
                         }
                     }
 
+                    // Updates the image gallery
                     string FolderPath = SaveDialog.FileName.Substring(0, SaveDialog.FileName.LastIndexOf("\\"));
                     (Application.Current.MainWindow as UI).ImgGallery.UpdatePath(FolderPath);
 
@@ -135,7 +137,7 @@ namespace MicroscopeGUI
                 // It is creating a new bitmap from the original image and saves it again
                 // This new image does not have any medatada
                 // So we delete the old file and rename the temporary file to be the old / new one
-                string TempPath = OriginalPath.Substring(0, OriginalPath.IndexOf(".png")) + "-temp.png";
+                string TempPath = OriginalPath.Substring(0, OriginalPath.ToLower().IndexOf(".png")) + "-temp.png";
                 using (Bitmap Bmp = new Bitmap(OriginalPath)) 
                     Bmp.Save(TempPath);
                 File.Delete(OriginalPath);
@@ -154,94 +156,5 @@ namespace MicroscopeGUI
 
         private void CancelClick(object sender, RoutedEventArgs e) =>
             Close();
-
-        class DataEntry : DockPanel 
-        {
-            static int Count = 0;
-
-            public string Key
-            {
-                get => KeyTextBox.Text;
-            }
-
-            public string Value
-            {
-                get => ValueTextBox.Text;
-            }
-
-            public TextBox KeyTextBox;
-            public TextBox ValueTextBox;
-            new StackPanel Parent;
-
-            public DataEntry(StackPanel Parent, string Key, string Value, bool KeyEditable = false, bool ValueEditable = false)
-            {
-                this.Parent = Parent;
-
-                KeyTextBox = new TextBox()
-                {
-                    Text = Key,
-                    IsReadOnly = !KeyEditable,
-                    CaretBrush = Brushes.White,
-                    BorderBrush = Brushes.White,
-                    Foreground = Count % 2 == 0 ? Brushes.White : Brushes.Black,
-                    Background = Count % 2 == 0 ? Brushes.Transparent : Brushes.LightBlue,
-                    BorderThickness = new Thickness(2),
-                    VerticalContentAlignment = VerticalAlignment.Center,
-                    Width = 250,
-                    Height = 40
-                };
-                ValueTextBox = new TextBox()
-                {
-                    Text = Value,
-                    IsReadOnly = !ValueEditable,
-                    CaretBrush = Brushes.White,
-                    BorderBrush = Brushes.White,
-                    Foreground = Count % 2 == 0 ? Brushes.White : Brushes.Black,
-                    Background = Count % 2 == 0 ? Brushes.Transparent : Brushes.LightBlue,
-                    BorderThickness = new Thickness(2),
-                    VerticalContentAlignment = VerticalAlignment.Center,
-                    Height = 40
-                };
-
-                KeyTextBox.PreviewKeyDown += KeyTextBoxKeyDown;
-                ValueTextBox.PreviewKeyDown += ValueTextBoxKeyDown;
-
-                Children.Add(KeyTextBox);
-                SetDock(KeyTextBox, Dock.Left);
-                Children.Add(ValueTextBox);
-                SetDock(ValueTextBox, Dock.Right);
-
-                Count++;
-            }
-
-            private void ValueTextBoxKeyDown(object sender, KeyEventArgs e)
-            {
-                if (e.Key == System.Windows.Input.Key.Back)
-                {
-                    if ((sender as TextBox).Text == string.Empty)
-                    {
-                        KeyTextBox.Focus();
-                    }
-                }
-            }
-
-            private void KeyTextBoxKeyDown(object sender, KeyEventArgs e)
-            {
-                if (e.Key == System.Windows.Input.Key.Back)
-                {
-                    if ((sender as TextBox).Text == string.Empty)
-                    {
-                        int Index = Parent.Children.IndexOf(this);
-                        // Removing the current element
-                        Parent.Children.RemoveAt(Index);
-                        // If this is not the last element, focus the value text box from the entry before
-                        if (Index > 0)
-                        {
-                            (Parent.Children[Index - 1] as DataEntry).ValueTextBox.Focus();
-                        }
-                    }
-                }
-            }
-        }
     }
 }
