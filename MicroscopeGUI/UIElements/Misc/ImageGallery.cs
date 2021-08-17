@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Drawing;
 using System.Windows;
 using Ookii.Dialogs.Wpf;
 using System.Windows.Input;
@@ -8,7 +7,6 @@ using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
-using System.Drawing.Drawing2D;
 
 namespace MicroscopeGUI
 {
