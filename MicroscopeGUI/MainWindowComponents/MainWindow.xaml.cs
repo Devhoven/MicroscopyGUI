@@ -29,7 +29,6 @@ namespace MicroscopeGUI
         ConfigControlsCon ConfigElements;
         EffectControlsCon EffectElements;
 
-
         MetaDataWindow MetadataPopup;
         KeybindWindow KeybindPopup;
 

@@ -4,12 +4,12 @@ using System.Text.RegularExpressions;
 
 namespace MicroscopeGUI
 {
-    public partial class FactorInputBox : Window
+    public partial class FactorInputWindow : Window
     {
         static readonly Regex NumRegex = new Regex("[^0-9.,]+"); // Regex that only allows numbers, a dot and a comma
         public bool Aborted = true;
 
-        public FactorInputBox()
+        public FactorInputWindow()
         {
             InitializeComponent();
 

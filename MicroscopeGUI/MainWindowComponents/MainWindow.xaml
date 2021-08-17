@@ -10,7 +10,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="ScrollBar.xaml"/>
+                <ResourceDictionary Source="/XAML/ScrollBar.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey }" Color="White"/>
@@ -95,7 +95,6 @@
                                 <Image Source="/Assets/Icons/Folder.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
                         </MenuItem>
-
                     </MenuItem>
 
                     <MenuItem Header="_Help">
@@ -110,11 +109,7 @@
                                 <Image Source="/Assets/Icons/Github.png" RenderOptions.BitmapScalingMode="HighQuality"/>
                             </MenuItem.Icon>
                         </MenuItem>
-
                     </MenuItem>
-
-                    
-
                 </Menu>
 
                 <Menu Background="Transparent" Margin="5 2 2 2"

@@ -42,7 +42,7 @@ namespace MicroscopeGUI
 
                 if (CurrentMode == MeasureMode.MeasureFactor)
                 {
-                    FactorInputBox InputDialog = new FactorInputBox();
+                    FactorInputWindow InputDialog = new FactorInputWindow();
                     InputDialog.ShowDialog();
 
                     // If the bool is set to true, the action was aborted

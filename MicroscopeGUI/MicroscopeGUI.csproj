@@ -60,8 +60,8 @@
     <None Remove="Assets\Microscope.ico" />
     <None Remove="Assets\NoCamConnected.png" />
     <None Remove="Histogram.png" />
-    <None Remove="Shader\Compiled\EffectShader.ps" />
-    <None Remove="Shader\FragmentShader.ps" />
+    <None Remove="MainWindowComponents\ImageViewer\Shader\Compiled\EffectShader.ps" />
+    <None Remove="MainWindowComponents\ImageViewer\Shader\FragmentShader.ps" />
   </ItemGroup>
 
   <ItemGroup>
@@ -116,7 +116,7 @@
     <Resource Include="XAML\ScrollBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Resource>
-    <Resource Include="Shader\Compiled\EffectShader.ps" />
+    <Resource Include="MainWindowComponents\ImageViewer\Shader\Compiled\EffectShader.ps" />
   </ItemGroup>
 
 </Project>
