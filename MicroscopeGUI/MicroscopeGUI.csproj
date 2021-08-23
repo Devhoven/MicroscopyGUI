@@ -4,7 +4,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Microscope.ico</ApplicationIcon>
+    <ApplicationIcon>Assets\Microscope.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -18,7 +18,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <OutputType>WinExe</OutputType>
     <TargetFrameworks>netcoreapp3.1</TargetFrameworks>
     <TargetLatestRuntimePatch>true</TargetLatestRuntimePatch>  
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
@@ -28,6 +28,12 @@
 	<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|netcoreapp3.1|AnyCPU'">
+    <PlatformTarget></PlatformTarget>
+  </PropertyGroup>
+  
+  
   <ItemGroup>
     <None Remove="Assets\ConfigIcon.png" />
     <None Remove="Assets\Icons\Delete.png" />
@@ -36,6 +42,7 @@
     <None Remove="Assets\Icons\Exit.png" />
     <None Remove="Assets\Icons\Folder.png" />
     <None Remove="Assets\Icons\Freeze.png" />
+    <None Remove="Assets\Icons\Github.png" />
     <None Remove="Assets\Icons\Histogram.png" />
     <None Remove="Assets\Icons\LeftCon.png" />
     <None Remove="Assets\Icons\Line.png" />
@@ -50,11 +57,12 @@
     <None Remove="Assets\Icons\Save.png" />
     <None Remove="Assets\Icons\SaveConfig.png" />
     <None Remove="Assets\Icons\Settings.png" />
+    <None Remove="Assets\Icons\ShiftKey.png" />
     <None Remove="Assets\Microscope.ico" />
     <None Remove="Assets\NoCamConnected.png" />
     <None Remove="Histogram.png" />
-    <None Remove="Shader\Compiled\EffectShader.ps" />
-    <None Remove="Shader\FragmentShader.ps" />
+    <None Remove="MainWindowComponents\ImageViewer\Shader\Compiled\EffectShader.ps" />
+    <None Remove="MainWindowComponents\ImageViewer\Shader\FragmentShader.ps" />
   </ItemGroup>
 
   <ItemGroup>
@@ -90,7 +98,7 @@
     <Resource Include="Assets\Icons\Exit.png" />
     <Resource Include="Assets\Icons\Folder.png" />
     <Resource Include="Assets\Icons\Freeze.png" />
-    <Resource Include="Assets\Icons\Config.png" />
+    <Resource Include="Assets\Icons\Github.png" />
     <Resource Include="Assets\Icons\Histogram.png" />
     <Resource Include="Assets\Icons\LeftCon.png" />
     <Resource Include="Assets\Icons\Line.png" />
@@ -104,12 +112,13 @@
     <Resource Include="Assets\Icons\Save.png" />
     <Resource Include="Assets\Icons\SaveConfig.png" />
     <Resource Include="Assets\Icons\Settings.png" />
+    <Resource Include="Assets\Icons\ShiftKey.png" />
     <Resource Include="Assets\Microscope.ico" />
     <Resource Include="Assets\NoCamConnected.png" />
     <Resource Include="XAML\ScrollBar.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Resource>
-    <Resource Include="Shader\Compiled\EffectShader.ps" />
+    <Resource Include="MainWindowComponents\ImageViewer\Shader\Compiled\EffectShader.ps" />
   </ItemGroup>
 
 </Project>

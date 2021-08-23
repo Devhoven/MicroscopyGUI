@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Windows.Media;
+﻿using System.Windows.Media;
 
 namespace MicroscopeGUI
 {
     static class Settings
     {
         public static SolidColorBrush LineColor = Brushes.Red;
-        public static int LineThickness = 1;
+        public static int LineThickness = 3;
         public static SolidColorBrush LineTextColor = Brushes.Black;
 
         public static string ImgGalleryPath = "";

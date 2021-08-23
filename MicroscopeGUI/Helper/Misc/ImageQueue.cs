@@ -1,20 +1,8 @@
 ﻿using System;
 using uEye.Defines;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing;
-using System.IO;
-using System.Drawing.Imaging;
 using ColorMode = uEye.Defines.ColorMode;
 using System.Windows.Media.Imaging;
-using System.Runtime.InteropServices;
-using System.Windows.Media;
-using System.Windows.Interop;
-using System.Windows;
-using System.Globalization;
-using uEye.Types;
 using System.Diagnostics;
 
 namespace MicroscopeGUI
@@ -57,11 +45,16 @@ namespace MicroscopeGUI
                 {
                     FailCount = 0;
 
-                    // Getting the values of the histogram, every 100 ms
-                    if (HistogramTimer.ElapsedMilliseconds >= 100)
+                    // Getting the values of the histogram, every 30 ms
+                    if (HistogramTimer.ElapsedMilliseconds >= 30)
                     {
                         UI.Cam.Image.GetHistogram(MemID, ColorMode.BGR8Packed, out Histogram);
                         HistogramTimer.Restart();
+
+                        UI.CurrentDispatcher.BeginInvoke(System.Windows.Threading.DispatcherPriority.Background, new Action(() =>
+                        {
+                            UI.HistogramControl.UpdateHistogram();
+                        }));
                     }
 
                     UI.Cam.Memory.GetSize(MemID, out Width, out Height);
@@ -87,8 +80,11 @@ namespace MicroscopeGUI
 
                     // Counts one up if something went wrong
                     FailCount++;
-                    if (FailCount > 20)
+                    if (FailCount >= 69)
+                        UI.CurrentDispatcher.Invoke(() => UserInfo.SetErrorInfo(FailCount + " frames were lost"));
+                    else if (FailCount > 20)
                         UI.CurrentDispatcher.Invoke(() => UserInfo.SetInfo(FailCount + " frames were lost"));
+
                     // If 10 frames fail continuously the ImageQueue won't continue
                     if (FailCount < 100)
                         continue;
@@ -103,7 +99,7 @@ namespace MicroscopeGUI
                                 {
                                     UI.OldXMLConfig = Control.GetXMLString();
                                     UserInfo.SetErrorInfo("Camera disconnected (" + Enum.GetName(typeof(Status), CurrentCamStatus) + ")");
-                                    UI.CurrentFrame.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCam.png"));
+                                    UI.CurrentFrame.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCamConnected.png"));
                                 }
                            ));
                     break;
