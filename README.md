@@ -4,8 +4,8 @@ This program is used to give the user a digital interface to process and work wi
 It is separated into 3 distinct workspaces: The "Control Panel", the "Image Viewer" and the "Image Gallery".  
 
 <p>
-  <img width="48%" src="https://user-images.githubusercontent.com/74535078/129679506-115af088-4316-46bd-9fcc-c677359742ce.PNG"/>
-  <img align="right" width="48%" src="https://user-images.githubusercontent.com/74535078/129680899-ea09e08f-7245-457f-9d13-1142ca62d761.PNG"/>
+  <img width="48%" src="https://user-images.githubusercontent.com/40501092/130403036-fa2a9b13-b433-463d-a705-089dcf6b9244.PNG"/>
+  <img align="right" width="48%" src="https://user-images.githubusercontent.com/40501092/130403066-7660827a-d4ba-49c2-820d-91a18865c508.PNG"/>
 </p>
 
 ## Control Panel:
@@ -27,8 +27,8 @@ The right mouse button click will open up a [popup](https://user-images.githubus
 With the left mouse button click the user now can measure distances with the before selected tool and with a single left mouse button click, the measurement can be removed.  
 
 <p>
-  <img width="48%" src="https://user-images.githubusercontent.com/74535078/129682106-c1f2eb5a-d7f6-4e0c-8504-02604f80ffd6.PNG"/>
-  <img align="right" width="48%" src="https://user-images.githubusercontent.com/74535078/129682008-417787d3-305b-4370-b795-a9907c9a158f.PNG"/>
+  <img width="48%" src="https://user-images.githubusercontent.com/40501092/130404106-aad47f1d-4d4c-4db8-84f9-877d8104abbf.PNG"/>
+  <img align="right" width="48%" src="https://user-images.githubusercontent.com/40501092/130404115-a9bb4bf3-840a-4e7b-bff7-4512e604e864.PNG"/>
 </p>
 
 
