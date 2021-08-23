@@ -55,6 +55,14 @@ namespace MicroscopeGUI
             });
         }
 
+        // Opens up the keybind window
+        private void OpenKeybindWindow(object sender, RoutedEventArgs e)
+        {
+            KeybindPopup = new KeybindWindow();
+            KeybindPopup.Owner = this;
+            KeybindPopup.Show();
+        }
+
         // Changes the directory of the image gallery
         void ChangeDirClick(object sender, RoutedEventArgs e) =>
             ImgGallery.UpdatePath();

@@ -204,11 +204,5 @@ namespace MicroscopeGUI
             if (ImageQueue.CurrentCamStatus == Status.SUCCESS)
                 Cam.Exit();
         }
-
-        private void OpenKeybindWindow(object sender, RoutedEventArgs e)
-        {
-            KeybindPopup = new KeybindWindow();
-            KeybindPopup.Show();
-        }
     }
 }

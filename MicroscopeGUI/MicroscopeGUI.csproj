@@ -57,6 +57,7 @@
     <None Remove="Assets\Icons\Save.png" />
     <None Remove="Assets\Icons\SaveConfig.png" />
     <None Remove="Assets\Icons\Settings.png" />
+    <None Remove="Assets\Icons\ShiftKey.png" />
     <None Remove="Assets\Microscope.ico" />
     <None Remove="Assets\NoCamConnected.png" />
     <None Remove="Histogram.png" />
@@ -111,6 +112,7 @@
     <Resource Include="Assets\Icons\Save.png" />
     <Resource Include="Assets\Icons\SaveConfig.png" />
     <Resource Include="Assets\Icons\Settings.png" />
+    <Resource Include="Assets\Icons\ShiftKey.png" />
     <Resource Include="Assets\Microscope.ico" />
     <Resource Include="Assets\NoCamConnected.png" />
     <Resource Include="XAML\ScrollBar.xaml">
