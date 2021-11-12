@@ -58,6 +58,9 @@ namespace MicroscopeGUI
 
         public void Initialize(UIElement element)
         {
+            if (element == null)
+                throw new ArgumentException("The parent cannot be null [ImageViewer]");
+
             _Child = element as Canvas;
 
             TransformGroup group = new TransformGroup();

@@ -1,12 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Windows;
-using Ookii.Dialogs.Wpf;
 using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
+using DialogResult = System.Windows.Forms.DialogResult;
+using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
+using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace MicroscopeGUI
 {
@@ -23,7 +25,7 @@ namespace MicroscopeGUI
         {
             string Path = RegistryManager.GetStrVal("ImgGalleryPath");
             Settings.ImgGalleryPath = Path;
-            if (Path != string.Empty && Directory.Exists(Path))
+            if (Path != string.Empty)
             {
                 string[] FilePaths = Directory.GetFiles(Path);
                 LoadImagesFromFolder(FilePaths);
@@ -35,11 +37,11 @@ namespace MicroscopeGUI
         // Shows a dialog where the user can select a folder
         public void UpdatePath()
         {
-            VistaFolderBrowserDialog Dialog = new VistaFolderBrowserDialog();
-            if (Dialog.ShowDialog().GetValueOrDefault())
-            {
-                UpdatePath(Dialog.SelectedPath);
-            }
+            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
+            dialog.InitialDirectory = Settings.ImgGalleryPath;
+            dialog.IsFolderPicker = true;
+            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
+                UpdatePath(dialog.FileName);
         }
 
         // Updates the path in the settings and the registry
@@ -177,7 +179,6 @@ namespace MicroscopeGUI
                 Window.LiveFeedBtn.Background = Brushes.Transparent;
                 Window.FreezeCamBtn.Background = Brushes.LightSkyBlue;
                 // And "freezing" the image
-                ImageQueue.Mode = ImageQueue.ImgQueueMode.ViewingAnotherImage;
             }
         }
     }

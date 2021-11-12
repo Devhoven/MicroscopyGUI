@@ -1,8 +1,8 @@
-﻿using uEye;
-using System;
-using uEye.Defines;
+﻿using System;
+using System.IO;
 using System.Windows;
-using System.Threading;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Threading;
 using System.Windows.Media.Imaging;
 using Image = System.Windows.Controls.Image;
@@ -13,20 +13,13 @@ namespace MicroscopeGUI
 {
     public partial class UI : Window
     {
-        public static Camera Cam;
         public static Image CurrentFrame;
         public static CustomShader FrameEffects;
         public static Dispatcher CurrentDispatcher;
 
         public static HistogramControl HistogramControl;
 
-        public static string OldXMLConfig;
-
-        Thread WorkerThread;
-        int[] MemoryIDs;
-
-        ConfigControlsCon ConfigElements;
-        EffectControlsCon EffectElements;
+        readonly MemoryStream BmpMemory;
 
         MetaDataWindow MetadataPopup;
         KeybindWindow KeybindPopup;
@@ -34,8 +27,6 @@ namespace MicroscopeGUI
         public UI()
         {
             InitializeComponent();
-
-            InitializeCam();
 
             InitializeUIComponents();
 
@@ -46,131 +37,47 @@ namespace MicroscopeGUI
             PreviewKeyDown += UIKeyDown;
             Closing += GUIClosing;
 
-            StartCapture();
+            CamControl.ImageReceived += CamImageReceived;
 
+            CamControl.Start();
+
+            BmpMemory = new MemoryStream();
+
+            CamControl.GetControlCon(ConfigCon);
         }
 
-        // The bool is for the reloading cam feature
-        void InitializeCam(bool SetErrorImage = true)
+        private void CamImageReceived(Bitmap bitmap)
         {
-            // For debugging the camera
-            Status StatusRet;
+            bitmap.Save(BmpMemory, ImageFormat.Bmp);
+            BmpMemory.Position = 0;
+            BitmapImage bitmapimage = new BitmapImage();
+            bitmapimage.BeginInit();
+            bitmapimage.StreamSource = BmpMemory;
+            bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapimage.EndInit();
+            bitmapimage.Freeze();
 
-            // Camera initialization
-            Cam = new Camera();
-            StatusRet = Cam.Init();
-
-            // Initializing the thread, which runs the image queue
-            WorkerThread = new Thread(ImageQueue.Run);
-
-            // Allocating image buffers for 1 second of an image queue
-            Cam.Timing.Framerate.Get(out double Framerate);
-            MemoryIDs = new int[(int)Framerate];
-            StatusRet = CreateRingBuffer();
-            
-            //Initialization failed, showing the error screen
-            if (StatusRet != Status.SUCCESS)
-            {
-                if (SetErrorImage)
-                {
-                    CurrentFrameCon.Source = new BitmapImage(new Uri("pack://application:,,,/Assets/NoCamConnected.png"));
-                    UserInfo.SetErrorInfo("ERROR: " + Enum.GetName(typeof(Status), StatusRet) + "(" + (int)StatusRet + ")");
-                }
-                ImageQueue.StopRunning = true;
-            }
+            CurrentFrame.Dispatcher.BeginInvoke(new Action<UI>(delegate { CurrentFrame.Source = bitmapimage; }), new object[] { this });
         }
 
-        Status CreateRingBuffer()
-        {
-            Status StatusRet;
-            for (int i = 0; i < MemoryIDs.Length; i++)
-            {
-                StatusRet = Cam.Memory.Allocate(out int MemID, false);
-                if (StatusRet == Status.Success)
-                    Cam.Memory.Sequence.Add(MemID);
-                MemoryIDs[i] = MemID;
-            }
-            StatusRet = Cam.Memory.Sequence.InitImageQueue();
-            return StatusRet;
-        }
-
-        void StartCapture()
-        {
-            // Starting the live feed and the image queue thread
-            Cam.Acquisition.Capture();
-            WorkerThread.Start();
-        }
-
+        // Restarts the camera and reloads the UI controls for the camera
         void ReloadCamera()
         {
             UserInfo.SetInfo("Reloading the cam...");
 
-            // Starts a new thread with the camera restarting logic inthere
-            Thread RestartThread = new Thread(RestartCam);
-            RestartThread.Start();
-            // Tries to join the thread together with the normal one again
-            // When this is done, the Join method waits for 10 seconds till the thread is finished
-            // If it hasn't finished until then, the restarting is aborted
-            if (!RestartThread.Join(TimeSpan.FromSeconds(10)))
-            {
-                RestartThread.Interrupt();
-                UserInfo.SetInfo("Aborted reloading the cam, since it took too long ( > 10 seconds), check if everything is plugged in correctly");
-            }
-            else
-            {
-                // Reloading all of the control elements
-                Control.RemoveAllControls();
-                ConfigCon.Children.Remove(ConfigElements);
-                EffectCon.Children.Remove(EffectElements);
-                ConfigElements = new ConfigControlsCon(ConfigCon);
-                EffectElements = new EffectControlsCon(EffectCon);
+            ConfigCon.Children.Clear();
 
-                UserInfo.SetInfo("Reloaded the cam");
+            CamControl.Stop();
 
-                if (!(OldXMLConfig is null))
-                {
-                    MessageBoxResult Result = MessageBox.Show("There is a saved config from before the camera crashed\nDo you want to load it?", "Question", MessageBoxButton.YesNo);
-                    if (Result == MessageBoxResult.Yes)
-                    {
-                        Control.LoadXML(OldXMLConfig);
-                        UserInfo.SetInfo("Loaded the config");
-                    }
-                }
-            }
+            CamControl.Initialize();
+            CamControl.Start();
 
-            // Capsuled in a method, so I can put it in a seperate thread
-            void RestartCam()
-            {
-                // Closes the thread and joins it to the current
-                ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
-                ImageQueue.StopRunning = true;
-                WorkerThread.Join();
-
-                // Closes the camera
-                Cam.Exit();
-
-                // Initializes a new thread and a new camera
-                InitializeCam(false);
-
-                ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
-
-                ImageQueue.StopRunning = false;
-
-                StartCapture();
-            }
+            CamControl.GetControlCon(ConfigCon);
         }
 
         void InitializeUIComponents()
         {
-            ConfigElements = new ConfigControlsCon(ConfigCon);
-            EffectElements = new EffectControlsCon(EffectCon);
             HistogramControl = new HistogramControl(HistogramPlot);
-            int Selected = RegistryManager.GetIntVal("CurrentConfigStep");
-
-            //if (Selected == 1)
-            //    SetVisibillity(AnalysisCon, AnalysisConBtn);
-            //else
-            //    SetVisibillity(ConfigCon, ConfigConBtn);
 
             bool ConfigConActivated = RegistryManager.GetBoolVal("ConfigConActivated");
             if (!ConfigConActivated)
@@ -193,16 +100,8 @@ namespace MicroscopeGUI
                 MetadataPopup.Close();
             if (!(KeybindPopup is null))
                 KeybindPopup.Close();
-            CloseCamera();
-        }
 
-        void CloseCamera()
-        {
-            ImageQueue.StopRunning = true;
-            WorkerThread.Join();
-            // So, if the cam crashed or got pulled out in the process, the programm will still close correctly
-            if (ImageQueue.CurrentCamStatus == Status.SUCCESS)
-                Cam.Exit();
+            CamControl.Stop();
         }
     }
 }

@@ -1,44 +1,50 @@
 ﻿using System;
 using ScottPlot;
+using std;
+using Histogram = peak.ipl.Histogram;
 
 namespace MicroscopeGUI
 {
     public class HistogramControl
     {
         // Contain the seperated r g b values from the histogram
-        double[] ValuesR = new double[255];
-        double[] ValuesG = new double[255];
-        double[] ValuesB = new double[255];
+        readonly double[] ValuesR = new double[255];
+        readonly double[] ValuesG = new double[255];
+        readonly double[] ValuesB = new double[255];
 
-        WpfPlot HistogramPlot;
-        public HistogramControl(WpfPlot HistogramPlot)
+        readonly WpfPlot HistogramPlot;
+
+        public HistogramControl(WpfPlot histogramPlot)
         {
-            this.HistogramPlot = HistogramPlot;
+            HistogramPlot = histogramPlot;
 
             // Design for the HistogramPlot
-            this.HistogramPlot.Plot.Frameless();
-            this.HistogramPlot.Plot.SetAxisLimits(0, 255);
-            this.HistogramPlot.Plot.Grid(false);
-            this.HistogramPlot.Plot.Frameless();
-            this.HistogramPlot.Plot.Style(ScottPlot.Style.Gray2);
+            HistogramPlot.Plot.Frameless();
+            HistogramPlot.Plot.SetAxisLimits(0, 255);
+            HistogramPlot.Plot.Grid(false);
+            HistogramPlot.Plot.Style(Style.Gray2);
+            HistogramPlot.MaxWidth = 180;
+
+            CamControl.HistogramUpdated += UpdateHistogram;
         }
 
         // Seperates the r g b values from the histogram and adds them onto the plot
-        public void UpdateHistogram()
+        public void UpdateHistogram(Histogram histogram)
         {
-            Array.Copy(ImageQueue.Histogram, 0, ValuesR, 0, 255);
+            HistogramChannelCollection collection = histogram.Channels();
 
-            // Starts at 256, since the value at 255 does not represent a real value
-            Array.Copy(ImageQueue.Histogram, 256, ValuesG, 0, 255);
+            Array.Copy(collection[0].Bins.ToArray(), 0, ValuesR, 0, 255);
+            Array.Copy(collection[1].Bins.ToArray(), 0, ValuesG, 0, 255);
+            Array.Copy(collection[2].Bins.ToArray(), 0, ValuesB, 0, 255);
 
-            // Same here
-            Array.Copy(ImageQueue.Histogram, 512, ValuesB, 0, 255);
-
-            HistogramPlot.Plot.Clear();
-            HistogramPlot.Plot.AddBar(ValuesR, System.Drawing.Color.Red).BorderLineWidth = 0;
-            HistogramPlot.Plot.AddBar(ValuesG, System.Drawing.Color.Green).BorderLineWidth = 0;
-            HistogramPlot.Plot.AddBar(ValuesB, System.Drawing.Color.Blue).BorderLineWidth = 0;
-            HistogramPlot.Render();
+            UI.CurrentDispatcher.BeginInvoke(new Action(() =>
+            {
+                HistogramPlot.Plot.Clear();
+                HistogramPlot.Plot.AddBar(ValuesR, System.Drawing.Color.Red).BorderLineWidth = 0;
+                HistogramPlot.Plot.AddBar(ValuesG, System.Drawing.Color.Green).BorderLineWidth = 0;
+                HistogramPlot.Plot.AddBar(ValuesB, System.Drawing.Color.Blue).BorderLineWidth = 0;
+                HistogramPlot.Render();
+            }), System.Windows.Threading.DispatcherPriority.Background);
         }
     }
 }

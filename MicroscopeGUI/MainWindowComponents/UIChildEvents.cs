@@ -1,11 +1,12 @@
 ﻿using System.IO;
 using System.Text;
 using System.Windows;
+using System.Diagnostics;
 using System.Windows.Forms;
 using System.Windows.Controls;
 using Brushes = System.Windows.Media.Brushes;
+using MenuItem = System.Windows.Controls.MenuItem;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
-using System.Diagnostics;
 
 namespace MicroscopeGUI
 {
@@ -96,7 +97,8 @@ namespace MicroscopeGUI
 
             if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                File.WriteAllText(SaveDialog.FileName, Control.GetXMLString(), Encoding.UTF8);
+                //File.WriteAllText(SaveDialog.FileName, Control.GetXMLString(), Encoding.UTF8);
+                CamControl.SaveToFile(SaveDialog.FileName);
                 UserInfo.SetInfo("Saved the current config to " + SaveDialog.FileName);
             }
             else
@@ -112,7 +114,7 @@ namespace MicroscopeGUI
 
             if (OpenDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                Control.LoadXML(File.ReadAllText(OpenDialog.FileName, Encoding.UTF8));
+                //Control.LoadXML(File.ReadAllText(OpenDialog.FileName, Encoding.UTF8));
                 UserInfo.SetInfo("Loaded the config from " + OpenDialog.FileName);
             }
             else
@@ -128,23 +130,23 @@ namespace MicroscopeGUI
         // Freezes the cam
         void FreezeCamClick(object sender, RoutedEventArgs e)
         {
-            Cam.Acquisition.Freeze();
-            ImageQueue.Mode = ImageQueue.ImgQueueMode.Frozen;
             LiveFeedBtn.Background = Brushes.Transparent;
             FreezeCamBtn.Background = Brushes.LightSkyBlue;
 
             UserInfo.SetInfo("Freezed the camera");
+
+            CamControl.Freeze();
         }
 
         // Starts the camera live feed again
         void LiveFeedClick(object sender, RoutedEventArgs e)
         {
-            Cam.Acquisition.Capture();
-            ImageQueue.Mode = ImageQueue.ImgQueueMode.Live;
             LiveFeedBtn.Background = Brushes.LightSkyBlue;
             FreezeCamBtn.Background = Brushes.Transparent;
 
             UserInfo.SetInfo("Started the live feed");
+
+            CamControl.Unfreeze();
         }
 
         void ConfigConToggle(object sender, RoutedEventArgs e) =>

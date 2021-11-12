@@ -62,7 +62,8 @@ namespace MicroscopeGUI
             Array.Copy(Data, 0, CodeBlock, ChunkType.Length, Data.Length);
 
             // Writing the two parts in the file
-            Stream.Write(CodeBlock);
+            // *SOMETHING CHANGED HERE, CHECK IF IT WORKS*
+            Stream.Write(CodeBlock, 0, CodeBlock.Length);
 
             // Retreiving the pointer to the array
             fixed (byte* CodeBlockPointer = CodeBlock)
@@ -77,7 +78,8 @@ namespace MicroscopeGUI
             }
 
             // Writing the ending to the end of the stream again
-            Stream.Write(Ending);
+            // *SOMETHING CHANGED HERE, CHECK IF IT WORKS*
+            Stream.Write(Ending, 0, Ending.Length);
         }
 
         // Simple seraching algorithm for a byte pattern

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MicroscopeGUI"
         mc:Ignorable="d"
         Title="Microscope GUI" Height="720" Width="1080"
-        WindowStartupLocation="CenterScreen" WindowState="Maximized" Icon="/Assets/Microscope.ico" Background="#FF2D2D30">
+        WindowStartupLocation="CenterScreen" WindowState="Maximized" Background="#FF2D2D30">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

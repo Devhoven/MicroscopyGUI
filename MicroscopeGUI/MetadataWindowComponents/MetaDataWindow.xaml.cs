@@ -4,7 +4,6 @@ using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Xml;
 using Application = System.Windows.Application;
@@ -22,7 +21,7 @@ namespace MicroscopeGUI
         {
             Initialize();
 
-            AddDataEntries(Control.GetXMLString());
+            //AddDataEntries(Control.GetXMLString());
 
             AddDataEntry("Comment", "", true).ValueTextBox.Focus();
         }
@@ -98,28 +97,29 @@ namespace MicroscopeGUI
         {
             if (OriginalPath is null)
             {
-                SaveFileDialog SaveDialog = new SaveFileDialog();
-                SaveDialog.Title = "Save file";
-                SaveDialog.Filter = "Png|*.png";
+                // *TODO*
+                //SaveFileDialog SaveDialog = new SaveFileDialog();
+                //SaveDialog.Title = "Save file";
+                //SaveDialog.Filter = "Png|*.png";
 
-                if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-                {
-                    ImageQueue.CurrentFrameBitmap.Save(SaveDialog.FileName);
+                //if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
+                //{
+                //    ImageQueue.CurrentFrameBitmap.Save(SaveDialog.FileName);
 
-                    using (FileStream Stream = new FileStream(SaveDialog.FileName, FileMode.Open, FileAccess.ReadWrite))
-                    {
-                        foreach (DataEntry Entry in Entries)
-                        {
-                            MetadataEditor.AddiTXt(Stream, Entry.Key, Entry.Value);
-                        }
-                    }
+                //    using (FileStream Stream = new FileStream(SaveDialog.FileName, FileMode.Open, FileAccess.ReadWrite))
+                //    {
+                //        foreach (DataEntry Entry in Entries)
+                //        {
+                //            MetadataEditor.AddiTXt(Stream, Entry.Key, Entry.Value);
+                //        }
+                //    }
 
-                    // Updates the image gallery
-                    string FolderPath = SaveDialog.FileName.Substring(0, SaveDialog.FileName.LastIndexOf("\\"));
-                    (Application.Current.MainWindow as UI).ImgGallery.UpdatePath(FolderPath);
+                //    // Updates the image gallery
+                //    string FolderPath = SaveDialog.FileName.Substring(0, SaveDialog.FileName.LastIndexOf("\\"));
+                //    (Application.Current.MainWindow as UI).ImgGallery.UpdatePath(FolderPath);
 
-                    Close();
-                }
+                //    Close();
+                //}
             }
             else
             {
