@@ -89,6 +89,9 @@
     <Reference Include="uEyeDotNet">
       <HintPath>..\..\..\..\..\Desktop\uEyeExmaples\uEye_DotNet_CSharp_ImageQueue\uEye_DotNet_ImageQueue\uEyeImageQueue\uEyeDotNet.dll</HintPath>
     </Reference>
+    <Reference Include="uEyeDotNetFramework">
+      <HintPath>uEyeDotNetFramework.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
   <ItemGroup>

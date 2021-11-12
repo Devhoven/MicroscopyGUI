@@ -58,10 +58,9 @@ namespace MicroscopeGUI
                     }
 
                     UI.Cam.Memory.GetSize(MemID, out Width, out Height);
-
                     // Converting it to a bitmap, since you can dispose it
                     // When you do it directly with an array, you get a lot of gc calls
-                    UI.Cam.Memory.ToBitmap(MemID, out Bitmap CFB);
+                    uEye.Extensions.ToBitmap(UI.Cam.Memory, MemID, out Bitmap CFB);
                     CurrentFrameBitmap = CFB;
 
                     // Checking if the main Thread is still running

@@ -23,7 +23,7 @@ namespace MicroscopeGUI
         {
             string Path = RegistryManager.GetStrVal("ImgGalleryPath");
             Settings.ImgGalleryPath = Path;
-            if (Path != string.Empty)
+            if (Path != string.Empty && Directory.Exists(Path))
             {
                 string[] FilePaths = Directory.GetFiles(Path);
                 LoadImagesFromFolder(FilePaths);
