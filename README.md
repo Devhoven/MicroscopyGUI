@@ -1,4 +1,4 @@
-# MicrosopyGUI
+# MicroscopyGUI
 This program is used to give the user a digital interface to process and work with images captured by a uEye camera in regards to microscopy. 
 
 It is separated into 3 distinct workspaces: The "Control Panel", the "Image Viewer" and the "Image Gallery".  
