@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
@@ -104,19 +106,60 @@ namespace MicroscopeGUI
 
                 if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
                 {
-                    ImageQueue.CurrentFrameBitmap.Save(SaveDialog.FileName);
+                    // Quick n dirty fix, in order to apply the post processing to the saved frame
+                    Bitmap savingBitmap = (Bitmap)ImageQueue.CurrentFrameBitmap.Clone();
+                    float brightness =  UI.FrameEffects.Brightness;
+                    float contrast   =  UI.FrameEffects.Contrast;
+                    float amountR    =  UI.FrameEffects.AmountR;
+                    float amountG    =  UI.FrameEffects.AmountG;
+                    float amountB    =  UI.FrameEffects.AmountB;
+                    Thread t = new Thread(new ThreadStart(SaveImg));
+                    UserInfo.SetInfo("Saving image...");
+                    t.Start();
 
-                    using (FileStream Stream = new FileStream(SaveDialog.FileName, FileMode.Open, FileAccess.ReadWrite))
+                    unsafe void SaveImg()
                     {
-                        foreach (DataEntry Entry in Entries)
+                        float r, g, b;
+                        BitmapData bmpData = null;
+                        bmpData = savingBitmap.LockBits(
+                            new Rectangle(0, 0, savingBitmap.Width, savingBitmap.Height),
+                            ImageLockMode.ReadWrite, PixelFormat.Format32bppArgb);
+                        for (int y = 0; y < savingBitmap.Height; y++)
                         {
-                            MetadataEditor.AddiTXt(Stream, Entry.Key, Entry.Value);
-                        }
-                    }
+                            byte* srcRow = (byte*)bmpData.Scan0 + (y * bmpData.Stride);
+                            for (int x = 0; x < savingBitmap.Width; x++)
+                            {
+                                r = ((srcRow[x * 4 + 2] / 255f * amountR - 0.5f)) * MathF.Max(contrast, 0) + 0.5f + brightness;
+                                g = ((srcRow[x * 4 + 1] / 255f * amountG - 0.5f)) * MathF.Max(contrast, 0) + 0.5f + brightness;
+                                b = ((srcRow[x * 4 + 0] / 255f * amountB - 0.5f)) * MathF.Max(contrast, 0) + 0.5f + brightness;
 
-                    // Updates the image gallery
-                    string FolderPath = SaveDialog.FileName.Substring(0, SaveDialog.FileName.LastIndexOf("\\"));
-                    (Application.Current.MainWindow as UI).ImgGallery.UpdatePath(FolderPath);
+                                srcRow[x * 4 + 2] = (byte)MathF.Max(MathF.Min(r * 255, 255), 0);
+                                srcRow[x * 4 + 1] = (byte)MathF.Max(MathF.Min(g * 255, 255), 0);
+                                srcRow[x * 4 + 0] = (byte)MathF.Max(MathF.Min(b * 255, 255), 0);
+                            }
+                        }
+
+                        savingBitmap.UnlockBits(bmpData);
+
+                        savingBitmap.Save(SaveDialog.FileName);
+
+                        UI.CurrentDispatcher.Invoke(new Action(() =>
+                        {
+                            using (FileStream Stream = new FileStream(SaveDialog.FileName, FileMode.Open, FileAccess.ReadWrite))
+                            {
+                                foreach (DataEntry Entry in Entries)
+                                {
+                                    MetadataEditor.AddiTXt(Stream, Entry.Key, Entry.Value);
+                                }
+                            }
+
+                            // Updates the image gallery
+                            string FolderPath = SaveDialog.FileName.Substring(0, SaveDialog.FileName.LastIndexOf("\\"));
+                            (Application.Current.MainWindow as UI).ImgGallery.UpdatePath(FolderPath);
+                            UserInfo.SetInfo("Saved the image and updated the path");
+                        }
+                        ));
+                    }
 
                     Close();
                 }
