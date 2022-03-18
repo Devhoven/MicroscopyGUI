@@ -43,6 +43,48 @@ namespace MicroscopeGUI
             return FrameSource;
         }
 
+        // Stolen from https://stackoverflow.com/a/16362489/9241163
+        [DllImport("kernel32.dll", EntryPoint = "RtlMoveMemory")]
+        static extern void CopyMemory(IntPtr Destination, IntPtr Source, uint Length);
+
+        public static Bitmap KernellDllCopyBitmap(this Bitmap bmp, bool CopyPalette = true)
+        {
+            Bitmap bmpDest = new Bitmap(bmp.Width, bmp.Height, bmp.PixelFormat);
+
+            if (!KernellDllCopyBitmap(bmp, bmpDest, CopyPalette))
+                bmpDest = null;
+
+            return bmpDest;
+        }
+
+        static bool KernellDllCopyBitmap(Bitmap bmpSrc, Bitmap bmpDest, bool CopyPalette = false)
+        {
+            bool copyOk = CheckCompatibility(bmpSrc, bmpDest);
+            if (copyOk)
+            {
+                BitmapData bmpDataSrc;
+                BitmapData bmpDataDest;
+
+                //Lock Bitmap to get BitmapData
+                bmpDataSrc = bmpSrc.LockBits(new Rectangle(0, 0, bmpSrc.Width, bmpSrc.Height), ImageLockMode.ReadOnly, bmpSrc.PixelFormat);
+                bmpDataDest = bmpDest.LockBits(new Rectangle(0, 0, bmpDest.Width, bmpDest.Height), ImageLockMode.WriteOnly, bmpDest.PixelFormat);
+                int lenght = bmpDataSrc.Stride * bmpDataSrc.Height;
+
+                CopyMemory(bmpDataDest.Scan0, bmpDataSrc.Scan0, (uint)lenght);
+
+                bmpSrc.UnlockBits(bmpDataSrc);
+                bmpDest.UnlockBits(bmpDataDest);
+
+                if (CopyPalette && bmpSrc.Palette.Entries.Length > 0)
+                    bmpDest.Palette = bmpSrc.Palette;
+            }
+            return copyOk;
+        }
+
+        static bool CheckCompatibility(Bitmap bmp1, Bitmap bmp2)
+            => ((bmp1.Width == bmp2.Width) && (bmp1.Height == bmp2.Height) && (bmp1.PixelFormat == bmp2.PixelFormat));
+
+
         // Returns the size in pixels of a given UI Element
         // Stolen from: https://stackoverflow.com/a/3450426/9241163
         public static Size GetElementPixelSize(this UIElement element)
