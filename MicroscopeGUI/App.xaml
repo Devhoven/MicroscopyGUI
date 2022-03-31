@@ -4,6 +4,25 @@
              xmlns:local="clr-namespace:MicroscopeGUI"
              StartupUri="MainWindowComponents/MainWindow.xaml">
     <Application.Resources>
-         
+        <ResourceDictionary>
+            <!--Text color-->
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White"/>
+            <!--Background of the containers (Menubar, ToolCon, ImageGallery)-->
+            <SolidColorBrush x:Key="BackgroundColor" Color="#FF434346" Opacity="0.5"/>
+            <!--Background of the foreground containers (ControlCon, etc.)-->
+            <SolidColorBrush x:Key="BackgroundAccentColor" Color="#FF262626"/>
+            <!--Accent color (SaveFrameBtn, Freeze and Unfreeze Button)-->
+            <SolidColorBrush x:Key="AccentColor" Color="LightSkyBlue"/>
+            <!--Background of the whole application-->
+            <LinearGradientBrush x:Key="AppBackgroundColor" StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#FF1E1E1E"  Offset="0.0"/>
+                <GradientStop Color="#FF2D2D30" Offset="1.0"/>
+            </LinearGradientBrush>
+
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/XAML/ScrollBar.xaml"/>
+                <ResourceDictionary Source="/XAML/HorizontalScrollbar.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

@@ -15,13 +15,10 @@ namespace MicroscopeGUI
             {
                 foreach (Control Current in AllControls)
                 {
-                    if (Current.Serializable)
+                    if (Current.Serializable && Reader.ReadToFollowing(Current.GetName().Replace(' ', '-')))
                     {
-                        if (Reader.ReadToFollowing(Current.GetName().Replace(' ', '-')))
-                        {
-                            Reader.Read();
-                            Current.SetValue(Reader.ReadContentAsObject());
-                        }
+                        Reader.Read();
+                        Current.SetValue(Reader.ReadContentAsObject());
                     }
                 }
             }

@@ -1,33 +1,7 @@
-﻿/*!
- * \file    AcquisitionWorker.cs
- * \author  IDS Imaging Development Systems GmbH
- * \date    2020-02-01
- * \since   1.1.6
- *
- * \brief   The AcquisitionWorker class is used in a worker thread to capture
- *          images from the device continuously and do an image conversion into
- *          a desired pixel format.
- *
- * \version 1.1.1
- *
- * Copyright (C) 2020 - 2021, IDS Imaging Development Systems GmbH.
- *
- * The information in this document is subject to change without notice
- * and should not be construed as a commitment by IDS Imaging Development Systems GmbH.
- * IDS Imaging Development Systems GmbH does not assume any responsibility for any errors
- * that may appear in this document.
- *
- * This document, or source code, is provided solely as an example of how to utilize
- * IDS Imaging Development Systems GmbH software libraries in a sample application.
- * IDS Imaging Development Systems GmbH does not assume any responsibility
- * for the use or reliability of any portion of this document.
- *
- * General permission to copy or modify is hereby granted.
- */
-
-using System;
+﻿using System;
 using peak.ipl;
 using peak.core;
+using peak.core.nodes;
 using System.Drawing;
 using System.Diagnostics;
 using Image = peak.ipl.Image;
@@ -57,12 +31,12 @@ namespace MicroscopeGUI
             try
             {
                 // Lock critical features to prevent them from changing during acquisition
-                NodeMapRemoteDevice.FindNode<peak.core.nodes.IntegerNode>("TLParamsLocked").SetValue(1);
+                NodeMapRemoteDevice.FindNode<IntegerNode>("TLParamsLocked").SetValue(1);
 
                 // Start acquisition
                 DataStream.StartAcquisition();
-                NodeMapRemoteDevice.FindNode<peak.core.nodes.CommandNode>("AcquisitionStart").Execute();
-                NodeMapRemoteDevice.FindNode<peak.core.nodes.CommandNode>("AcquisitionStart").WaitUntilDone();
+                NodeMapRemoteDevice.FindNode<CommandNode>("AcquisitionStart").Execute();
+                NodeMapRemoteDevice.FindNode<CommandNode>("AcquisitionStart").WaitUntilDone();
             }
             catch (Exception e)
             {

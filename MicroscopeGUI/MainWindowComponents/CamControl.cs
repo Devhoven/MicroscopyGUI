@@ -1,27 +1,4 @@
-﻿/*!
- * \file    BackEnd.cs
- * \author  IDS Imaging Development Systems GmbH
- * \date    2020-02-01
- * \since   1.1.6
- *
- * \version 1.0.0
- *
- * Copyright (C) 2020 - 2021, IDS Imaging Development Systems GmbH.
- *
- * The information in this document is subject to change without notice
- * and should not be construed as a commitment by IDS Imaging Development Systems GmbH.
- * IDS Imaging Development Systems GmbH does not assume any responsibility for any errors
- * that may appear in this document.
- *
- * This document, or source code, is provided solely as an example of how to utilize
- * IDS Imaging Development Systems GmbH software libraries in a sample application.
- * IDS Imaging Development Systems GmbH does not assume any responsibility
- * for the use or reliability of any portion of this document.
- *
- * General permission to copy or modify is hereby granted.
- */
-
-using peak;
+﻿using peak;
 using System;
 using peak.ipl;
 using peak.core;
@@ -53,7 +30,7 @@ namespace MicroscopeGUI
 
         static Device Device;
         static DataStream DataStream;
-        static NodeMap NodeMapRemoteDevice;
+        static NodeMap NodeMap;
 
         static CamControl()
         {
@@ -99,7 +76,7 @@ namespace MicroscopeGUI
         {
             try
             {
-                NodeMapRemoteDevice.FindNode<CommandNode>("AcquisitionStop").Execute();
+                NodeMap.FindNode<CommandNode>("AcquisitionStop").Execute();
             }
             catch (Exception e)
             {
@@ -111,7 +88,7 @@ namespace MicroscopeGUI
         {
             try
             {
-                NodeMapRemoteDevice.FindNode<CommandNode>("AcquisitionStart").Execute();
+                NodeMap.FindNode<CommandNode>("AcquisitionStart").Execute();
             }
             catch (Exception e)
             {
@@ -186,15 +163,15 @@ namespace MicroscopeGUI
                     DataStream = dataStreams[0].OpenDataStream();
 
                     // Get nodemap of remote device for all accesses to the genicam nodemap tree
-                    NodeMapRemoteDevice = Device.RemoteDevice().NodeMaps()[0];
+                    NodeMap = Device.RemoteDevice().NodeMaps()[0];
 
                     // To prepare for untriggered continuous image acquisition, load the default user set if available
                     // and wait until execution is finished
                     try
                     {
-                        NodeMapRemoteDevice.FindNode<EnumerationNode>("UserSetSelector").SetCurrentEntry("Default");
-                        NodeMapRemoteDevice.FindNode<CommandNode>("UserSetLoad").Execute();
-                        NodeMapRemoteDevice.FindNode<CommandNode>("UserSetLoad").WaitUntilDone();
+                        NodeMap.FindNode<EnumerationNode>("UserSetSelector").SetCurrentEntry("Default");
+                        NodeMap.FindNode<CommandNode>("UserSetLoad").Execute();
+                        NodeMap.FindNode<CommandNode>("UserSetLoad").WaitUntilDone();
                     }
                     catch
                     {
@@ -202,7 +179,7 @@ namespace MicroscopeGUI
                     }
 
                     // Get the payload size for correct buffer allocation
-                    uint payloadSize = Convert.ToUInt32(NodeMapRemoteDevice.FindNode<IntegerNode>("PayloadSize").Value());
+                    uint payloadSize = Convert.ToUInt32(NodeMap.FindNode<IntegerNode>("PayloadSize").Value());
 
                     // Get the minimum number of buffers that must be announced
                     uint bufferCountMax = DataStream.NumBuffersAnnouncedMinRequired();
@@ -216,7 +193,7 @@ namespace MicroscopeGUI
 
                     // Configure worker
                     AcqWorker.SetDataStream(DataStream);
-                    AcqWorker.SetNodemapRemoteDevice(NodeMapRemoteDevice);
+                    AcqWorker.SetNodemapRemoteDevice(NodeMap);
                 }
             }
             catch (Exception e)
@@ -236,7 +213,7 @@ namespace MicroscopeGUI
             {
                 try
                 {
-                    var remoteNodeMap = Device.RemoteDevice().NodeMaps()[0];
+                    NodeMap remoteNodeMap = Device.RemoteDevice().NodeMaps()[0];
                     remoteNodeMap.FindNode<CommandNode>("AcquisitionStop").Execute();
                     remoteNodeMap.FindNode<CommandNode>("AcquisitionStop").WaitUntilDone();
                 }
@@ -269,7 +246,7 @@ namespace MicroscopeGUI
             try
             {
                 // Unlock parameters after acquisition stop
-                NodeMapRemoteDevice.FindNode<IntegerNode>("TLParamsLocked").SetValue(0);
+                NodeMap.FindNode<IntegerNode>("TLParamsLocked").SetValue(0);
             }
             catch (Exception e)
             {
@@ -278,12 +255,10 @@ namespace MicroscopeGUI
         }
 
         public static void SaveToFile(string path)
-        {
-            NodeMapRemoteDevice.StoreToFile(path);
-        }
+            => NodeMap.StoreToFile(path);
 
         public static ControlCon GetControlCon(StackPanel parent) 
-            => new ControlCon(parent, NodeMapRemoteDevice);
+            => new ControlCon(parent, NodeMap);
 
         static void AcquisitionWorker_ImageReceived(Bitmap image)
             => ImageReceived(image);
