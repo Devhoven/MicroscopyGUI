@@ -24,12 +24,6 @@ namespace MicroscopeGUI
 
         public static bool IsActive;
 
-        public static int Width { get => AcqWorker.Width; }
-        public static int Height { get => AcqWorker.Height; }
-
-        static AcquisitionWorker AcqWorker;
-        static Thread AcqThread;
-
         static Device Device;
         static DataStream DataStream;
         static NodeMap NodeMap;
@@ -49,12 +43,8 @@ namespace MicroscopeGUI
         {
             try
             {
-                // Create acquisition worker thread that waits for new images from the camera
-                AcqWorker = new AcquisitionWorker();
-                AcqThread = new Thread(new ThreadStart(AcqWorker.Start));
-
-                AcqWorker.ImageReceived += AcquisitionWorker_ImageReceived;
-                AcqWorker.HistogramUpdated += AcquisitionWorker_HistogramUpdated;
+                AcquisitionWorker.ImageReceived += AcquisitionWorker_ImageReceived;
+                AcquisitionWorker.HistogramUpdated += AcquisitionWorker_HistogramUpdated;
 
                 // Initialize peak library
                 Library.Initialize();
@@ -71,9 +61,6 @@ namespace MicroscopeGUI
             Debug.WriteLine("--- [BackEnd] Start");
             if (!OpenDevice())
                 return false;
-
-            // Start thread execution
-            AcqThread.Start();
 
             // Retreiving the start and stop command nodes
             AcquisitionStartNode = NodeMap.FindNode<CommandNode>("AcquisitionStart");
@@ -110,10 +97,7 @@ namespace MicroscopeGUI
         {
             Debug.WriteLine("--- [BackEnd] Stop");
             IsActive = false;
-            AcqWorker.Stop();
-
-            if (AcqThread.IsAlive)
-                AcqThread.Join();
+            AcquisitionWorker.Stop();
 
             CloseDevice();
 

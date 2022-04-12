@@ -6,29 +6,32 @@ using System.Drawing;
 using System.Diagnostics;
 using Image = peak.ipl.Image;
 using Buffer = peak.core.Buffer;
+using System.Threading;
 
 namespace MicroscopeGUI
 {
-    public class AcquisitionWorker
+    public static class AcquisitionWorker
     {
         // Event which is raised if a new image was received
         public delegate void ImageReceivedEventHandler(Bitmap image);
-        public event ImageReceivedEventHandler ImageReceived;
+        public static event ImageReceivedEventHandler ImageReceived;
 
         public delegate void HistogramUpdatedEventHandler(Histogram histogram);
-        public event HistogramUpdatedEventHandler HistogramUpdated;
+        public static event HistogramUpdatedEventHandler HistogramUpdated;
 
         // Contain the widht and height of the current image
-        public int Width, Height;
+        public static int Width, Height;
 
-        DataStream DataStream;
-        NodeMap NodeMap;
+        static DataStream DataStream;
+        static NodeMap NodeMap;
 
-        ColorCorrector ColorCorrector;
+        static ColorCorrector ColorCorrector;
 
-        bool Running = false;
+        static bool Running = false;
 
-        public void Start()
+        static Thread AcqThread;
+
+        public static void Start()
         {
             try
             {
@@ -48,10 +51,12 @@ namespace MicroscopeGUI
 
             InitColorCorrector();
 
-            Loop();
+            // Create acquisition worker thread that waits for new images from the camera
+            AcqThread = new Thread(new ThreadStart(Loop));
+            AcqThread.Start();
         }
 
-        void InitColorCorrector()
+        static void InitColorCorrector()
         {
             ColorCorrector = new ColorCorrector();
 
@@ -70,8 +75,6 @@ namespace MicroscopeGUI
                 }
 
                 ColorCorrector.SetColorCorrectionFactors(colorCorrectionFactors);
-
-
             }
             catch (Exception e)
             {
@@ -79,7 +82,7 @@ namespace MicroscopeGUI
             }
         }
 
-        void Loop()
+        static void Loop()
         {
             int stride;
 
@@ -141,13 +144,18 @@ namespace MicroscopeGUI
             }
         }
 
-        public void Stop() =>
+        public static void Stop()
+        {
             Running = false;
 
-        public void SetDataStream(DataStream dataStream) =>
+            if (AcqThread.IsAlive)
+                AcqThread.Join();
+        }
+
+        public static void SetDataStream(DataStream dataStream) =>
             DataStream = dataStream;
 
-        public void SetNodeMap(NodeMap nodeMap) =>
+        public static void SetNodeMap(NodeMap nodeMap) =>
             NodeMap = nodeMap;
     }
 }
