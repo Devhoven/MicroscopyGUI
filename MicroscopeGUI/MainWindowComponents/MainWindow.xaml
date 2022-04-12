@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MicroscopeGUI"
+        xmlns:local="clr-namespace:MicroscopeGUI" xmlns:effects="clr-namespace:MicroscopeGUI.MainWindowComponents.ImageViewer.Shader.Classes"
         mc:Ignorable="d"
         Title="Microscope GUI" Height="720" Width="1080"
         WindowStartupLocation="CenterScreen" WindowState="Maximized">
@@ -166,7 +166,7 @@
                 <!--Post processing container-->
                 <Expander Header="Post Processing" FontSize="18" Margin="5 5 0 10" Grid.Row="2">
                     <Border CornerRadius="5" Background="{StaticResource BackgroundAccentColor}" Margin="0 10 5 0" Padding="5">
-                        <StackPanel x:Name="EffectCon" TextElement.FontSize="13" Margin="0 0 0 10"/>
+                        <effects:EffectContainer x:Name="EffectCon" TextElement.FontSize="13" Margin="0 0 0 10"/>
                     </Border>
                 </Expander>
                 

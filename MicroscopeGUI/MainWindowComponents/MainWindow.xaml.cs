@@ -8,6 +8,7 @@ using System.Windows.Media.Imaging;
 using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
 using MessageBox = System.Windows.MessageBox;
+using MicroscopeGUI.MainWindowComponents.ImageViewer.Shader.Classes;
 
 namespace MicroscopeGUI
 {
