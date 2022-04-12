@@ -182,22 +182,6 @@ namespace MicroscopeGUI
                         NodeMap.FindNode<EnumerationNode>("UserSetSelector").SetCurrentEntry("Default");
                         NodeMap.FindNode<CommandNode>("UserSetLoad").Execute();
                         NodeMap.FindNode<CommandNode>("UserSetLoad").WaitUntilDone();
-                        // Determine the current entry of ColorCorrectionMatrix
-                        string value = NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrix").CurrentEntry().SymbolicValue();
-                        // Get a list of all available entries of ColorCorrectionMatrix
-                        var allEntries = NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrix").Entries();
-                        List<string> availableEntries = new List<string>();
-                        for (int i = 0; i < allEntries.Count(); ++i)
-                        {
-                            if ((allEntries[i].AccessStatus() != NodeAccessStatus.NotAvailable)
-                                    && (allEntries[i].AccessStatus() != NodeAccessStatus.NotImplemented))
-                            {
-                                availableEntries.Add(allEntries[i].SymbolicValue());
-                            }
-                        }
-                        // Set ColorCorrectionMatrix to "HQ"
-                        NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrix").SetCurrentEntry("HQ");
-
                     }
                     catch
                     {
