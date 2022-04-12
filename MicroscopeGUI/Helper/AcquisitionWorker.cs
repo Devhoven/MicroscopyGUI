@@ -22,7 +22,9 @@ namespace MicroscopeGUI
         public int Width, Height;
 
         DataStream DataStream;
-        NodeMap NodeMapRemoteDevice;
+        NodeMap NodeMap;
+
+        ColorCorrector ColorCorrector;
 
         bool Running = false;
 
@@ -31,12 +33,12 @@ namespace MicroscopeGUI
             try
             {
                 // Lock critical features to prevent them from changing during acquisition
-                NodeMapRemoteDevice.FindNode<IntegerNode>("TLParamsLocked").SetValue(1);
+                NodeMap.FindNode<IntegerNode>("TLParamsLocked").SetValue(1);
 
                 // Start acquisition
                 DataStream.StartAcquisition();
-                NodeMapRemoteDevice.FindNode<CommandNode>("AcquisitionStart").Execute();
-                NodeMapRemoteDevice.FindNode<CommandNode>("AcquisitionStart").WaitUntilDone();
+                NodeMap.FindNode<CommandNode>("AcquisitionStart").Execute();
+                NodeMap.FindNode<CommandNode>("AcquisitionStart").WaitUntilDone();
             }
             catch (Exception e)
             {
@@ -44,7 +46,55 @@ namespace MicroscopeGUI
                 Debug.WriteLine("--- [AquisitionWorker] " + e.Message);
             }
 
+            InitColorCorrector();
+
             Loop();
+        }
+
+        void InitColorCorrector()
+        {
+            ColorCorrector = new ColorCorrector();
+
+            try
+            {
+                // Set the color correction matrix selector to the predefined matrix
+                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain00");
+                var gain_0_0 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
+
+                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain01");
+                var gain_0_1 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
+
+                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain02");
+                var gain_0_2 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
+
+                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain10");
+                var gain_1_0 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
+
+                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain11");
+                var gain_1_1 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
+
+                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain12");
+                var gain_1_2 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
+
+                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain20");
+                var gain_2_0 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
+
+                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain21");
+                var gain_2_1 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
+
+                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain22");
+                var gain_2_2 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
+
+                var colorCorrectionFactors = new ColorCorrectionFactors((float)gain_0_0, (float)gain_0_1, (float)gain_0_2,
+                                                                        (float)gain_1_0, (float)gain_1_1, (float)gain_1_2,
+                                                                        (float)gain_2_0, (float)gain_2_1, (float)gain_2_2);
+
+                ColorCorrector.SetColorCorrectionFactors(colorCorrectionFactors);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("--- [AquisitionWorker] Couldn't set the color correction matrix \n" + e.Message);
+            }
         }
 
         void Loop()
@@ -69,10 +119,12 @@ namespace MicroscopeGUI
                     iplImg = new Image((PixelFormatName)buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), buffer.Width(), buffer.Height());
 
                     // Debayering and converting IDS peak IPL Image to RGBa8 format
-                    iplImg = iplImg.ConvertTo(PixelFormatName.BGRa8);
+                    iplImg = iplImg.ConvertTo(PixelFormatName.BGRa8, ConversionMode.HighQuality);
 
                     // Queue buffer so that it can be used again 
                     DataStream.QueueBuffer(buffer);
+
+                    ColorCorrector.ProcessInPlace(iplImg);
 
                     // Getting dimensions of the IDS peak IPL Image 
                     Width = (int)iplImg.Width();
@@ -113,7 +165,7 @@ namespace MicroscopeGUI
         public void SetDataStream(DataStream dataStream) =>
             DataStream = dataStream;
 
-        public void SetNodemapRemoteDevice(NodeMap nodeMap) =>
-            NodeMapRemoteDevice = nodeMap;
+        public void SetNodeMap(NodeMap nodeMap) =>
+            NodeMap = nodeMap;
     }
 }

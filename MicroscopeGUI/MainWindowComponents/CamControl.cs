@@ -188,6 +188,13 @@ namespace MicroscopeGUI
                         // UserSet is not available
                     }
 
+                    // Trying to set the ColorCorrectionMatrix to "Hiqh Quality"
+                    try
+                    {
+                        NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrix").SetCurrentEntry("HQ");
+                    }
+                    catch { }
+
 
                     // Get the payload size for correct buffer allocation
                     uint payloadSize = Convert.ToUInt32(NodeMap.FindNode<IntegerNode>("PayloadSize").Value());
@@ -204,7 +211,7 @@ namespace MicroscopeGUI
 
                     // Configure worker
                     AcqWorker.SetDataStream(DataStream);
-                    AcqWorker.SetNodemapRemoteDevice(NodeMap);
+                    AcqWorker.SetNodeMap(NodeMap);
                 }
             }
             catch (Exception e)
