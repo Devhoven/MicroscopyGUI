@@ -49,16 +49,13 @@ namespace MicroscopeGUI
 
         void Loop()
         {
-            int Stride;
+            int stride;
 
-            uint ErrorCounter = 0;
+            uint errorCounter = 0;
 
-            Bitmap Image;
-            Image IPLImg;
-            Buffer Buffer;
-
-            DateTime Before = DateTime.Now;
-            DateTime After = Before;
+            Bitmap image;
+            Image iplImg;
+            Buffer buffer;
 
             Running = true;
             while (Running)
@@ -66,45 +63,45 @@ namespace MicroscopeGUI
                 try
                 {
                     // Get buffer from device's datastream
-                    Buffer = DataStream.WaitForFinishedBuffer(1000);
+                    buffer = DataStream.WaitForFinishedBuffer(1000);
 
                     // Create IDS peak IPL Image
-                    IPLImg = new Image((PixelFormatName)Buffer.PixelFormat(), Buffer.BasePtr(), Buffer.Size(), Buffer.Width(), Buffer.Height());
+                    iplImg = new Image((PixelFormatName)buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), buffer.Width(), buffer.Height());
 
                     // Debayering and converting IDS peak IPL Image to RGBa8 format
-                    IPLImg = IPLImg.ConvertTo(PixelFormatName.BGRa8);
+                    iplImg = iplImg.ConvertTo(PixelFormatName.BGRa8);
 
                     // Queue buffer so that it can be used again 
-                    DataStream.QueueBuffer(Buffer);
+                    DataStream.QueueBuffer(buffer);
 
                     // Getting dimensions of the IDS peak IPL Image 
-                    Width = (int)IPLImg.Width();
-                    Height = (int)IPLImg.Height();
-                    Stride = (int)IPLImg.PixelFormat().CalculateStorageSizeOfPixels(IPLImg.Width());
+                    Width = (int)iplImg.Width();
+                    Height = (int)iplImg.Height();
+                    stride = (int)iplImg.PixelFormat().CalculateStorageSizeOfPixels(iplImg.Width());
 
                     // Fire the histogram updated event with the new data
-                    HistogramUpdated(new Histogram(IPLImg));
+                    HistogramUpdated(new Histogram(iplImg));
 
                     // Creating Bitmap from the IDS peak IPL Image
-                    Image = new Bitmap(Width, Height, Stride, System.Drawing.Imaging.PixelFormat.Format32bppArgb, IPLImg.Data());
+                    image = new Bitmap(Width, Height, stride, System.Drawing.Imaging.PixelFormat.Format32bppArgb, iplImg.Data());
 
                     if (ImageReceived != null)
-                        ImageReceived(Image);
-
-                    Image.Dispose();
-                    IPLImg.Dispose();
+                        ImageReceived(image);
+                        
+                    image.Dispose();
+                    iplImg.Dispose();
 
                     // Resetting it to 0, since the current frame got sent successfully
-                    ErrorCounter = 0;
+                    errorCounter = 0;
                 }
                 catch (Exception e)
                 {
-                    ErrorCounter++;
+                    errorCounter++;
 
                     Debug.WriteLine("--- [AquisitionWorker] " + e.Message);
 
                     // If more than 10 consecutive errors have been thrown a message is going to be shown to the user
-                    if (ErrorCounter > 10)
+                    if (errorCounter > 10)
                         UserInfo.SetErrorInfo("The camera failed to send more than 10 consecutive frames");
                 }
             }
