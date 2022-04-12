@@ -209,7 +209,7 @@
 
         <!--Image Gallery-->
         <Border Grid.ZIndex="1" Grid.Column="2" Grid.Row="1" Background="{StaticResource BackgroundColor}" 
-                CornerRadius="5" Margin="5 5 5 5">
+                CornerRadius="5" Margin="5 5 5 5" MinWidth="210">
             <Grid x:Name="ImgGalleryCon">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
@@ -218,7 +218,7 @@
 
                 <Label Content="Image Gallery:" Style="{StaticResource Headline}" HorizontalAlignment="Left" Margin="5 5 0 0" Grid.Row="0"/>
 
-                <ScrollViewer Grid.Row="1" Visibility="Visible" Width="200" VerticalScrollBarVisibility="Visible">
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" >
                     <local:ImageGallery x:Name="ImgGallery" VerticalAlignment="Top" Margin="10 5 0 0"/>
                 </ScrollViewer>
             </Grid>
