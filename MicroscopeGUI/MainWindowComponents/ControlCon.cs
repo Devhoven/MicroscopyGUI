@@ -57,6 +57,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
                 }
             }
 
+            // BoolControl for the 
             Children.Add(new BoolControl("Color Correction Matrix", AcquisitionWorker.UseColorCorrection, (val) =>
             {
                 AcquisitionWorker.UseColorCorrection = val;

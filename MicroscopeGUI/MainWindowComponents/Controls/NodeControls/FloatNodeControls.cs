@@ -14,7 +14,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
     class FloatNodeControl : ControlBase
     {
         // Standard margins for the label
-        static Thickness LabelMargin = new Thickness(0, 5, 0, 5);
+        static readonly Thickness LabelMargin = new Thickness(0, 5, 0, 5);
 
         FloatNode Node;
 

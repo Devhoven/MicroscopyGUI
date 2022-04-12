@@ -23,9 +23,9 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
                 _Value = Math.Clamp(value, Minimum, Maximum);
                 // If the value exceeds 1000, a k is going to be appended for readabillity
                 if (value > 1000)
-                    Text = (_Value / 1000).ToString("N1") + "k";
+                    Text = (_Value / 1000).ToString("0.#") + "k";
                 else
-                    Text = _Value.ToString("N2");
+                    Text = _Value.ToString("0.##");
                 // Replacing the commas with dots, since they are more conventional 
                 Text = Text.Replace(',', '.');
             }
