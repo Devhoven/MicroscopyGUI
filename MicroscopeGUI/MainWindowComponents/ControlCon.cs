@@ -43,6 +43,12 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
 
         void AddControls(NodeMap nodeMap)
         {
+            // BoolControl for the ColorCorrectionMatrix
+            Children.Add(new BoolControl("Color Correction Matrix", AcquisitionWorker.UseColorCorrection, (val) =>
+            {
+                AcquisitionWorker.UseColorCorrection = val;
+            }));
+
             foreach (ControlNode element in CONTROL_NODES)
             {
                 switch (element.Type)
@@ -56,12 +62,6 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
                         break;
                 }
             }
-
-            // BoolControl for the 
-            Children.Add(new BoolControl("Color Correction Matrix", AcquisitionWorker.UseColorCorrection, (val) =>
-            {
-                AcquisitionWorker.UseColorCorrection = val;
-            }));
         }
     }
 }

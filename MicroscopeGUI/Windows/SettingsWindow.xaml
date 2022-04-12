@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MicroscopeGUI"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
         mc:Ignorable="d"
         Title="SettingsWindow" Width="450" Height="230" ResizeMode="NoResize">
     <Window.Background>
@@ -19,7 +19,7 @@
         </Style>
     </Window.Style>
     <Window.Resources>
-        <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey }" Color="White"/>
+        <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White"/>
     </Window.Resources>
 
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -44,8 +44,8 @@
                 <StackPanel Margin="5">
                     <DockPanel Margin="0 0 0 5">
                         <Label Content="Line Color:"/>
-                        <xctk:ColorPicker x:Name="LineColorPicker" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0"
-                                      SelectedColorChanged="LineColorPickerColorChanged" ShowDropDownButton="False" Width="50"/>
+                        <colorpicker:PortableColorPicker Name="LineColorPicker" HorizontalAlignment="Right" ColorChanged="LineColorPickerColorChanged"
+                                                         Width="50" Height="25" ShowAlpha="False" FontSize="13"/>
                     </DockPanel>
 
                     <DockPanel Margin="0 0 0 5">
@@ -57,8 +57,8 @@
 
                     <DockPanel>
                         <Label Content="Line Text Color:"/>
-                        <xctk:ColorPicker x:Name="LineTextColorPicker" HorizontalAlignment="Right" Background="Transparent" BorderThickness="0"
-                                      SelectedColorChanged="LineTextColorPickerColorChanged" ShowDropDownButton="False" Width="50"/>
+                        <colorpicker:PortableColorPicker Name="LineTextColorPicker" HorizontalAlignment="Right" ColorChanged="LineTextColorPickerColorChanged"
+                                                         Width="50" Height="25" ShowAlpha="False" FontSize="13"/>
                     </DockPanel>
                 </StackPanel>
             </Border>

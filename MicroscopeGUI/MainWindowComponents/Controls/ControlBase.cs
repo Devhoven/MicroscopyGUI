@@ -6,6 +6,9 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
 {
     abstract class ControlBase : Grid
     {
+        // Standard margins for the label
+        static readonly Thickness LABEL_MARGIN = new Thickness(0, 5, 0, 5);
+
         public Label Label;
 
         public virtual bool Enable
@@ -20,6 +23,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
             {
                 Foreground = Brushes.White,
                 Content = name,
+                Margin = LABEL_MARGIN,
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Left
             };

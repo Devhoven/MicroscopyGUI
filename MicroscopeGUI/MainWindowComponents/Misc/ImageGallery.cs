@@ -8,7 +8,6 @@ using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
 using DialogResult = System.Windows.Forms.DialogResult;
 using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
-using Microsoft.WindowsAPICodePack.Dialogs;
 
 namespace MicroscopeGUI
 {
@@ -37,11 +36,13 @@ namespace MicroscopeGUI
         // Shows a dialog where the user can select a folder
         public void UpdatePath()
         {
-            CommonOpenFileDialog dialog = new CommonOpenFileDialog();
-            dialog.InitialDirectory = Settings.ImgGalleryPath;
-            dialog.IsFolderPicker = true;
-            if (dialog.ShowDialog() == CommonFileDialogResult.Ok)
-                UpdatePath(dialog.FileName);
+            FolderBrowserDialog dialog = new FolderBrowserDialog()
+            {
+                InitialDirectory = Settings.ImgGalleryPath
+            };
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+                UpdatePath(dialog.SelectedPath);
         }
 
         // Updates the path in the settings and the registry

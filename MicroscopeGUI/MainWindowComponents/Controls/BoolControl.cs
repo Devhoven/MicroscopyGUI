@@ -10,8 +10,6 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
 {
     class BoolControl : ControlBase
     {
-        static readonly Thickness ControlMargin = new Thickness(0, 10, 0, 5);
-
         public delegate void Toggled(bool newVal);
 
         Toggled OnToggled;
@@ -21,8 +19,6 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
             OnToggled = onToggled;
 
             InitControls(defaultVal);
-
-            Margin = ControlMargin;
         }
 
         void InitControls(bool defaultVal)

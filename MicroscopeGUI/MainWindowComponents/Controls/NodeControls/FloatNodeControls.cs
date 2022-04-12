@@ -13,9 +13,6 @@ namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
     // Slider controls with double values
     class FloatNodeControl : ControlBase
     {
-        // Standard margins for the label
-        static readonly Thickness LabelMargin = new Thickness(0, 5, 0, 5);
-
         FloatNode Node;
 
         RangeInput ValInput;
@@ -48,10 +45,8 @@ namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
             Node.ChangedEvent += NodeChanged;
         }
 
-        void InitControls()
+        private void InitControls()
         {
-            Label.Margin = LabelMargin;
-
             ValInput = new RangeInput(Node.Value(), Node.Minimum(), Node.Maximum(), Node.HasConstantIncrement() ? Node.Increment() : 0);
 
             RowDefinitions.Add(new RowDefinition());
@@ -75,7 +70,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
             => ValInput.ChangeRange(Node.Minimum(), Node.Maximum());
 
         // Gets called if the user sets a new value 
-        void ChangeValue(double newVal)
+        private void ChangeValue(double newVal)
         {
             if (DelayTimer.ElapsedMilliseconds > MIN_ELAPSED_MS)
             {
@@ -85,7 +80,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
         }
 
         // Sets the value of the node
-        void SetValue(double newVal)
+        private void SetValue(double newVal)
             => CamControl.SetNodeValue(() => Node.SetValue(newVal));
     }
 }

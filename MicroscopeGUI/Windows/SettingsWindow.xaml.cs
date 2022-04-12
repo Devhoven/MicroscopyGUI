@@ -26,11 +26,11 @@ namespace MicroscopeGUI
             PathTextBlock.Text = Settings.ImgGalleryPath;
         }
 
-        private void LineColorPickerColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e) =>
-            Settings.LineColor = new SolidColorBrush((Color)e.NewValue);
+        private void LineColorPickerColorChanged(object sender, RoutedEventArgs e) =>
+            Settings.LineColor = new SolidColorBrush(LineColorPicker.SelectedColor);
 
-        private void LineTextColorPickerColorChanged(object sender, RoutedPropertyChangedEventArgs<Color?> e) =>
-            Settings.LineTextColor = new SolidColorBrush((Color)e.NewValue);
+        private void LineTextColorPickerColorChanged(object sender, RoutedEventArgs e) =>
+            Settings.LineTextColor = new SolidColorBrush(LineTextColorPicker.SelectedColor);
 
         private void CheckIfNumeric(object sender, TextCompositionEventArgs e) =>
             e.Handled = NumRegex.IsMatch(e.Text);
