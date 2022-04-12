@@ -20,8 +20,6 @@ namespace MicroscopeGUI
                 ReloadCamera();
             else if (e.Key == System.Windows.Input.Key.F1)
                 SettingsClick(null, null);
-            else if (e.Key == System.Windows.Input.Key.Escape)
-                Close();
             // If Ctrl is pressed
             else if (e.KeyboardDevice.Modifiers.HasFlag(System.Windows.Input.ModifierKeys.Control))
             {
