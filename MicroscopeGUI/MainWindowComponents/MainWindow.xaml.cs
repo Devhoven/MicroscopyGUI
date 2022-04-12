@@ -43,7 +43,7 @@ namespace MicroscopeGUI
 
             BmpMemory = new MemoryStream();
 
-            CamControl.GetControlCon(ConfigCon);
+            ConfigCon.Children.Add(CamControl.GetControlCon());
         }
 
         private void CamImageReceived(Bitmap bitmap)
@@ -72,7 +72,7 @@ namespace MicroscopeGUI
             CamControl.Initialize();
             CamControl.Start();
 
-            CamControl.GetControlCon(ConfigCon);
+            ConfigCon.Children.Add(CamControl.GetControlCon());
         }
 
         void InitializeUIComponents()

@@ -8,6 +8,8 @@ using peak.core.nodes;
 using System.Threading;
 using System.Diagnostics;
 using System.Windows.Controls;
+using System.Text;
+using System.Collections.Generic;
 
 namespace MicroscopeGUI
 {
@@ -31,6 +33,10 @@ namespace MicroscopeGUI
         static Device Device;
         static DataStream DataStream;
         static NodeMap NodeMap;
+
+
+        static CommandNode AcquisitionStartNode;
+        static CommandNode AcquisitionStopNode;
 
         static CamControl()
         {
@@ -68,6 +74,10 @@ namespace MicroscopeGUI
 
             // Start thread execution
             AcqThread.Start();
+
+            // Retreiving the start and stop command nodes
+            AcquisitionStartNode = NodeMap.FindNode<CommandNode>("AcquisitionStart");
+            AcquisitionStopNode = NodeMap.FindNode<CommandNode>("AcquisitionStop");
 
             return true;
         }
@@ -172,11 +182,28 @@ namespace MicroscopeGUI
                         NodeMap.FindNode<EnumerationNode>("UserSetSelector").SetCurrentEntry("Default");
                         NodeMap.FindNode<CommandNode>("UserSetLoad").Execute();
                         NodeMap.FindNode<CommandNode>("UserSetLoad").WaitUntilDone();
+                        // Determine the current entry of ColorCorrectionMatrix
+                        string value = NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrix").CurrentEntry().SymbolicValue();
+                        // Get a list of all available entries of ColorCorrectionMatrix
+                        var allEntries = NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrix").Entries();
+                        List<string> availableEntries = new List<string>();
+                        for (int i = 0; i < allEntries.Count(); ++i)
+                        {
+                            if ((allEntries[i].AccessStatus() != NodeAccessStatus.NotAvailable)
+                                    && (allEntries[i].AccessStatus() != NodeAccessStatus.NotImplemented))
+                            {
+                                availableEntries.Add(allEntries[i].SymbolicValue());
+                            }
+                        }
+                        // Set ColorCorrectionMatrix to "HQ"
+                        NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrix").SetCurrentEntry("HQ");
+
                     }
                     catch
                     {
                         // UserSet is not available
                     }
+
 
                     // Get the payload size for correct buffer allocation
                     uint payloadSize = Convert.ToUInt32(NodeMap.FindNode<IntegerNode>("PayloadSize").Value());
@@ -254,11 +281,18 @@ namespace MicroscopeGUI
             }
         }
 
+        public static void SetNodeValue(Action action)
+        {
+            AcquisitionStopNode.Execute();
+            action();
+            AcquisitionStartNode.Execute();
+        }
+
         public static void SaveToFile(string path)
             => NodeMap.StoreToFile(path);
 
-        public static ControlCon GetControlCon(StackPanel parent) 
-            => new ControlCon(parent, NodeMap);
+        public static ControlCon GetControlCon() 
+            => new ControlCon(NodeMap);
 
         static void AcquisitionWorker_ImageReceived(Bitmap image)
             => ImageReceived(image);

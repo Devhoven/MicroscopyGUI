@@ -9,7 +9,7 @@ namespace MicroscopeGUI.Helper.UIInteraction
 {
     static class ResourceManager
     {
-        public static object GetResource(string name)
-            => Application.Current.FindResource(name);
+        public static T GetResource<T>(string name)
+            => (T)Application.Current.FindResource(name);
     }
 }

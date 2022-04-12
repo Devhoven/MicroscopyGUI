@@ -10,6 +10,7 @@ using Size = System.Windows.Size;
 using System.Drawing.Drawing2D;
 using Image = System.Drawing.Image;
 using Matrix = System.Windows.Media.Matrix;
+using peak.core.nodes;
 
 namespace MicroscopeGUI
 {
@@ -81,5 +82,9 @@ namespace MicroscopeGUI
             }
             return newImage;
         }
+
+        // Little helper method which returns if a node is writeable
+        public static bool IsWriteable(this Node node)
+            => node.AccessStatus() == NodeAccessStatus.WriteOnly || node.AccessStatus() == NodeAccessStatus.ReadWrite;
     }
 }

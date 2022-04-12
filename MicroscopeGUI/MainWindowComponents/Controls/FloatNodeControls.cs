@@ -1,17 +1,17 @@
-﻿using MicroscopeGUI.MainWindowComponents.Controls;
-using peak.core.nodes;
-using System;
-using System.Diagnostics;
+﻿using System;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
+using peak.core.nodes;
+using System.Diagnostics;
 using System.Windows.Media;
-using Xceed.Wpf.Toolkit;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
+using MicroscopeGUI.Helper.UIInteraction;
+using MicroscopeGUI.MainWindowComponents.Controls;
 
 namespace MicroscopeGUI
 {
     // Slider controls with double values
-    class FloatSliderControl : Control
+    class FloatNodeControl : NodeControl
     {
         // Standard margins for the elements
         static Thickness LabelMargin = new Thickness(0, 5, 0, 5);
@@ -42,42 +42,33 @@ namespace MicroscopeGUI
             }
         }
 
-        public FloatSliderControl(FloatNode node, ControlCon Parent, bool EnabledByDefault = true) : base(node.DisplayName(), Parent)
+        public FloatNodeControl(FloatNode node) : base(node.DisplayName())
         {
             Node = node;
 
-            Label.Margin = LabelMargin;
-            Parent.Children.Add(Label);
-
             InitControls();
 
-            Enable = EnabledByDefault;
-
-            // If the node is cacheable the controls don't need to be updated
-            if (!Node.IsCacheable())
-                Node.ChangedEvent += NodeChanged;
+            Node.ChangedEvent += NodeChanged;
         }
 
         void InitControls()
         {
-            // Contains the slider and numinput
-            Grid panel = new Grid();
-            panel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(5, GridUnitType.Star) });
-            panel.ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
+            Label.Margin = LabelMargin;
 
             // Slider and DecimalUpDown element with the right range and default value
             Slider = new Slider()
             {
                 VerticalAlignment = VerticalAlignment.Center,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                AutoToolTipPlacement = System.Windows.Controls.Primitives.AutoToolTipPlacement.TopLeft,
+                AutoToolTipPlacement = AutoToolTipPlacement.TopLeft,
                 AutoToolTipPrecision = 2,
                 Margin = SliderMargin,
                 Value = Node.Value(),
                 Minimum = Node.Minimum(),
                 Maximum = Node.Maximum(),
-                Style = (Style)Application.Current.FindResource("Horizontal_Slider")
+                Style = ResourceManager.GetResource<Style>("Horizontal_Slider")
             };
+            
             NumInput = new NumberInput()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
@@ -86,10 +77,18 @@ namespace MicroscopeGUI
                 Maximum = Node.Maximum()
             };
 
-            Grid.SetColumn(Slider, 0);
-            Grid.SetColumn(NumInput, 1);
-            panel.Children.Add(Slider);
-            panel.Children.Add(NumInput);
+            // Contains the slider and numinput
+            ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(5, GridUnitType.Star) });
+            ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
+            RowDefinitions.Add(new RowDefinition());
+
+            SetColumn(Slider, 0);
+            SetRow(Slider, 1);
+            Children.Add(Slider);
+
+            SetRow(NumInput, 1);
+            SetColumn(NumInput, 1);
+            Children.Add(NumInput);
 
             // If the node has a constant increment, it is going to bet set to the slider
             if (Node.HasConstantIncrement())
@@ -103,8 +102,6 @@ namespace MicroscopeGUI
             // If the user is finished with his input, the final value is going to be set in this method
             Slider.PreviewMouseUp += (o, e) => SetValue();
             NumInput.ValueConfirmed += NumInputValueConfirmed;
-
-            Parent.Children.Add(panel);
         }
 
         // Updates the ranges from the controls, if they change
@@ -137,18 +134,8 @@ namespace MicroscopeGUI
             }
         }
 
-        // Thread safe value setting
-        public override void SetValue(object Value) =>
-            UI.CurrentDispatcher.Invoke(() => Slider.Value = Convert.ToDouble(Value));
-
         // Sets the value of the node
         void SetValue()
-            => Parent.SetNode(() => Node.SetValue(Slider.Value));
-
-        public override object GetValue() =>
-            Slider.Value;
-
-        protected override string GetName() =>
-            Node.DisplayName();
+            => CamControl.SetNodeValue(() => Node.SetValue(Slider.Value));
     }
 }

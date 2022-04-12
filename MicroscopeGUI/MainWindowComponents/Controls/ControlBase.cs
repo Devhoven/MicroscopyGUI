@@ -4,13 +4,9 @@ using System.Windows.Media;
 
 namespace MicroscopeGUI
 {
-    partial class Control
+    class NodeControl : Grid
     {
         public Label Label;
-
-        protected ControlCon Parent;
-
-        protected bool Serializable;
 
         public virtual bool Enable
         {
@@ -18,15 +14,7 @@ namespace MicroscopeGUI
             set;
         }
 
-        protected Control(ControlCon parent)
-        {
-            Parent = parent;
-
-            AllControls.Add(this);
-            Serializable = true;
-        }
-
-        protected Control(string name, ControlCon parent) : this(parent)
+        protected NodeControl(string name)
         {
             Label = new Label()
             {
@@ -35,15 +23,13 @@ namespace MicroscopeGUI
                 VerticalAlignment = VerticalAlignment.Top,
                 HorizontalAlignment = HorizontalAlignment.Left
             };
+
+            // The label is always in it's own row at the top
+            RowDefinitions.Add(new RowDefinition());
+            SetRow(Label, 0);
+            SetColumn(Label, 0);
+            SetColumnSpan(Label, 2);
+            Children.Add(Label);
         }
-
-        // Used for constructing the xml string
-        protected virtual string GetName() => "";
-
-        // Sets the value of the given control
-        public virtual void SetValue(object value) { }
-
-        // Returns the value of the given control
-        public virtual object GetValue() => null;
     }
 }

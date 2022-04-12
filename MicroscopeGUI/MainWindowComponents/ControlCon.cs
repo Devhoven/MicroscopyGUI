@@ -15,7 +15,12 @@ namespace MicroscopeGUI
         {
             new ControlNode("AcquisitionFrameRate", NodeType.Float),
             new ControlNode("ExposureTime", NodeType.Float),
-            new ControlNode("Gain", NodeType.Float)
+            new ControlNode("Gain", NodeType.Float),
+            new ControlNode("GainSelector", NodeType.Enumeration),
+            new ControlNode("SensorOperationMode", NodeType.Enumeration),
+            new ControlNode("UserSetSelector", NodeType.Enumeration),
+            new ControlNode("SequencerMode", NodeType.Enumeration),
+            new ControlNode("ColorCorrectionMatrix", NodeType.Enumeration)
         };
         
         struct ControlNode
@@ -30,20 +35,10 @@ namespace MicroscopeGUI
             }
         }
 
-        NodeMap NodeMap;
-        CommandNode AcquisitionStartNode;
-        CommandNode AcquisitionStopNode;
-
-        public ControlCon(StackPanel parent, NodeMap nodeMap)
+        public ControlCon(NodeMap nodeMap)
         {
-            NodeMap = nodeMap;
-
-            AcquisitionStartNode = NodeMap.FindNode<CommandNode>("AcquisitionStart");
-            AcquisitionStopNode = NodeMap.FindNode<CommandNode>("AcquisitionStop");
-
-            parent.Children.Add(this);
             AddControls(nodeMap);
-        }
+        } 
 
         void AddControls(NodeMap nodeMap)
         {
@@ -52,21 +47,14 @@ namespace MicroscopeGUI
                 switch (element.Type)
                 {
                     case NodeType.Float:
-                        new FloatSliderControl(nodeMap.FindNode<FloatNode>(element.Name), this);
+                        Children.Add(new FloatNodeControl(nodeMap.FindNode<FloatNode>(element.Name)));
                         break;
 
                     case NodeType.Enumeration:
-                        new EnumControl(nodeMap.FindNode<EnumerationNode>(element.Name), this);
+                        Children.Add(new EnumNodeControl(nodeMap.FindNode<EnumerationNode>(element.Name)));
                         break;
                 }
             }
-        }
-
-        public void SetNode(Action action)
-        {
-            AcquisitionStopNode.Execute();
-            action();
-            AcquisitionStartNode.Execute();
         }
     }
 }
