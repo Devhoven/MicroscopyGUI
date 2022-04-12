@@ -6,8 +6,10 @@ using peak.core;
 using peak.core.nodes;
 using System.Windows.Controls;
 using System.Text;
+using MicroscopeGUI.MainWindowComponents.Controls;
+using MicroscopeGUI.MainWindowComponents.Controls.NodeControls;
 
-namespace MicroscopeGUI
+namespace MicroscopeGUI.MainWindowComponents.Controls
 {
     class ControlCon : StackPanel
     {
@@ -15,12 +17,11 @@ namespace MicroscopeGUI
         {
             new ControlNode("AcquisitionFrameRate", NodeType.Float),
             new ControlNode("ExposureTime", NodeType.Float),
-            new ControlNode("Gain", NodeType.Float),
-            new ControlNode("GainSelector", NodeType.Enumeration),
-            new ControlNode("SensorOperationMode", NodeType.Enumeration),
-            new ControlNode("UserSetSelector", NodeType.Enumeration),
-            new ControlNode("SequencerMode", NodeType.Enumeration),
-            new ControlNode("ColorCorrectionMatrix", NodeType.Enumeration)
+            new ControlNode("Gain", NodeType.Float)
+            //new ControlNode("GainSelector", NodeType.Enumeration),
+            //new ControlNode("SensorOperationMode", NodeType.Enumeration),
+            //new ControlNode("UserSetSelector", NodeType.Enumeration),
+            //new ControlNode("SequencerMode", NodeType.Enumeration),
         };
         
         struct ControlNode
@@ -55,6 +56,11 @@ namespace MicroscopeGUI
                         break;
                 }
             }
+
+            Children.Add(new BoolControl("Color Correction Matrix", AcquisitionWorker.UseColorCorrection, (val) =>
+            {
+                AcquisitionWorker.UseColorCorrection = val;
+            }));
         }
     }
 }

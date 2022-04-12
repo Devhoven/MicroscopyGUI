@@ -8,10 +8,10 @@ using System.Windows.Controls.Primitives;
 using MicroscopeGUI.Helper.UIInteraction;
 using MicroscopeGUI.MainWindowComponents.Controls;
 
-namespace MicroscopeGUI
+namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
 {
     // Slider controls with double values
-    class FloatNodeControl : NodeControl
+    class FloatNodeControl : ControlBase
     {
         // Standard margins for the label
         static Thickness LabelMargin = new Thickness(0, 5, 0, 5);

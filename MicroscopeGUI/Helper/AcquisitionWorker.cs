@@ -25,6 +25,7 @@ namespace MicroscopeGUI
         static DataStream DataStream;
         static NodeMap NodeMap;
 
+        public static bool UseColorCorrection = true;
         static ColorCorrector ColorCorrector;
 
         static bool Running = false;
@@ -109,7 +110,8 @@ namespace MicroscopeGUI
                     // Queue buffer so that it can be used again 
                     DataStream.QueueBuffer(buffer);
 
-                    ColorCorrector.ProcessInPlace(iplImg);
+                    if (UseColorCorrection)
+                        ColorCorrector.ProcessInPlace(iplImg);
 
                     // Getting dimensions of the IDS peak IPL Image 
                     Width = (int)iplImg.Width();

@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Windows.Controls;
 using System.Text;
 using System.Collections.Generic;
+using MicroscopeGUI.MainWindowComponents.Controls;
 
 namespace MicroscopeGUI
 {
@@ -61,6 +62,8 @@ namespace MicroscopeGUI
             Debug.WriteLine("--- [BackEnd] Start");
             if (!OpenDevice())
                 return false;
+
+            AcquisitionWorker.Start();
 
             // Retreiving the start and stop command nodes
             AcquisitionStartNode = NodeMap.FindNode<CommandNode>("AcquisitionStart");
@@ -194,8 +197,8 @@ namespace MicroscopeGUI
                     }
 
                     // Configure worker
-                    AcqWorker.SetDataStream(DataStream);
-                    AcqWorker.SetNodeMap(NodeMap);
+                    AcquisitionWorker.SetDataStream(DataStream);
+                    AcquisitionWorker.SetNodeMap(NodeMap);
                 }
             }
             catch (Exception e)

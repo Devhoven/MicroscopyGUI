@@ -2,9 +2,9 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace MicroscopeGUI
+namespace MicroscopeGUI.MainWindowComponents.Controls
 {
-    class NodeControl : Grid
+    abstract class ControlBase : Grid
     {
         public Label Label;
 
@@ -14,7 +14,7 @@ namespace MicroscopeGUI
             set;
         }
 
-        protected NodeControl(string name)
+        protected ControlBase(string name)
         {
             Label = new Label()
             {
@@ -26,9 +26,9 @@ namespace MicroscopeGUI
 
             // The label is always in it's own row at the top
             RowDefinitions.Add(new RowDefinition());
+            ColumnDefinitions.Add(new ColumnDefinition());
             SetRow(Label, 0);
             SetColumn(Label, 0);
-            SetColumnSpan(Label, 2);
             Children.Add(Label);
         }
     }

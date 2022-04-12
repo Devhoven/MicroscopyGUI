@@ -5,9 +5,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace MicroscopeGUI
+namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
 {
-    class EnumNodeControl : NodeControl
+    class EnumNodeControl : ControlBase
     {
         EnumerationNode Node;
 
