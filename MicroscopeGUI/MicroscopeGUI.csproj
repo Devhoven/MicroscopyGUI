@@ -27,6 +27,7 @@
     <None Remove="Assets\Icons\Microscope.ico" />
     <None Remove="Assets\Icons\Microscope.png" />
     <None Remove="Assets\Icons\Rectangle.png" />
+    <None Remove="Assets\Icons\Reset.png" />
     <None Remove="Assets\Icons\Restart.png" />
     <None Remove="Assets\Icons\RightCon.png" />
     <None Remove="Assets\Icons\Save.png" />
@@ -55,6 +56,7 @@
     <Resource Include="Assets\Icons\Microscope.ico" />
     <Resource Include="Assets\Icons\Microscope.png" />
     <Resource Include="Assets\Icons\Rectangle.png" />
+    <Resource Include="Assets\Icons\Reset.png" />
     <Resource Include="Assets\Icons\Restart.png" />
     <Resource Include="Assets\Icons\RightCon.png" />
     <Resource Include="Assets\Icons\Save.png" />

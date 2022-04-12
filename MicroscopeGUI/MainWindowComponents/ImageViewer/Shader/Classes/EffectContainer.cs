@@ -55,7 +55,6 @@ namespace MicroscopeGUI.MainWindowComponents.ImageViewer.Shader.Classes
 
         public EffectContainer()
         {
-            //Test t = () => EffectControls.InitControls();
             foreach (EffContainer element in RGB)
             {
                 Children.Add(new EffectControls(element));

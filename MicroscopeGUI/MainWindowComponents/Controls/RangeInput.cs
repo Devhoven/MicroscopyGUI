@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 namespace MicroscopeGUI.MainWindowComponents.Controls
 {
@@ -25,11 +27,13 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
         public event ValueConfirmed OnValueConfirmed;
 
         public double Value => NumInput.Value;
+        public double DefaultVal = 0;
 
         Slider Slider;
         // Contains the current input
         NumberInput NumInput;
-
+        // Reset Button
+        Button ResetBtn;
         public RangeInput(double startVal, double minVal, double maxVal, double increment = 0)
         {
             InitControls(startVal, minVal, maxVal);
@@ -46,6 +50,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
 
         void InitControls(double startVal, double minVal, double maxVal)
         {
+            DefaultVal = startVal;
             // Slider and DecimalUpDown element with the right range and default value
             Slider = new Slider()
             {
@@ -67,20 +72,46 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
                 Minimum = minVal,
                 Maximum = maxVal
             };
+
+
+            Image img = new Image()
+            {
+                Source = new BitmapImage(new Uri("../Assets/Icons/Reset.png", UriKind.Relative))
+            };
+
+
+            ResetBtn = new Button()
+            {
+                VerticalAlignment = VerticalAlignment.Stretch,
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                Content = img,
+                Margin = new Thickness(5, 0, 0, 0),
+                ToolTip = "Reset to default",
+            };
+
+
+            RenderOptions.SetBitmapScalingMode(img, BitmapScalingMode.HighQuality);
+
+            ResetBtn.Click += Btn_Click;
         }
 
         void AddToGrid()
         {
+            ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(5, GridUnitType.Auto) });
             ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(5, GridUnitType.Star) });
-            ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(2, GridUnitType.Star) });
+            ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(3, GridUnitType.Star) });
 
-            SetColumn(Slider, 0);
             SetRow(Slider, 1);
+            SetColumn(Slider, 0);
             Children.Add(Slider);
 
             SetRow(NumInput, 1);
             SetColumn(NumInput, 1);
             Children.Add(NumInput);
+
+            SetRow(ResetBtn, 1);
+            SetColumn(ResetBtn, 2);
+            Children.Add(ResetBtn);
         }
     
         void BindEvents()
@@ -108,5 +139,9 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
             Slider.Minimum = minVal;
             Slider.Maximum = maxVal;
         }
+
+        // Resets Slider-/Inputboxvalue to default value
+        private void Btn_Click(object sender, RoutedEventArgs e)
+            => Slider.Value = DefaultVal;
     }
 }
