@@ -57,39 +57,21 @@ namespace MicroscopeGUI
 
             try
             {
-                // Set the color correction matrix selector to the predefined matrix
-                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain00");
-                var gain_0_0 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
+                EnumerationNode valueSelectorNode = NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector");
+                FloatNode matrixValueNode = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue");
 
-                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain01");
-                var gain_0_1 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
-
-                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain02");
-                var gain_0_2 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
-
-                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain10");
-                var gain_1_0 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
-
-                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain11");
-                var gain_1_1 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
-
-                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain12");
-                var gain_1_2 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
-
-                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain20");
-                var gain_2_0 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
-
-                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain21");
-                var gain_2_1 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
-
-                NodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrixValueSelector").SetCurrentEntry("Gain22");
-                var gain_2_2 = NodeMap.FindNode<FloatNode>("ColorCorrectionMatrixValue").Value();
-
-                var colorCorrectionFactors = new ColorCorrectionFactors((float)gain_0_0, (float)gain_0_1, (float)gain_0_2,
-                                                                        (float)gain_1_0, (float)gain_1_1, (float)gain_1_2,
-                                                                        (float)gain_2_0, (float)gain_2_1, (float)gain_2_2);
+                var colorCorrectionFactors = new ColorCorrectionFactors(GetGain("Gain00"), GetGain("Gain01"), GetGain("Gain02"),
+                                                                        GetGain("Gain10"), GetGain("Gain11"), GetGain("Gain12"),
+                                                                        GetGain("Gain20"), GetGain("Gain21"), GetGain("Gain22"));
+                float GetGain(string name)
+                {
+                    valueSelectorNode.SetCurrentEntry(name);
+                    return (float)matrixValueNode.Value();
+                }
 
                 ColorCorrector.SetColorCorrectionFactors(colorCorrectionFactors);
+
+
             }
             catch (Exception e)
             {
