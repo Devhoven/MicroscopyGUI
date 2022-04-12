@@ -19,7 +19,12 @@
         </Style>
     </Window.Style>
     <Window.Resources>
-        <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White"/>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ColorPicker;component/Styles/DefaultColorPickerStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="{x:Static SystemColors.ControlTextBrushKey}" Color="White"/>
+        </ResourceDictionary>
     </Window.Resources>
 
     <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -45,7 +50,8 @@
                     <DockPanel Margin="0 0 0 5">
                         <Label Content="Line Color:"/>
                         <colorpicker:PortableColorPicker Name="LineColorPicker" HorizontalAlignment="Right" ColorChanged="LineColorPickerColorChanged"
-                                                         Width="50" Height="25" ShowAlpha="False" FontSize="13"/>
+                                                         Width="50" Height="25" ShowAlpha="False" FontSize="12" Style="{StaticResource DefaultColorPickerStyle}"/>
+
                     </DockPanel>
 
                     <DockPanel Margin="0 0 0 5">
@@ -58,7 +64,7 @@
                     <DockPanel>
                         <Label Content="Line Text Color:"/>
                         <colorpicker:PortableColorPicker Name="LineTextColorPicker" HorizontalAlignment="Right" ColorChanged="LineTextColorPickerColorChanged"
-                                                         Width="50" Height="25" ShowAlpha="False" FontSize="13"/>
+                                                         Width="50" Height="25" ShowAlpha="False" FontSize="12" Style="{StaticResource DefaultColorPickerStyle}"/>
                     </DockPanel>
                 </StackPanel>
             </Border>

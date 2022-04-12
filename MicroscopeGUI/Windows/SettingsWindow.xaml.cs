@@ -3,6 +3,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Text.RegularExpressions;
+using System;
 
 namespace MicroscopeGUI
 {
@@ -17,7 +18,10 @@ namespace MicroscopeGUI
             PreviewKeyDown += (o, e) =>
             {
                 if (e.Key == Key.Escape)
+                {
                     Close();
+                    e.Handled = true;
+                }
             };
 
             LineColorPicker.SelectedColor = Settings.LineColor.Color;
@@ -39,6 +43,34 @@ namespace MicroscopeGUI
         {
             if (((TextBox)sender).Text != string.Empty)
                 Settings.LineThickness = int.Parse(((TextBox)sender).Text);
+        }
+
+
+        // From https://stackoverflow.com/a/19780697/9241163
+        // Witht this bit of code the window always start at the cursor position
+        protected override void OnContentRendered(EventArgs e)
+        {
+            base.OnContentRendered(e);
+            MoveBottomRightEdgeOfWindowToMousePosition();
+        }
+
+        private void MoveBottomRightEdgeOfWindowToMousePosition()
+        {
+            var transform = PresentationSource.FromVisual(this).CompositionTarget.TransformFromDevice;
+            var mouse = transform.Transform(GetMousePosition());
+            Left = mouse.X - ActualWidth;
+            Top = mouse.Y - ActualHeight;
+
+            if (Left < 0)
+                Left = 0;
+            if (Top < 0)  
+                Top = 0;
+
+            Point GetMousePosition()
+            {
+                System.Drawing.Point point = System.Windows.Forms.Control.MousePosition;
+                return new Point(point.X, point.Y);
+            }
         }
     }
 }
