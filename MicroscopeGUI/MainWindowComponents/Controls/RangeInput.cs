@@ -97,8 +97,8 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
         void AddToGrid()
         {
             ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(5, GridUnitType.Auto) });
-            ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(5, GridUnitType.Star) });
-            ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(3, GridUnitType.Star) });
+            ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(9, GridUnitType.Star) });
+            ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(6, GridUnitType.Star) });
 
             SetRow(Slider, 1);
             SetColumn(Slider, 0);

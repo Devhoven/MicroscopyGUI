@@ -1,6 +1,7 @@
-﻿using System;
+﻿using std;
+using System;
 using ScottPlot;
-using std;
+using System.Drawing;
 using Histogram = peak.ipl.Histogram;
 
 namespace MicroscopeGUI
@@ -40,9 +41,9 @@ namespace MicroscopeGUI
             UI.CurrentDispatcher.BeginInvoke(new Action(() =>
             {
                 HistogramPlot.Plot.Clear();
-                HistogramPlot.Plot.AddBar(ValuesR, System.Drawing.Color.Red).BorderLineWidth = 0;
-                HistogramPlot.Plot.AddBar(ValuesG, System.Drawing.Color.Green).BorderLineWidth = 0;
-                HistogramPlot.Plot.AddBar(ValuesB, System.Drawing.Color.Blue).BorderLineWidth = 0;
+                HistogramPlot.Plot.AddBar(ValuesR, Color.Red).BorderLineWidth = 0;
+                HistogramPlot.Plot.AddBar(ValuesG, Color.Green).BorderLineWidth = 0;
+                HistogramPlot.Plot.AddBar(ValuesB, Color.Blue).BorderLineWidth = 0;
                 HistogramPlot.Render();
             }), System.Windows.Threading.DispatcherPriority.Background);
         }

@@ -166,23 +166,24 @@
                             <RowDefinition/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
+                        
                         <!--Config container-->
-                        <Label FontSize="18" Margin="5 0 0 0" VerticalAlignment="Center" Grid.Row="0">Camera config:</Label>
-                        <Border CornerRadius="5" Background="{StaticResource BackgroundAccentColor}" Padding="5" Margin="5 0 5 0" Grid.Row="1">
-                            <StackPanel x:Name="ConfigCon" TextElement.FontSize="14" Margin="0 0 0 10"/>
+                        <Label Content="Camera config:" Style="{StaticResource Headline}" Margin="5 0 0 0" Grid.Row="0"/>
+                        <Border CornerRadius="5" Background="{StaticResource BackgroundAccentColor}" Margin="5 0 5 0" Padding="8" Grid.Row="1">
+                            <StackPanel x:Name="ConfigCon" TextElement.FontSize="14" Margin="0 -5 0 5"/>
                         </Border>
 
                         <!--Post processing container-->
-                        <Label FontSize="18" Foreground="White" Margin="5 0 0 0" VerticalAlignment="Center" Grid.Row="2">Post Processing:</Label>
-                        <Border CornerRadius="5" Background="{StaticResource BackgroundAccentColor}" Margin="5 0 0 0" Padding="5" Grid.Row="3">
-                            <effects:EffectControlContainer x:Name="EffectCon" TextElement.FontSize="13" Margin="0 0 0 10"/>
+                        <Label Content="Post Processing:" Style="{StaticResource Headline}" Margin="5 0 0 0" Grid.Row="2"/>
+                        <Border CornerRadius="5" Background="{StaticResource BackgroundAccentColor}" Margin="5 0 5 0" Padding="8" Grid.Row="3">
+                            <effects:EffectControlContainer x:Name="EffectCon" TextElement.FontSize="14" Margin="0 -5 0 5"/>
                         </Border>
                     </Grid>
                 </ScrollViewer>
                 
                 <!--Histogram container-->
                 <StackPanel VerticalAlignment="Bottom" Grid.Row="3">
-                    <Label Content="Histogram:" FontSize="15" Margin="5 0 0 0"/>
+                    <Label Content="Histogram:" Style="{StaticResource Headline}" Margin="5 0 0 0"/>
                     <Border CornerRadius="5" Padding="5" Background="{StaticResource BackgroundAccentColor}" Margin="5">
                         <WpfPlot x:Name="HistogramPlot" Height="150" Width="200"/>
                     </Border>
@@ -211,11 +212,11 @@
                 CornerRadius="5" Margin="5 5 5 5">
             <Grid x:Name="ImgGalleryCon">
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="36"/>
+                    <RowDefinition Height="40"/>
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
-                <Label Content="Image Gallery:" HorizontalAlignment="Left" Margin="5 5 0 0" FontSize="15" Grid.Row="0"/>
+                <Label Content="Image Gallery:" Style="{StaticResource Headline}" HorizontalAlignment="Left" Margin="5 5 0 0" Grid.Row="0"/>
 
                 <ScrollViewer Grid.Row="1" Visibility="Visible" Width="200" VerticalScrollBarVisibility="Visible">
                     <local:ImageGallery x:Name="ImgGallery" VerticalAlignment="Top" Margin="10 5 0 0"/>

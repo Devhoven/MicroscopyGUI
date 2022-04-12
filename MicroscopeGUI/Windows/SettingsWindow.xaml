@@ -3,7 +3,6 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:MicroscopeGUI"
         xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
         mc:Ignorable="d"
         Title="SettingsWindow" Width="450" Height="230" ResizeMode="NoResize">
@@ -44,14 +43,13 @@
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
 
-            <Label Content="Measure Tools:" FontSize="17" Grid.Row="0" Grid.Column="0"/>
+            <Label Content="Measure Tools:" Style="{StaticResource Headline}" Grid.Row="0" Grid.Column="0"/>
             <Border Background="#FF2D2D30" CornerRadius="5" Grid.Row="1" Grid.Column="0">
                 <StackPanel Margin="5">
                     <DockPanel Margin="0 0 0 5">
                         <Label Content="Line Color:"/>
                         <colorpicker:PortableColorPicker Name="LineColorPicker" HorizontalAlignment="Right" ColorChanged="LineColorPickerColorChanged"
                                                          Width="50" Height="25" ShowAlpha="False" FontSize="12" Style="{StaticResource DefaultColorPickerStyle}"/>
-
                     </DockPanel>
 
                     <DockPanel Margin="0 0 0 5">
@@ -69,7 +67,7 @@
                 </StackPanel>
             </Border>
 
-            <Label Content="Image Gallery:" FontSize="17" Margin="20 0 0 0" Grid.Row="0" Grid.Column="1"/>
+            <Label Content="Image Gallery:" Style="{StaticResource Headline}" Margin="20 0 0 0" Grid.Row="0" Grid.Column="1"/>
             <Border Background="#FF2D2D30" Margin="20 0 0 0" CornerRadius="5" Grid.Row="1" Grid.Column="1">
                 <StackPanel Margin="5">
                     <DockPanel>
