@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -78,7 +79,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
             {
                 Source = new BitmapImage(new Uri("../Assets/Icons/Reset.png", UriKind.Relative))
             };
-
+            RenderOptions.SetBitmapScalingMode(img, BitmapScalingMode.HighQuality);
 
             ResetBtn = new Button()
             {
@@ -87,10 +88,8 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
                 Content = img,
                 Margin = new Thickness(5, 0, 0, 0),
                 ToolTip = "Reset to default",
+                Cursor = Cursors.Hand
             };
-
-
-            RenderOptions.SetBitmapScalingMode(img, BitmapScalingMode.HighQuality);
 
             ResetBtn.Click += Btn_Click;
         }

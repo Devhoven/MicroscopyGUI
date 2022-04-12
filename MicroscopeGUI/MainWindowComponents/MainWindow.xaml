@@ -194,7 +194,7 @@
         <local:ImageViewer x:Name="ZoomDisplay" Grid.Column="1" Grid.Row="1" Margin="0 5 0 0">
             <Canvas x:Name="DrawingCanvas" RenderOptions.BitmapScalingMode="NearestNeighbor">
                 <Canvas.CacheMode>
-                    <BitmapCache RenderOptions.CachingHint="Cache" RenderOptions.BitmapScalingMode="NearestNeighbor"></BitmapCache>
+                    <BitmapCache RenderOptions.CachingHint="Cache" RenderOptions.BitmapScalingMode="NearestNeighbor"/>
                 </Canvas.CacheMode>
                 <Image x:Name="CurrentFrameCon" RenderOptions.BitmapScalingMode="NearestNeighbor"
                        Width="{Binding ActualWidth, ElementName=ZoomDisplay}" 
