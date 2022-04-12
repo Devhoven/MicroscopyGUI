@@ -6,33 +6,19 @@ using System.Windows.Media;
 
 namespace MicroscopeGUI.MainWindowComponents.ImageViewer.Shader.Classes
 {
-    class EffectControls : Grid
+    class EffectControl : ControlBase
     {
-        static Thickness LabelMargin = new Thickness(0, 5, 0, 5);
-
         RangeInput ValInput;
-        Label Label;
 
-        EffectContainer.ChangeValue ChangeValue;
+        public delegate void ChangeEffectValue(float newValue);
 
-        public EffectControls(EffectContainer.EffContainer effect) 
+        ChangeEffectValue ChangeValue;
+
+        public EffectControl(EffectControlContainer.EffectInfo effect) : base(effect.Name)
         {
-            RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
             RowDefinitions.Add(new RowDefinition() { Height = GridLength.Auto });
 
             ChangeValue = effect.ChangeValue;
-
-            Label = new Label()
-            {
-                Foreground = Brushes.White,
-                Content = effect.Name,
-                VerticalAlignment = VerticalAlignment.Top,
-                HorizontalAlignment = HorizontalAlignment.Left,
-                Margin = LabelMargin
-            };
-
-            SetRow(Label, 0);
-            Children.Add(Label);
 
             InitControls(effect.StartValue, effect.Minimum, effect.Maximum);
         }

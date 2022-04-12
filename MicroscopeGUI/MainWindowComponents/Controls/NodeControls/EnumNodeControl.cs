@@ -33,7 +33,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
 
             InitControls();
 
-            Enable = Node.IsWriteable();
+            //Enable = Node.IsWriteable();
 
             Node.ChangedEvent += (o, e) 
                 => FillComboBox();
@@ -57,7 +57,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
         {
             foreach (EnumerationEntryNode node in Node.Entries())
             {
-                if (node.IsWriteable())
+                if (node.IsWriteable() || true)
                 {
                     EnumComboBox.Items.Add(new EnumerationEntryNodeItem(node));
 

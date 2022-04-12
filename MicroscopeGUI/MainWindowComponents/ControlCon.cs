@@ -18,10 +18,6 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
             new ControlNode("AcquisitionFrameRate", NodeType.Float),
             new ControlNode("ExposureTime", NodeType.Float),
             new ControlNode("Gain", NodeType.Float)
-            //new ControlNode("GainSelector", NodeType.Enumeration),
-            //new ControlNode("SensorOperationMode", NodeType.Enumeration),
-            //new ControlNode("UserSetSelector", NodeType.Enumeration),
-            //new ControlNode("SequencerMode", NodeType.Enumeration),
         };
         
         struct ControlNode
