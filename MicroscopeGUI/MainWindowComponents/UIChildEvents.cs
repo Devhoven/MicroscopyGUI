@@ -64,8 +64,8 @@ namespace MicroscopeGUI
         }
 
         // Changes the directory of the image gallery
-        void ChangeDirClick(object sender, RoutedEventArgs e) =>
-            ImgGallery.UpdatePath();
+        void ChangeDirClick(object sender, RoutedEventArgs e) 
+            => ImgGallery.UpdatePath();
 
         // Opens the settings
         void SettingsClick(object sender, RoutedEventArgs e)
@@ -84,8 +84,8 @@ namespace MicroscopeGUI
         }
 
         // Exits the application
-        private void ExitClick(object sender, RoutedEventArgs e) =>
-            Close();
+        private void ExitClick(object sender, RoutedEventArgs e) 
+            => Close();
 
         // Saves a config
         void ConfigSaveClick(object sender, RoutedEventArgs e)
@@ -122,9 +122,7 @@ namespace MicroscopeGUI
 
         // Closes all the stuff the camera set up (Except the ring buffer) and initializes it again
         void ReloadCamClick(object sender, RoutedEventArgs e)
-        {
-            ReloadCamera();
-        }
+            => ReloadCamera();
 
         // Freezes the cam
         void FreezeCamClick(object sender, RoutedEventArgs e)
@@ -148,11 +146,11 @@ namespace MicroscopeGUI
             CamControl.Unfreeze();
         }
 
-        void ConfigConToggle(object sender, RoutedEventArgs e) =>
-            ToggleItemVisibillity((MenuItem)sender, ToolCon, "ConfigConActivated");
+        void ConfigConToggle(object sender, RoutedEventArgs e) 
+            => ToggleItemVisibillity((MenuItem)sender, ToolCon, "ConfigConActivated");
 
-        void ImgGalleryToggle(object sender, RoutedEventArgs e) =>
-            ToggleItemVisibillity((MenuItem)sender, ImgGalleryCon, "ImgGalleryActivated");
+        void ImgGalleryToggle(object sender, RoutedEventArgs e) 
+            => ToggleItemVisibillity((MenuItem)sender, ImgGalleryCon, "ImgGalleryActivated");
 
         // Toggles the visibillity of a UI Elements and with it the color of the specified MenuItem
         void ToggleItemVisibillity(MenuItem Sender, UIElement Element, string ValName)

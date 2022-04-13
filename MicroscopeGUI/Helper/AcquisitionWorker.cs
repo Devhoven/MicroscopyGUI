@@ -121,8 +121,9 @@ namespace MicroscopeGUI
                 {
                     GetIPLImg(buffer);
 
-                    // Fire the histogram updated event with the new data
-                    HistogramUpdated(new Histogram(iplImg));
+                    if (!Freeze)
+                        // Fire the histogram updated event with the new data
+                        HistogramUpdated(new Histogram(iplImg));
 
                     GetFrameBitmap();
                     
@@ -155,7 +156,7 @@ namespace MicroscopeGUI
                 iplImg = new Image((PixelFormatName)buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), buffer.Width(), buffer.Height());
 
                 // Debayering and converting IDS peak IPL Image to RGBa8 format
-                iplImg = iplImg.ConvertTo(PixelFormatName.BGRa8, ConversionMode.HighQuality);
+                iplImg = iplImg.ConvertTo(PixelFormatName.BGRa8, ConversionMode.Classic);
 
                 // Queue buffer so that it can be used again 
                 DataStream.QueueBuffer(buffer);

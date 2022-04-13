@@ -218,6 +218,9 @@ namespace MicroscopeGUI
         {
             if (e.ClickCount == 2)
             {
+                // Freezing the image
+                CamControl.Freeze();
+
                 // Loading the image from the file, since the one in the image gallery is downsized
                 BitmapImage BmpImg = new BitmapImage();
                 BmpImg.BeginInit();
@@ -230,8 +233,6 @@ namespace MicroscopeGUI
                 UI Window = Application.Current.MainWindow as UI;
                 Window.LiveFeedBtn.Background = Brushes.Transparent;
                 Window.FreezeCamBtn.Background = Brushes.LightSkyBlue;
-                // And "freezing" the image
-                CamControl.Freeze();
             }
         }
     }
