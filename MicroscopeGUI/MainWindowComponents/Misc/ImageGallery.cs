@@ -5,20 +5,28 @@ using System.Windows.Input;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
 using Image = System.Windows.Controls.Image;
+using SharpImg = SixLabors.ImageSharp.Image;
 using Brushes = System.Windows.Media.Brushes;
 using DialogResult = System.Windows.Forms.DialogResult;
 using FolderBrowserDialog = System.Windows.Forms.FolderBrowserDialog;
+using MicroscopeGUI.MetadataWindowComponents;
+using System.Collections.Generic;
+using System.Windows.Threading;
+using SixLabors.ImageSharp.Formats;
+using SixLabors.ImageSharp.Processing;
+using SixLabors.ImageSharp;
+using System.Threading;
 
 namespace MicroscopeGUI
 {
-    partial class ImageGallery : StackPanel
+    public partial class ImageGallery : StackPanel
     {
         static Thickness ImgBoxMargin = new Thickness()
         {
             Bottom = 5
         };
 
-        FileSystemWatcher Watcher;
+        Dictionary <string, Image> Images = new Dictionary<string, Image>();
 
         public ImageGallery()
         {
@@ -46,30 +54,25 @@ namespace MicroscopeGUI
         }
 
         // Updates the path in the settings and the registry
-        public void UpdatePath(string NewPath)
+        public void UpdatePath(string newPath)
         {
-            LoadImagesFromFolder(Directory.GetFiles(NewPath));
-            RegistryManager.SetValue("ImgGalleryPath", NewPath);
-            Settings.ImgGalleryPath = NewPath;
+            if (Settings.ImgGalleryPath == newPath)
+                return;
+
+            LoadImagesFromFolder(Directory.GetFiles(newPath));
+            RegistryManager.SetValue("ImgGalleryPath", newPath);
+            Settings.ImgGalleryPath = newPath;
             UserInfo.SetInfo("Set the path to " + Settings.ImgGalleryPath);
+            InitializeWatcher(newPath);
         }
 
         private void LoadImagesFromFolder(string[] FilePaths)
         {
             Children.Clear();
-            foreach (string Path in FilePaths)
+            foreach (string path in FilePaths)
             {
-                if (Path.ToLower().EndsWith(".png"))
-                {
-                    Image NewImg = GetImage(Path);
-                    
-                    AddImageContextMenu(NewImg);
-
-                    NewImg.MouseLeftButtonDown += OnImageClick;
-                    NewImg.Cursor = Cursors.Hand;
-
-                    Children.Add(NewImg);
-                }
+                if (path.ToLower().EndsWith(".png"))
+                    AddImg(path);
             }
 
             // Clears up the unmanaged memory
@@ -79,32 +82,81 @@ namespace MicroscopeGUI
             GC.WaitForPendingFinalizers();
         }
 
-        // Returns an Image-control instance which holds an 180 * 180 pixels image
-        Image GetImage(string Path)
+        void AddImg(string path)
         {
-            using (MemoryStream Stream = new MemoryStream())
+            Image newImg = GetImage(path);
+            // The image could not be loaded
+            if (newImg == null)
+                return;
+
+            AddImageContextMenu(newImg);
+
+            newImg.MouseLeftButtonDown += OnImageClick;
+            newImg.Cursor = Cursors.Hand;
+
+            Children.Add(newImg);
+            Images.Add(Path.GetFileName(path), newImg);
+        }
+
+        void RemoveImg(string name)
+        {
+            if (!Images.ContainsKey(name))
+                return;
+
+            Children.Remove(Images[name]);
+            Images.Remove(name);
+        }
+
+        // Returns an Image-control instance which holds an 180 * 180 pixels image
+        Image GetImage(string path)
+        {
+            // Waits until the file is freed
+            // After 200ms it stops trying
+            SpinWait.SpinUntil(() => IsFileReady(path), 200);
+            if (!IsFileReady(path))
+                return null;
+
+            using (MemoryStream stream = new MemoryStream())
             {
                 // Loading the file and resizing it to 180 * 180 pixels
-                System.Drawing.Image Img = System.Drawing.Image.FromFile(Path).Resize(180, 180);
-                // Getting a stream from the resized image
-                Img.Save(Stream, System.Drawing.Imaging.ImageFormat.Png);
-                Stream.Position = 0;
-
-                // Loading the BitmapImage from which we can construct the Image-control
-                BitmapImage BmpImg = new BitmapImage();
-                BmpImg.BeginInit();
-                BmpImg.CacheOption = BitmapCacheOption.OnLoad;
-                BmpImg.StreamSource = Stream;
-                BmpImg.EndInit();
-
-                return new Image()
+                using (SharpImg img = SharpImg.Load(path, out IImageFormat format))
                 {
-                    Source = BmpImg,
-                    Width = 180,
-                    MaxHeight = 180,
-                    Margin = ImgBoxMargin,
-                    ToolTip = Path.Substring(Path.LastIndexOf("\\") + 1)
-                };
+                    img.Mutate(i => i.Resize(180, 180));
+                    // Getting a stream from the resized image
+                    img.Save(stream, format);
+                    stream.Position = 0;
+
+                    // Loading the BitmapImage from which we can construct the Image-control
+                    BitmapImage bmpImg = new BitmapImage();
+                    bmpImg.BeginInit();
+                    bmpImg.CacheOption = BitmapCacheOption.OnLoad;
+                    bmpImg.StreamSource = stream;
+                    bmpImg.EndInit();
+                    bmpImg.Freeze();
+
+                    return new Image()
+                    {
+                        Source = bmpImg,
+                        Width = 180,
+                        MaxHeight = 180,
+                        Margin = ImgBoxMargin,
+                        ToolTip = Path.GetFileName(path)
+                    };
+                }
+            }
+        }
+
+        // From https://stackoverflow.com/a/1406853/9241163
+        static bool IsFileReady(string path)
+        {
+            try
+            {
+                using (FileStream inputStream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.None))
+                    return inputStream.Length > 0;
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
 
@@ -137,16 +189,16 @@ namespace MicroscopeGUI
         // Shows the metadata from the image, so the user can edit it
         private void MetadataViewClick(object sender, RoutedEventArgs e)
         {
-            MenuItem Sender = sender as MenuItem;
-            Image OriginalSource = (Sender.Parent as ContextMenu).PlacementTarget as Image;
+            MenuItem menuItem = sender as MenuItem;
+            Image originalSource = (menuItem.Parent as ContextMenu).PlacementTarget as Image;
             // The ToolTip is the name of the image 
-            string OriginalPath = Settings.ImgGalleryPath + "\\" + OriginalSource.ToolTip;
+            string OriginalPath = Settings.ImgGalleryPath + "\\" + originalSource.ToolTip;
 
             using (FileStream Stream = new FileStream(OriginalPath, FileMode.Open, FileAccess.ReadWrite))
             {
-                MetaDataWindow MetadataPopup = new MetaDataWindow(OriginalPath, MetadataEditor.GetValuePairs(Stream));
-                MetadataPopup.Owner = Application.Current.MainWindow;
-                MetadataPopup.Show();
+                EditMetadataWindow metadataPopup = new EditMetadataWindow(OriginalPath, MetadataEditor.GetValuePairs(Stream));
+                metadataPopup.Owner = Application.Current.MainWindow;
+                metadataPopup.Show();
             }
         }
 
@@ -159,10 +211,9 @@ namespace MicroscopeGUI
             string OriginalPath = Settings.ImgGalleryPath + "\\" + OriginalSource.ToolTip;
 
             File.Delete(OriginalPath);
-
-            Children.Remove(OriginalSource);
         }
 
+        /* TODO */
         void OnImageClick(object o, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
@@ -185,17 +236,19 @@ namespace MicroscopeGUI
     }
 
     // Only handels the FileSystemWatcher for the image gallery
-    partial class ImageGallery : StackPanel
+    public partial class ImageGallery : StackPanel
     {
+        FileSystemWatcher Watcher;
+
         // Initializes the FileSystemWatcher 
-        void InitializeWatcher(string Path)
+        void InitializeWatcher(string path)
         {
-            Watcher = new FileSystemWatcher(Path);
+            Watcher = new FileSystemWatcher(path);
 
             // So if anything changes the FileSystemWatcher listens
-            Watcher.Created += Watcher_Changed;
-            Watcher.Deleted += Watcher_Changed;
-            Watcher.Renamed += Watcher_Changed;
+            Watcher.Created += Watcher_Created;
+            Watcher.Deleted += Watcher_Deleted;
+            Watcher.Renamed += Watcher_Renamed;
 
             // Only fires events if a .png file changes
             Watcher.Filter = "*.png";
@@ -203,10 +256,18 @@ namespace MicroscopeGUI
             Watcher.EnableRaisingEvents = true;
         }
 
-        private void Watcher_Changed(object sender, FileSystemEventArgs e)
+        private void Watcher_Created(object sender, FileSystemEventArgs e)
+            => UI.CurrentDispatcher.BeginInvoke(() => AddImg(e.FullPath), DispatcherPriority.Background);
+
+        private void Watcher_Deleted(object sender, FileSystemEventArgs e)
+            => UI.CurrentDispatcher.BeginInvoke(() => RemoveImg(e.Name), DispatcherPriority.Background);
+
+        private void Watcher_Renamed(object sender, RenamedEventArgs e)
         {
-            // Reloading the image gallery
-            UI.CurrentDispatcher.Invoke(() => LoadImagesFromFolder(Directory.GetFiles(Settings.ImgGalleryPath)));
+            Image renamedImg = Images[e.OldName];
+            Images.Remove(e.OldName);
+            Images.Add(e.Name, renamedImg);
+            UI.CurrentDispatcher.BeginInvoke(() => renamedImg.ToolTip = e.Name, DispatcherPriority.Background);
         }
     }
 }

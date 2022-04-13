@@ -7,6 +7,7 @@ using System.Windows.Threading;
 using System.Windows.Media.Imaging;
 using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
+using MicroscopeGUI.MetadataWindowComponents;
 
 namespace MicroscopeGUI
 {
@@ -15,12 +16,13 @@ namespace MicroscopeGUI
         public static Image CurrentFrame;
         public static CustomShader FrameEffects;
         public static Dispatcher CurrentDispatcher;
+        public static ImageGallery CurrentGallery;
 
         public static HistogramControl HistogramControl;
 
         readonly MemoryStream BmpMemory;
 
-        MetaDataWindow MetadataPopup;
+        MetadataWindow MetadataPopup;
         KeybindWindow KeybindPopup;
 
         public UI()
@@ -32,6 +34,7 @@ namespace MicroscopeGUI
             CurrentFrame = CurrentFrameCon;
             CurrentDispatcher = Dispatcher;
             FrameEffects = EffectShader;
+            CurrentGallery = ImgGallery;
 
             PreviewKeyDown += UIKeyDown;
             Closing += GUIClosing;

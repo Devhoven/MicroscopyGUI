@@ -7,6 +7,7 @@ using System.Diagnostics;
 using Image = peak.ipl.Image;
 using Buffer = peak.core.Buffer;
 using System.Threading;
+using System.Windows.Threading;
 
 namespace MicroscopeGUI
 {
@@ -24,6 +25,18 @@ namespace MicroscopeGUI
 
         static DataStream DataStream;
         static NodeMap NodeMap;
+
+        // Gets set to true if the user wants to save the current frame
+        // Fires after the frame was saved by the acquisition thread
+        public static event Action SavedFrame;
+        // Set by the SaveFrameTo method
+        // Get's queried in the loop and if it's true, the current frame is saved
+        static bool SaveFrame = false;
+        // Also set by the SaveFrameTo method
+        // Specifies the path where the frame should be saved
+        static string SavePath;
+
+        static Bitmap CurrentFrameBitmap;
 
         public static bool UseColorCorrection = true;
         static ColorCorrector ColorCorrector;
@@ -89,7 +102,6 @@ namespace MicroscopeGUI
 
             uint errorCounter = 0;
 
-            Bitmap image;
             Image iplImg;
             Buffer buffer;
 
@@ -122,12 +134,26 @@ namespace MicroscopeGUI
                     HistogramUpdated(new Histogram(iplImg));
 
                     // Creating Bitmap from the IDS peak IPL Image
-                    image = new Bitmap(Width, Height, stride, System.Drawing.Imaging.PixelFormat.Format32bppArgb, iplImg.Data());
+                    CurrentFrameBitmap = new Bitmap(Width, Height, stride, System.Drawing.Imaging.PixelFormat.Format32bppArgb, iplImg.Data());
 
+                    // Would be null if nothing subscribed to the event
                     if (ImageReceived != null)
-                        ImageReceived(image);
-                        
-                    image.Dispose();
+                        ImageReceived(CurrentFrameBitmap);
+
+                    // If the user wants so save the current frame, this bool is set
+                    if (SaveFrame)
+                    {
+                        // Setting it to false, so only a single frame gets saved
+                        SaveFrame = false;
+
+                        // Saving the bitmap at the given path
+                        CurrentFrameBitmap.Save(SavePath);
+
+                        // Informing the UI
+                        UI.CurrentDispatcher.BeginInvoke(() => SavedFrame.Invoke(), DispatcherPriority.Background);
+                    }
+
+                    CurrentFrameBitmap.Dispose();
                     iplImg.Dispose();
 
                     // Resetting it to 0, since the current frame got sent successfully
@@ -159,5 +185,11 @@ namespace MicroscopeGUI
 
         public static void SetNodeMap(NodeMap nodeMap) =>
             NodeMap = nodeMap;
+
+        public static void SaveFrameTo(string path)
+        {
+            SavePath = path;
+            SaveFrame = true;
+        }
     }
 }

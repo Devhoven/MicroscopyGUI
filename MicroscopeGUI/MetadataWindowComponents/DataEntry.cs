@@ -6,9 +6,9 @@ using Brushes = System.Windows.Media.Brushes;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using TextBox = System.Windows.Controls.TextBox;
 
-namespace MicroscopeGUI
+namespace MicroscopeGUI.MetadataWindowComponents
 {
-    class DataEntry : DockPanel
+    public class DataEntry : DockPanel
     {
         static int Count = 1;
         static Brush FirstBackgroundColor = (Brush)new BrushConverter().ConvertFrom("#FF2f2f30");

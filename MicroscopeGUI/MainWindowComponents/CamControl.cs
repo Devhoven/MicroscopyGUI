@@ -266,6 +266,11 @@ namespace MicroscopeGUI
             AcquisitionStartNode.Execute();
         }
 
+        public static void LoadFromFile(string path)
+        {
+            // TODO
+        }
+
         public static void SaveToFile(string path)
             => NodeMap.StoreToFile(path);
 

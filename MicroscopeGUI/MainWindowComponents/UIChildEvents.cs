@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using Brushes = System.Windows.Media.Brushes;
 using MenuItem = System.Windows.Controls.MenuItem;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MicroscopeGUI.MetadataWindowComponents;
 
 namespace MicroscopeGUI
 {
@@ -77,7 +78,7 @@ namespace MicroscopeGUI
         // Saves the current frame
         void SaveClick(object sender, RoutedEventArgs e)
         {
-            MetadataPopup = new MetaDataWindow();
+            MetadataPopup = new MetadataWindow();
             MetadataPopup.Owner = this;
             MetadataPopup.Show();
         }
@@ -91,11 +92,10 @@ namespace MicroscopeGUI
         {
             SaveFileDialog SaveDialog = new SaveFileDialog();
             SaveDialog.Title = "Save file";
-            SaveDialog.Filter = "Configfile|*.xml";
+            SaveDialog.Filter = "Configfile|*.conf";
 
             if (SaveDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
-                //File.WriteAllText(SaveDialog.FileName, Control.GetXMLString(), Encoding.UTF8);
                 CamControl.SaveToFile(SaveDialog.FileName);
                 UserInfo.SetInfo("Saved the current config to " + SaveDialog.FileName);
             }
@@ -108,11 +108,12 @@ namespace MicroscopeGUI
         {
             OpenFileDialog OpenDialog = new OpenFileDialog();
             OpenDialog.Title = "Choose the config file";
-            OpenDialog.Filter = "Configfile|*.xml";
+            OpenDialog.Filter = "Configfile|*.conf";
 
             if (OpenDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
             {
                 //Control.LoadXML(File.ReadAllText(OpenDialog.FileName, Encoding.UTF8));
+                CamControl.LoadFromFile(OpenDialog.FileName);
                 UserInfo.SetInfo("Loaded the config from " + OpenDialog.FileName);
             }
             else

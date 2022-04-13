@@ -1,4 +1,4 @@
-﻿<Window x:Class="MicroscopeGUI.MetaDataWindow"
+﻿<Window x:Class="MicroscopeGUI.MetadataWindowComponents.MetadataWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -36,7 +36,7 @@
         <StackPanel Orientation="Horizontal" 
                     HorizontalAlignment="Left" VerticalAlignment="Center"
                     DockPanel.Dock="Bottom" Panel.ZIndex="1">
-            <Button Background="#FF434346" Click="SaveImgClick" 
+            <Button x:Name="ConfirmBtn" Background="#FF434346" Click="ConfirmClick" 
                         Width="180" Height="40" BorderThickness="0" Margin="10 5 5 5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Foreground="White">Save image</TextBlock>
