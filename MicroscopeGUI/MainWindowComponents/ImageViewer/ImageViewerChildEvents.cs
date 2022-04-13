@@ -79,7 +79,7 @@ namespace MicroscopeGUI
                 {
                     // Returns the parameters of a rectangle with a positive size (is required for a rectangle)
                     (double X, double Y, double Width, double Height) = GetRectangle(DrawStart, CurrentMousePos);
-                    RenderRectangle(X, Y, Width, Height);
+                    RenderRectangle(DrawStart, CurrentMousePos, X, Y, Width, Height);
                 }
                 else if (CurrentMode == MeasureMode.Line)
                 {

@@ -9,7 +9,7 @@ namespace MicroscopeGUI
     public partial class ImageViewer
     {
         // Renders a rectangle out of a point and two positive lengths
-        void RenderRectangle(double X, double Y, double Width, double Height)
+        void RenderRectangle(Point startpoint, Point endpoint, double X, double Y, double Width, double Height)
         {
             // If the width and height are zero => The user only clicked on the canvas
             // No new rectangle / text is added, thus "removing" the old rectangle
@@ -18,13 +18,17 @@ namespace MicroscopeGUI
 
             double SizeFactor = GetScreenToPixelFactor();
 
+            Point Anchor = new Point(X, Y);
+
             if (AlternativeMeasureMode)
             {
-                if (Width < Height)
-                    Height = Width;
-                else
-                    Width = Height;
+                Height = Math.Min(Math.Abs(endpoint.X - startpoint.X), Math.Abs(endpoint.Y - startpoint.Y));
+                Width = Height;
+                
+                Anchor.X = startpoint.X < endpoint.X ? startpoint.X : startpoint.X - Height;
+                Anchor.Y = startpoint.Y < endpoint.Y ? startpoint.Y : startpoint.Y - Height;
             }
+
 
             // The values that are actually shown on the screen
             int PixelWidth = (int)Math.Round(Width * SizeFactor);
@@ -60,17 +64,17 @@ namespace MicroscopeGUI
             _Child.Children.Add(HeightDisplay);
 
             // Sets the render location of the new elements on the canvas
-            Canvas.SetLeft(Rect, X);
-            Canvas.SetTop(Rect, Y);
+            Canvas.SetLeft(Rect, Anchor.X);
+            Canvas.SetTop(Rect, Anchor.Y);
 
             // Sets the position of the text blocks
             Size RenderedSize = WidthDisplay.GetElementPixelSize();
-            Canvas.SetLeft(WidthDisplay, X + Width / 2 - RenderedSize.Width / 2);
-            Canvas.SetTop(WidthDisplay, Y - WidthDisplay.FontSize - Rect.StrokeThickness - 3);
+            Canvas.SetLeft(WidthDisplay, Anchor.X + Width / 2 - RenderedSize.Width / 2);
+            Canvas.SetTop(WidthDisplay, Anchor.Y - WidthDisplay.FontSize - Rect.StrokeThickness - 3);
 
             RenderedSize = HeightDisplay.GetElementPixelSize();
-            Canvas.SetLeft(HeightDisplay, X + Width);
-            Canvas.SetTop(HeightDisplay, Y + Height / 2 - RenderedSize.Width / 2);
+            Canvas.SetLeft(HeightDisplay, Anchor.X + Width);
+            Canvas.SetTop(HeightDisplay, Anchor.Y + Height / 2 - RenderedSize.Width / 2);
 
             ChildCount = 3;
         }
