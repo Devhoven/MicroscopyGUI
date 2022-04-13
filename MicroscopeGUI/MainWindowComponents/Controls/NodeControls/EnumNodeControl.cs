@@ -27,7 +27,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
             }
         }
 
-        public EnumNodeControl(EnumerationNode node) : base(node.DisplayName())
+        public EnumNodeControl(EnumerationNode node, ControlCon.ControlNodeInfo element) : base(element.DisplayName)
         {
             Node = node;
 

@@ -36,7 +36,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
             }
         }
 
-        public FloatNodeControl(FloatNode node) : base(node.DisplayName())
+        public FloatNodeControl(FloatNode node, ControlCon.ControlNodeInfo element) : base(element.DisplayName)
         {
             Node = node;
 

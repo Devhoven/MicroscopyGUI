@@ -13,22 +13,24 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
 {
     class ControlCon : StackPanel
     {
-        readonly static List<ControlNode> CONTROL_NODES = new List<ControlNode>()
+        readonly static List<ControlNodeInfo> CONTROL_NODES = new List<ControlNodeInfo>()
         {
-            new ControlNode("AcquisitionFrameRate", NodeType.Float),
-            new ControlNode("ExposureTime", NodeType.Float),
-            new ControlNode("Gain", NodeType.Float)
+            new ControlNodeInfo("AcquisitionFrameRate", "Acquisition frame rate", NodeType.Float),
+            new ControlNodeInfo("ExposureTime", "Exposure time (µs)", NodeType.Float),
+            new ControlNodeInfo("Gain", "Gain", NodeType.Float)
         };
         
-        struct ControlNode
+        public struct ControlNodeInfo
         {
             public string Name;
+            public string DisplayName;
             public NodeType Type;
 
-            public ControlNode(string name, NodeType type)
+            public ControlNodeInfo(string name, string displayName, NodeType type)
             {
                 Name = name;
                 Type = type;
+                DisplayName = displayName;
             }
         }
 
@@ -45,16 +47,16 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
                 AcquisitionWorker.UseColorCorrection = val;
             }));
 
-            foreach (ControlNode element in CONTROL_NODES)
+            foreach (ControlNodeInfo element in CONTROL_NODES)
             {
                 switch (element.Type)
                 {
                     case NodeType.Float:
-                        Children.Add(new FloatNodeControl(nodeMap.FindNode<FloatNode>(element.Name)));
+                        Children.Add(new FloatNodeControl(nodeMap.FindNode<FloatNode>(element.Name), element));
                         break;
 
                     case NodeType.Enumeration:
-                        Children.Add(new EnumNodeControl(nodeMap.FindNode<EnumerationNode>(element.Name)));
+                        Children.Add(new EnumNodeControl(nodeMap.FindNode<EnumerationNode>(element.Name), element));
                         break;
                 }
             }
