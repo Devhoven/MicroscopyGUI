@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:MicroscopeGUI" xmlns:effects="clr-namespace:MicroscopeGUI.MainWindowComponents.ImageViewer.Shader.Classes"
         mc:Ignorable="d"
         Title="Microscope GUI" Height="720" Width="1080"
-        WindowStartupLocation="CenterScreen" WindowState="Maximized">
+        WindowStartupLocation="CenterScreen" WindowState="Maximized"
+        Icon="/Assets/Microscope.ico">
 
     <Window.Style>
         <Style TargetType="{x:Type Window}">
