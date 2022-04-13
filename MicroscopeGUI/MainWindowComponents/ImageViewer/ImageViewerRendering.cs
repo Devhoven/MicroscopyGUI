@@ -153,7 +153,7 @@ namespace MicroscopeGUI
         double GetScreenToPixelFactor()
         {
             double ActualWidth = (double)_Child.Children[0].GetValue(Image.ActualWidthProperty);
-            return AcquisitionWorker.Width / ActualWidth;
+            return CamControl.Width / ActualWidth;
         }
 
         // Removing the old elements, except the image 

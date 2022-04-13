@@ -23,19 +23,32 @@ namespace MicroscopeGUI
         public delegate void HistogramUpdatedEventHandler(Histogram histogram);
         public static event HistogramUpdatedEventHandler HistogramUpdated;
 
+        public static event Action SavedFrame;
+
         public static bool IsActive;
+
+        public static int Width => AcqWorker.Width;
+
+        public static bool UseColorCorrection
+        {
+            get => AcqWorker.UseColorCorrection;
+            set => AcqWorker.UseColorCorrection = value;
+        }
 
         static Device Device;
         static DataStream DataStream;
         static NodeMap NodeMap;
 
-
         static CommandNode AcquisitionStartNode;
         static CommandNode AcquisitionStopNode;
+
+        static AcquisitionWorker AcqWorker;
 
         static CamControl()
         {
             IsActive = true;
+
+            AcqWorker = new AcquisitionWorker();
 
             Initialize();
         }
@@ -44,8 +57,9 @@ namespace MicroscopeGUI
         {
             try
             {
-                AcquisitionWorker.ImageReceived += AcquisitionWorker_ImageReceived;
-                AcquisitionWorker.HistogramUpdated += AcquisitionWorker_HistogramUpdated;
+                AcqWorker.ImageReceived += AcqWorker_ImageReceived;
+                AcqWorker.HistogramUpdated += AcqWorker_HistogramUpdated;
+                AcqWorker.SavedFrame += AcqWorker_SavedFrame;
 
                 // Initialize peak library
                 Library.Initialize();
@@ -63,7 +77,7 @@ namespace MicroscopeGUI
             if (!OpenDevice())
                 return false;
 
-            AcquisitionWorker.Start();
+            AcqWorker.Start();
 
             // Retreiving the start and stop command nodes
             AcquisitionStartNode = NodeMap.FindNode<CommandNode>("AcquisitionStart");
@@ -73,34 +87,16 @@ namespace MicroscopeGUI
         }
 
         public static void Freeze()
-        {
-            try
-            {
-                NodeMap.FindNode<CommandNode>("AcquisitionStop").Execute();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("--- [BackEnd] The user tried to freeze a frozen cam: " + e.Message);
-            }
-        }
+            => AcqWorker.Freeze = true;
 
         public static void Unfreeze()
-        {
-            try
-            {
-                NodeMap.FindNode<CommandNode>("AcquisitionStart").Execute();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("--- [BackEnd] The user tried to start a live cam: " + e.Message);
-            }
-        }
+            => AcqWorker.Freeze = false;
 
         public static void Stop()
         {
             Debug.WriteLine("--- [BackEnd] Stop");
             IsActive = false;
-            AcquisitionWorker.Stop();
+            AcqWorker.Stop();
 
             CloseDevice();
 
@@ -197,8 +193,8 @@ namespace MicroscopeGUI
                     }
 
                     // Configure worker
-                    AcquisitionWorker.SetDataStream(DataStream);
-                    AcquisitionWorker.SetNodeMap(NodeMap);
+                    AcqWorker.SetDataStream(DataStream);
+                    AcqWorker.SetNodeMap(NodeMap);
                 }
             }
             catch (Exception e)
@@ -274,13 +270,19 @@ namespace MicroscopeGUI
         public static void SaveToFile(string path)
             => NodeMap.StoreToFile(path);
 
+        public static void SafeFrameTo(string path)
+            => AcqWorker.SaveFrameTo(path);
+
         public static ControlCon GetControlCon() 
             => new ControlCon(NodeMap);
 
-        static void AcquisitionWorker_ImageReceived(Bitmap image)
+        static void AcqWorker_ImageReceived(Bitmap image)
             => ImageReceived(image);
     
-        static void AcquisitionWorker_HistogramUpdated(Histogram histogram) 
+        static void AcqWorker_HistogramUpdated(Histogram histogram) 
             => HistogramUpdated(histogram);
+
+        static void AcqWorker_SavedFrame()
+            => SavedFrame();
     }
 }

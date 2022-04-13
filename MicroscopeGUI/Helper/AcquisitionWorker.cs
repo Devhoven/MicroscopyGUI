@@ -11,41 +11,42 @@ using System.Windows.Threading;
 
 namespace MicroscopeGUI
 {
-    public static class AcquisitionWorker
+    public class AcquisitionWorker
     {
         // Event which is raised if a new image was received
         public delegate void ImageReceivedEventHandler(Bitmap image);
-        public static event ImageReceivedEventHandler ImageReceived;
+        public event ImageReceivedEventHandler ImageReceived;
 
         public delegate void HistogramUpdatedEventHandler(Histogram histogram);
-        public static event HistogramUpdatedEventHandler HistogramUpdated;
+        public event HistogramUpdatedEventHandler HistogramUpdated;
 
         // Contain the widht and height of the current image
-        public static int Width, Height;
+        public int Width, Height;
 
-        static DataStream DataStream;
-        static NodeMap NodeMap;
+        DataStream DataStream;
+        NodeMap NodeMap;
 
         // Gets set to true if the user wants to save the current frame
         // Fires after the frame was saved by the acquisition thread
-        public static event Action SavedFrame;
+        public event Action SavedFrame;
         // Set by the SaveFrameTo method
         // Get's queried in the loop and if it's true, the current frame is saved
-        static bool SaveFrame = false;
+        bool SaveFrame = false;
         // Also set by the SaveFrameTo method
         // Specifies the path where the frame should be saved
-        static string SavePath;
+        string SavePath;
 
-        static Bitmap CurrentFrameBitmap;
+        Bitmap CurrentFrameBitmap;
 
-        public static bool UseColorCorrection = true;
-        static ColorCorrector ColorCorrector;
+        public bool UseColorCorrection = true;
+        ColorCorrector ColorCorrector;
 
-        static bool Running = false;
+        public bool Freeze = false;
+        bool Running = false;
 
-        static Thread AcqThread;
+        Thread AcqThread;
 
-        public static void Start()
+        public void Start()
         {
             try
             {
@@ -70,7 +71,7 @@ namespace MicroscopeGUI
             AcqThread.Start();
         }
 
-        static void InitColorCorrector()
+        void InitColorCorrector()
         {
             ColorCorrector = new ColorCorrector();
 
@@ -95,63 +96,37 @@ namespace MicroscopeGUI
                 Debug.WriteLine("--- [AquisitionWorker] Couldn't set the color correction matrix \n" + e.Message);
             }
         }
+       
+        public void Stop()
+        {
+            Running = false;
 
-        static void Loop()
+            if (AcqThread.IsAlive)
+                AcqThread.Join();
+        }
+
+        void Loop()
         {
             int stride;
 
             uint errorCounter = 0;
 
-            Image iplImg;
-            Buffer buffer;
+            Image iplImg = null;
+            Buffer buffer = null;
 
             Running = true;
             while (Running)
             {
                 try
                 {
-                    // Get buffer from device's datastream
-                    buffer = DataStream.WaitForFinishedBuffer(1000);
-
-                    // Create IDS peak IPL Image
-                    iplImg = new Image((PixelFormatName)buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), buffer.Width(), buffer.Height());
-
-                    // Debayering and converting IDS peak IPL Image to RGBa8 format
-                    iplImg = iplImg.ConvertTo(PixelFormatName.BGRa8, ConversionMode.HighQuality);
-
-                    // Queue buffer so that it can be used again 
-                    DataStream.QueueBuffer(buffer);
-
-                    if (UseColorCorrection)
-                        ColorCorrector.ProcessInPlace(iplImg);
-
-                    // Getting dimensions of the IDS peak IPL Image 
-                    Width = (int)iplImg.Width();
-                    Height = (int)iplImg.Height();
-                    stride = (int)iplImg.PixelFormat().CalculateStorageSizeOfPixels(iplImg.Width());
+                    GetIPLImg(buffer);
 
                     // Fire the histogram updated event with the new data
                     HistogramUpdated(new Histogram(iplImg));
 
-                    // Creating Bitmap from the IDS peak IPL Image
-                    CurrentFrameBitmap = new Bitmap(Width, Height, stride, System.Drawing.Imaging.PixelFormat.Format32bppArgb, iplImg.Data());
-
-                    // Would be null if nothing subscribed to the event
-                    if (ImageReceived != null)
-                        ImageReceived(CurrentFrameBitmap);
-
-                    // If the user wants so save the current frame, this bool is set
-                    if (SaveFrame)
-                    {
-                        // Setting it to false, so only a single frame gets saved
-                        SaveFrame = false;
-
-                        // Saving the bitmap at the given path
-                        CurrentFrameBitmap.Save(SavePath);
-
-                        // Informing the UI
-                        UI.CurrentDispatcher.BeginInvoke(() => SavedFrame.Invoke(), DispatcherPriority.Background);
-                    }
+                    GetFrameBitmap();
+                    
+                    CheckSaveFrame();
 
                     CurrentFrameBitmap.Dispose();
                     iplImg.Dispose();
@@ -170,23 +145,65 @@ namespace MicroscopeGUI
                         UserInfo.SetErrorInfo("The camera failed to send more than 10 consecutive frames");
                 }
             }
+
+            void GetIPLImg(Buffer buffer)
+            {
+                // Get buffer from device's datastream
+                buffer = DataStream.WaitForFinishedBuffer(1000);
+
+                // Create IDS peak IPL Image
+                iplImg = new Image((PixelFormatName)buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), buffer.Width(), buffer.Height());
+
+                // Debayering and converting IDS peak IPL Image to RGBa8 format
+                iplImg = iplImg.ConvertTo(PixelFormatName.BGRa8, ConversionMode.HighQuality);
+
+                // Queue buffer so that it can be used again 
+                DataStream.QueueBuffer(buffer);
+
+                // Applying the HQ matrix
+                if (UseColorCorrection)
+                    ColorCorrector.ProcessInPlace(iplImg);
+            }
+            
+            void GetFrameBitmap()
+            {
+                // Getting dimensions of the IDS peak IPL Image 
+                Width = (int)iplImg.Width();
+                Height = (int)iplImg.Height();
+                stride = (int)iplImg.PixelFormat().CalculateStorageSizeOfPixels(iplImg.Width());
+
+                // Creating Bitmap from the IDS peak IPL Image
+                CurrentFrameBitmap = new Bitmap(Width, Height, stride, System.Drawing.Imaging.PixelFormat.Format32bppArgb, iplImg.Data());
+
+                // Would be null if nothing subscribed to the event
+                if (ImageReceived != null && !Freeze)
+                    ImageReceived(CurrentFrameBitmap);
+            }
+
+            void CheckSaveFrame()
+            {
+                // If the user wants so save the current frame, this bool is set
+                if (!SaveFrame)
+                    return;
+
+                // Setting it to false, so only a single frame gets saved
+                SaveFrame = false;
+
+                // Saving the bitmap at the given path
+                CurrentFrameBitmap.Save(SavePath);
+
+                // Informing the UI
+                UI.CurrentDispatcher.BeginInvoke(() => SavedFrame.Invoke(), DispatcherPriority.Background);
+            }
         }
 
-        public static void Stop()
-        {
-            Running = false;
+        public void SetDataStream(DataStream dataStream) 
+            => DataStream = dataStream;
 
-            if (AcqThread.IsAlive)
-                AcqThread.Join();
-        }
+        public void SetNodeMap(NodeMap nodeMap) 
+            => NodeMap = nodeMap;
 
-        public static void SetDataStream(DataStream dataStream) =>
-            DataStream = dataStream;
-
-        public static void SetNodeMap(NodeMap nodeMap) =>
-            NodeMap = nodeMap;
-
-        public static void SaveFrameTo(string path)
+        public void SaveFrameTo(string path)
         {
             SavePath = path;
             SaveFrame = true;

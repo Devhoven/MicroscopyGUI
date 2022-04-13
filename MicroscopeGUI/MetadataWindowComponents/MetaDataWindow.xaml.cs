@@ -68,7 +68,7 @@ namespace MicroscopeGUI.MetadataWindowComponents
             {
                 SavePath = saveDialog.FileName;
 
-                AcquisitionWorker.SavedFrame += () =>
+                CamControl.SavedFrame += () =>
                 {
                     using (FileStream Stream = new FileStream(SavePath, FileMode.Open, FileAccess.ReadWrite))
                     {
@@ -81,7 +81,7 @@ namespace MicroscopeGUI.MetadataWindowComponents
                     UI.CurrentGallery.UpdatePath(FolderPath);
                 };
 
-                AcquisitionWorker.SaveFrameTo(SavePath);
+                CamControl.SafeFrameTo(SavePath);
 
                 Close();
             }
