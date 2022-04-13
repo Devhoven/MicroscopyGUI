@@ -17,6 +17,7 @@ using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp;
 using System.Threading;
 using System.Windows.Media;
+using MicroscopeGUI.IDSPeak;
 
 namespace MicroscopeGUI
 {

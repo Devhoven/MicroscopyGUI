@@ -8,6 +8,7 @@ using Brushes = System.Windows.Media.Brushes;
 using MenuItem = System.Windows.Controls.MenuItem;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using MicroscopeGUI.MetadataWindowComponents;
+using MicroscopeGUI.IDSPeak;
 
 namespace MicroscopeGUI
 {

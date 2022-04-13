@@ -8,6 +8,7 @@ using System.Windows.Controls;
 using System.Text;
 using MicroscopeGUI.MainWindowComponents.Controls;
 using MicroscopeGUI.MainWindowComponents.Controls.NodeControls;
+using MicroscopeGUI.IDSPeak;
 
 namespace MicroscopeGUI.MainWindowComponents.Controls
 {

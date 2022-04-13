@@ -9,7 +9,7 @@ using Buffer = peak.core.Buffer;
 using System.Threading;
 using System.Windows.Threading;
 
-namespace MicroscopeGUI
+namespace MicroscopeGUI.IDSPeak
 {
     public class AcquisitionWorker
     {

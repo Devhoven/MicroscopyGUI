@@ -7,6 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using MicroscopeGUI.Helper.UIInteraction;
 using MicroscopeGUI.MainWindowComponents.Controls;
+using MicroscopeGUI.IDSPeak;
 
 namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
 {

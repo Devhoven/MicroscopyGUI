@@ -3,6 +3,7 @@ using System;
 using ScottPlot;
 using System.Drawing;
 using Histogram = peak.ipl.Histogram;
+using MicroscopeGUI.IDSPeak;
 
 namespace MicroscopeGUI
 {

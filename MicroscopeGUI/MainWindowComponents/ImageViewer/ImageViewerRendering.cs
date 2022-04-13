@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MicroscopeGUI.IDSPeak;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;

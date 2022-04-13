@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Input;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
+using MicroscopeGUI.IDSPeak;
 
 namespace MicroscopeGUI.MetadataWindowComponents
 {
