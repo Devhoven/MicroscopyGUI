@@ -107,8 +107,10 @@ namespace MicroscopeGUI
                 var tt = GetTranslateTransform(_Child);
 
                 double zoom = e.Delta > 0 ? .2 : -.2;
-                if (!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4))
+                if ((!(e.Delta > 0) && (st.ScaleX < .4 || st.ScaleY < .4)) || ((e.Delta > 0) && (st.ScaleX > 20 || st.ScaleY > 20)))
+                {
                     return;
+                }
 
                 Point relative = e.GetPosition(_Child);
                 double absoluteX;

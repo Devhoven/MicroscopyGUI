@@ -16,6 +16,7 @@ using SixLabors.ImageSharp.Formats;
 using SixLabors.ImageSharp.Processing;
 using SixLabors.ImageSharp;
 using System.Threading;
+using System.Windows.Media;
 
 namespace MicroscopeGUI
 {
@@ -230,6 +231,7 @@ namespace MicroscopeGUI
                 BmpImg.EndInit();
 
                 UI.CurrentFrame.Source = BmpImg;
+                RenderOptions.SetBitmapScalingMode(UI.CurrentFrame, BitmapScalingMode.HighQuality);
                 // Setting the color of the buttons, so the user knows, that the image was "frozen"
                 UI Window = Application.Current.MainWindow as UI;
                 Window.LiveFeedBtn.Background = Brushes.Transparent;
