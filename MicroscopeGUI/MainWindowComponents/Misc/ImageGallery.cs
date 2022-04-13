@@ -69,6 +69,7 @@ namespace MicroscopeGUI
 
         private void LoadImagesFromFolder(string[] FilePaths)
         {
+            Images.Clear();
             Children.Clear();
             foreach (string path in FilePaths)
             {
@@ -218,7 +219,6 @@ namespace MicroscopeGUI
             File.Delete(OriginalPath);
         }
 
-        /* TODO */
         void OnImageClick(object o, MouseButtonEventArgs e)
         {
             if (e.ClickCount == 2)
