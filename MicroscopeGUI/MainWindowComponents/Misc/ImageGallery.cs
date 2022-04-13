@@ -21,10 +21,7 @@ namespace MicroscopeGUI
 {
     public partial class ImageGallery : StackPanel
     {
-        static Thickness ImgBoxMargin = new Thickness()
-        {
-            Bottom = 5
-        };
+        static readonly Thickness IMG_BOX_MARGIN = new Thickness(10, 0, 5, 13);
 
         Dictionary <string, Image> Images = new Dictionary<string, Image>();
 
@@ -144,7 +141,7 @@ namespace MicroscopeGUI
                         Source = bmpImg,
                         Width = 180,
                         MaxHeight = 180,
-                        Margin = ImgBoxMargin,
+                        Margin = IMG_BOX_MARGIN,
                         ToolTip = Path.GetFileName(path)
                     };
                 }
