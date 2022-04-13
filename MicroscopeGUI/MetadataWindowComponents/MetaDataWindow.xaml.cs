@@ -33,8 +33,8 @@ namespace MicroscopeGUI.MetadataWindowComponents
         }
 
         // So the main window does not get unfocused
-        private void WindowClosing(object sender, EventArgs e) =>
-            Owner.Activate();
+        private void WindowClosing(object sender, EventArgs e) 
+            => Owner.Activate();
 
         private void MetaDataWindowKeyDown(object sender, KeyEventArgs e)
         {
@@ -88,7 +88,7 @@ namespace MicroscopeGUI.MetadataWindowComponents
             }
         }
 
-        private void CancelClick(object sender, RoutedEventArgs e) =>
-            Close();
+        private void CancelClick(object sender, RoutedEventArgs e) 
+            => Close();
     }
 }

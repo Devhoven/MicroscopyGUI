@@ -121,10 +121,8 @@ namespace MicroscopeGUI
                 }
             };
 
-            ResetImageItem.Click += (o, e) =>
-            {
-                Reset();
-            };
+            ResetImageItem.Click += (o, e) 
+                => Reset();
 
             RectangleMeasureItem.Click += (o, e) =>
             {
@@ -167,7 +165,7 @@ namespace MicroscopeGUI
             }
         }
 
-        public void SetMeasureMode(MeasureMode NewMode) =>
-            CurrentMode = NewMode;
+        public void SetMeasureMode(MeasureMode NewMode) 
+            => CurrentMode = NewMode;
     }
 }

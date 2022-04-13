@@ -31,7 +31,8 @@ namespace MicroscopeGUI
         public static string ImgGalleryPath = "";
 
         // Converts a color to a hex string
-        static string ToHexString(this Color c) => $"#{c.R:X2}{c.G:X2}{c.B:X2}";
+        static string ToHexString(this Color c) 
+            => $"#{c.R:X2}{c.G:X2}{c.B:X2}";
 
         static Settings()
         {

@@ -29,8 +29,10 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
                 IsChecked = defaultVal
             };
 
-            checkBox.Checked += (s, e) => OnToggled(true);
-            checkBox.Unchecked += (s, e) => OnToggled(false);
+            checkBox.Checked += (s, e) 
+                => OnToggled(true);
+            checkBox.Unchecked += (s, e) 
+                => OnToggled(false);
 
             ColumnDefinitions.Add(new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Auto)});
             SetColumn(checkBox, 1);

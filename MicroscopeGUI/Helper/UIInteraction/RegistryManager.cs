@@ -20,13 +20,13 @@ namespace MicroscopeGUI
                 return key.GetValue(ValName, DefaultVal);
         }
 
-        public static string GetStrVal(string ValName) =>
-            GetObjVal(ValName, string.Empty).ToString();
+        public static string GetStrVal(string ValName) 
+            => GetObjVal(ValName, string.Empty).ToString();
 
-        public static int GetIntVal(string ValName) =>
-            (int)GetObjVal(ValName, -1);
+        public static int GetIntVal(string ValName) 
+            => (int)GetObjVal(ValName, -1);
 
-        public static bool GetBoolVal(string ValName) =>
-            bool.Parse(GetObjVal(ValName, true).ToString());
+        public static bool GetBoolVal(string ValName) 
+            => bool.Parse(GetObjVal(ValName, true).ToString());
     }
 }

@@ -209,9 +209,9 @@
         </local:ImageViewer>
 
         <!--Image Gallery-->
-        <Border Grid.ZIndex="1" Grid.Column="2" Grid.Row="1" Background="{StaticResource BackgroundColor}" 
-                CornerRadius="5" Margin="5" MinWidth="210" >
-            <Grid x:Name="ImgGalleryCon">
+        <Border x:Name="ImgGalleryCon" Grid.ZIndex="1" Grid.Column="2" Grid.Row="1" Background="{StaticResource BackgroundColor}" 
+                CornerRadius="5" Margin="5" Width="210" >
+            <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="40"/>
                     <RowDefinition Height="1*"/>

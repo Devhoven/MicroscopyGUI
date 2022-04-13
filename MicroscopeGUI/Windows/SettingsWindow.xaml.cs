@@ -30,14 +30,14 @@ namespace MicroscopeGUI
             PathTextBlock.Text = Settings.ImgGalleryPath;
         }
 
-        private void LineColorPickerColorChanged(object sender, RoutedEventArgs e) =>
-            Settings.LineColor = new SolidColorBrush(LineColorPicker.SelectedColor);
+        private void LineColorPickerColorChanged(object sender, RoutedEventArgs e) 
+            => Settings.LineColor = new SolidColorBrush(LineColorPicker.SelectedColor);
 
-        private void LineTextColorPickerColorChanged(object sender, RoutedEventArgs e) =>
-            Settings.LineTextColor = new SolidColorBrush(LineTextColorPicker.SelectedColor);
+        private void LineTextColorPickerColorChanged(object sender, RoutedEventArgs e) 
+            => Settings.LineTextColor = new SolidColorBrush(LineTextColorPicker.SelectedColor);
 
-        private void CheckIfNumeric(object sender, TextCompositionEventArgs e) =>
-            e.Handled = NumRegex.IsMatch(e.Text);
+        private void CheckIfNumeric(object sender, TextCompositionEventArgs e) 
+            => e.Handled = NumRegex.IsMatch(e.Text);
 
         private void LineThicknessChanged(object sender, TextChangedEventArgs e)
         {

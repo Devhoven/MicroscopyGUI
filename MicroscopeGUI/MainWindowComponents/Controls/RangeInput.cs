@@ -61,19 +61,16 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
                 AutoToolTipPrecision = 2,
                 Margin = SliderMargin,
                 Value = startVal,
-                Minimum = minVal,
-                Maximum = maxVal,
                 Style = ResourceManager.GetResource<Style>("Horizontal_Slider")
             };
 
             NumInput = new NumberInput()
             {
                 HorizontalAlignment = HorizontalAlignment.Stretch,
-                Value = startVal,
-                Minimum = minVal,
-                Maximum = maxVal
+                Value = startVal
             };
 
+            ChangeRange(minVal, maxVal);
 
             Image img = new Image()
             {
@@ -86,7 +83,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
                 VerticalAlignment = VerticalAlignment.Stretch,
                 HorizontalAlignment = HorizontalAlignment.Stretch,
                 Content = img,
-                Margin = new Thickness(5, 0, 0, 0),
+                Margin = new Thickness(3, 0, 0, 0),
                 ToolTip = "Reset to default",
                 Cursor = Cursors.Hand
             };
@@ -116,18 +113,18 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
         void BindEvents()
         {
             // Invoking the events of the class
-            Slider.ValueChanged += (o, e) =>
-                OnValueChanged.Invoke(e.NewValue);
-            Slider.PreviewMouseUp += (o, e) =>
-                OnValueConfirmed.Invoke(Slider.Value);
-            NumInput.ValueConfirmed += () =>
-                OnValueConfirmed.Invoke(NumInput.Value);
+            Slider.ValueChanged += (o, e) 
+                => OnValueChanged.Invoke(e.NewValue);
+            Slider.PreviewMouseUp += (o, e) 
+                => OnValueConfirmed.Invoke(Slider.Value);
+            NumInput.ValueConfirmed += () 
+                => OnValueConfirmed.Invoke(NumInput.Value);
 
             // Changing the value of the Slider or NumberInput if either of them change
-            NumInput.ValueConfirmed += () =>
-                Slider.Value = NumInput.Value;
-            Slider.ValueChanged += (o, e) =>
-                NumInput.Value = Slider.Value;
+            NumInput.ValueConfirmed += () 
+                => Slider.Value = NumInput.Value;
+            Slider.ValueChanged += (o, e) 
+                => NumInput.Value = Slider.Value;
         }
 
         public void ChangeRange(double minVal, double maxVal)
@@ -137,6 +134,8 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
 
             Slider.Minimum = minVal;
             Slider.Maximum = maxVal;
+
+            Slider.SmallChange = (maxVal - minVal) / 30;
         }
 
         // Resets Slider-/Inputboxvalue to default value
