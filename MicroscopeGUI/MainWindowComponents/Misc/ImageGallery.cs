@@ -121,7 +121,11 @@ namespace MicroscopeGUI
                 // Loading the file and resizing it to 180 * 180 pixels
                 using (SharpImg img = SharpImg.Load(path, out IImageFormat format))
                 {
-                    img.Mutate(i => i.Resize(180, 180));
+                    img.Mutate(i => i.Resize(new ResizeOptions()
+                    {
+                        Mode = SixLabors.ImageSharp.Processing.ResizeMode.Max,
+                        Size = new SixLabors.ImageSharp.Size(180, 180)
+                    }));
                     // Getting a stream from the resized image
                     img.Save(stream, format);
                     stream.Position = 0;
