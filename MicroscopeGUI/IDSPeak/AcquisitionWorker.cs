@@ -8,6 +8,7 @@ using Image = peak.ipl.Image;
 using Buffer = peak.core.Buffer;
 using System.Threading;
 using System.Windows.Threading;
+using std;
 
 namespace MicroscopeGUI.IDSPeak
 {
@@ -40,6 +41,7 @@ namespace MicroscopeGUI.IDSPeak
 
         public bool UseColorCorrection = true;
         ColorCorrector ColorCorrector;
+        HotpixelCorrection HotpixelCorrector;
 
         public bool Freeze = false;
         bool Running = false;
@@ -65,6 +67,8 @@ namespace MicroscopeGUI.IDSPeak
             }
 
             InitColorCorrector();
+
+            HotpixelCorrector = new HotpixelCorrection();
 
             // Create acquisition worker thread that waits for new images from the camera
             AcqThread = new Thread(new ThreadStart(Loop));
@@ -154,6 +158,9 @@ namespace MicroscopeGUI.IDSPeak
 
                 // Create IDS peak IPL Image
                 iplImg = new Image((PixelFormatName)buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), buffer.Width(), buffer.Height());
+
+                Point2DCollection hotpixelVec = HotpixelCorrector.Detect(iplImg);
+                iplImg = HotpixelCorrector.Correct(iplImg, hotpixelVec);
 
                 // Debayering and converting IDS peak IPL Image to RGBa8 format
                 iplImg = iplImg.ConvertTo(PixelFormatName.BGRa8, ConversionMode.Classic);
