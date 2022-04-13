@@ -121,8 +121,8 @@ namespace MicroscopeGUI
                 {
                     GetIPLImg(buffer);
 
+                    // Fire the histogram updated event with the new data
                     if (!Freeze)
-                        // Fire the histogram updated event with the new data
                         HistogramUpdated(new Histogram(iplImg));
 
                     GetFrameBitmap();
