@@ -96,10 +96,16 @@ namespace MicroscopeGUI.IDSPeak
         }
 
         public static void Freeze()
-            => AcqWorker.Freeze = true;
+        {
+            AcqWorker.Freeze = true;
+            Stop();
+        }
 
         public static void Unfreeze()
-            => AcqWorker.Freeze = false;
+        {
+            AcqWorker.Freeze = false;
+            Start();
+        }
 
         public static void Stop()
         {

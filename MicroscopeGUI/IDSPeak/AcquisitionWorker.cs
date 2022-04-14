@@ -100,7 +100,7 @@ namespace MicroscopeGUI.IDSPeak
                 Debug.WriteLine("--- [AquisitionWorker] Couldn't set the color correction matrix \n" + e.Message);
             }
         }
-       
+
         public void Stop()
         {
             Running = false;
@@ -130,7 +130,7 @@ namespace MicroscopeGUI.IDSPeak
                         HistogramUpdated(new Histogram(iplImg));
 
                     GetFrameBitmap();
-                    
+
                     CheckSaveFrame();
 
                     CurrentFrameBitmap.Dispose();
@@ -188,7 +188,7 @@ namespace MicroscopeGUI.IDSPeak
                 if (UseColorCorrection)
                     ColorCorrector.ProcessInPlace(iplImg);
             }
-            
+
             void GetFrameBitmap()
             {
                 // Getting dimensions of the IDS peak IPL Image 
@@ -217,14 +217,14 @@ namespace MicroscopeGUI.IDSPeak
                 CurrentFrameBitmap.Save(SavePath);
 
                 // Informing the UI
-                UI.CurrentDispatcher.BeginInvoke(() => SavedFrame.Invoke(), DispatcherPriority.Background);
+                UI.CurrentDispatcher.BeginInvoke(() => SavedFrame.Invoke(), DispatcherPriority.Normal);
             }
         }
 
-        public void SetDataStream(DataStream dataStream) 
+        public void SetDataStream(DataStream dataStream)
             => DataStream = dataStream;
 
-        public void SetNodeMap(NodeMap nodeMap) 
+        public void SetNodeMap(NodeMap nodeMap)
             => NodeMap = nodeMap;
 
         public void SaveFrameTo(string path)
