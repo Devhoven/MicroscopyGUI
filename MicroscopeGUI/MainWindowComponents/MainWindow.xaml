@@ -221,9 +221,9 @@
                     <ColumnDefinition Width="210"/>
                 </Grid.ColumnDefinitions>
 
-                <Label Content="Image Gallery:" Style="{StaticResource Headline}" HorizontalAlignment="Left" Margin="5 5 0 0" Grid.Row="0"/>
+                <Label Content="Image Gallery:" Style="{StaticResource Headline}" HorizontalAlignment="Left" Margin="10 5 0 0" Grid.Row="0"/>
 
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Visible" Style="{StaticResource SVStyle}" >
                     <local:ImageGallery x:Name="ImgGallery" VerticalAlignment="Top" HorizontalAlignment="Center"/>
                 </ScrollViewer>
             </Grid>

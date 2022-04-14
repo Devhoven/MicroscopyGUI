@@ -23,7 +23,7 @@ namespace MicroscopeGUI
 {
     public partial class ImageGallery : StackPanel
     {
-        static readonly Thickness IMG_BOX_MARGIN = new Thickness(10, 0, 5, 13);
+        static readonly Thickness IMG_BOX_MARGIN = new Thickness(0, 0, 0, 10);
 
         Dictionary <string, Image> Images = new Dictionary<string, Image>();
 
