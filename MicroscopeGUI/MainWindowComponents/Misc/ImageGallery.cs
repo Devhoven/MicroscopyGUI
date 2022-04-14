@@ -233,6 +233,7 @@ namespace MicroscopeGUI
 
                 UI.CurrentFrame.Source = BmpImg;
                 RenderOptions.SetBitmapScalingMode(UI.CurrentFrame, BitmapScalingMode.HighQuality);
+                UserInfo.SetInfo("Opened " + Path.GetFileName(BmpImg.UriSource.LocalPath));
                 // Setting the color of the buttons, so the user knows, that the image was "frozen"
                 UI Window = Application.Current.MainWindow as UI;
                 Window.LiveFeedBtn.Background = Brushes.Transparent;
