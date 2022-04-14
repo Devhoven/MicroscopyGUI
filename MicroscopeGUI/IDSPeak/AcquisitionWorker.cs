@@ -151,10 +151,11 @@ namespace MicroscopeGUI.IDSPeak
                         UI.CurrentDispatcher.BeginInvoke(() =>
                             {
                                 UserInfo.SetErrorInfo("The camera failed to send more than 30 consecutive frames, stopping the acquisition");
-                                CamControl.Stop();
+                                Stop();
                             },
                             DispatcherPriority.Background);
                         errorCounter = 0;
+                        break;
                     }
                     // If more than 10 consecutive errors have been thrown a message is going to be shown to the user
                     else if (errorCounter > 10)

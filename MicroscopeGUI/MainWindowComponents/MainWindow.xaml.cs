@@ -91,7 +91,6 @@ namespace MicroscopeGUI
             }
         }
 
-
         private void CamImageReceived(Bitmap bitmap)
         {
             bitmap.Save(BmpMemory, ImageFormat.Bmp);

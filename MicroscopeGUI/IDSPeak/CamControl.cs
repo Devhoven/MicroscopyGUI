@@ -70,7 +70,10 @@ namespace MicroscopeGUI.IDSPeak
         {
             IDSDeviceManager.DeviceInfo? result = IDSDeviceManager.OpenDevice();
 
-            if (result == null)
+            if (result is null 
+                || result.Value.Device is null 
+                || result.Value.NodeMap is null 
+                || result.Value.DataStream is null)
                 return false;
 
             Device = result.Value.Device;
@@ -100,9 +103,6 @@ namespace MicroscopeGUI.IDSPeak
 
         public static void Stop()
         {
-            if (!IsActive)
-                return;
-
             IsActive = false;
             AcqWorker.Stop();
 
