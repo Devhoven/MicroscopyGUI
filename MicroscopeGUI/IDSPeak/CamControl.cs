@@ -80,11 +80,13 @@ namespace MicroscopeGUI.IDSPeak
             // Configure worker
             AcqWorker.SetDataStream(DataStream);
             AcqWorker.SetNodeMap(NodeMap);
-            AcqWorker.Start();
 
             // Retreiving the start and stop command nodes
             AcquisitionStartNode = NodeMap.FindNode<CommandNode>("AcquisitionStart");
             AcquisitionStopNode = NodeMap.FindNode<CommandNode>("AcquisitionStop");
+
+            // Starting the acquisition
+            AcqWorker.Start();
 
             IsActive = true;
             return true;
@@ -98,6 +100,9 @@ namespace MicroscopeGUI.IDSPeak
 
         public static void Stop()
         {
+            if (!IsActive)
+                return;
+
             IsActive = false;
             AcqWorker.Stop();
 

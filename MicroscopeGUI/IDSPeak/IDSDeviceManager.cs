@@ -49,7 +49,7 @@ namespace MicroscopeGUI.IDSPeak
 
                 result.NodeMap = OpenNodeMap(result.Device);
                 InitializeNodeMap(result.NodeMap);
-
+                
                 InitializeDataStream(result.DataStream, result.NodeMap);
             }
             catch (Exception e)
@@ -129,13 +129,6 @@ namespace MicroscopeGUI.IDSPeak
             {
                 // UserSet is not available
             }
-
-            // Trying to set the ColorCorrectionMatrix to "Hiqh Quality"
-            try
-            {
-                nodeMap.FindNode<EnumerationNode>("ColorCorrectionMatrix").SetCurrentEntry("HQ");
-            }
-            catch { }
         }
 
         static void InitializeDataStream(DataStream dataStream, NodeMap nodeMap)
