@@ -42,12 +42,10 @@ namespace MicroscopeGUI.IDSPeak
         static CommandNode AcquisitionStartNode;
         static CommandNode AcquisitionStopNode;
 
-        static AcquisitionWorker AcqWorker;
+        static readonly AcquisitionWorker AcqWorker;
 
         static CamControl()
         {
-            IsActive = true;
-
             AcqWorker = new AcquisitionWorker();
 
             Initialize();
@@ -70,8 +68,6 @@ namespace MicroscopeGUI.IDSPeak
 
         public static bool Start()
         {
-            Debug.WriteLine("--- [BackEnd] Start");
-
             IDSDeviceManager.DeviceInfo? result = IDSDeviceManager.OpenDevice();
 
             if (result == null)
@@ -90,6 +86,7 @@ namespace MicroscopeGUI.IDSPeak
             AcquisitionStartNode = NodeMap.FindNode<CommandNode>("AcquisitionStart");
             AcquisitionStopNode = NodeMap.FindNode<CommandNode>("AcquisitionStop");
 
+            IsActive = true;
             return true;
         }
 
@@ -101,14 +98,27 @@ namespace MicroscopeGUI.IDSPeak
 
         public static void Stop()
         {
-            Debug.WriteLine("--- [BackEnd] Stop");
             IsActive = false;
             AcqWorker.Stop();
 
-            AcquisitionStopNode.Execute();
-            AcquisitionStopNode.WaitUntilDone();
+            try
+            {
+                AcquisitionStopNode.Execute();
+                AcquisitionStopNode.WaitUntilDone();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+            }
 
-            IDSDeviceManager.CloseDevice(new IDSDeviceManager.DeviceInfo(Device, NodeMap, DataStream));
+            try
+            {
+                IDSDeviceManager.CloseDevice(new IDSDeviceManager.DeviceInfo(Device, NodeMap, DataStream));
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.StackTrace);
+            }
         }
 
         public static void SetNodeValue(Action action)
@@ -119,9 +129,7 @@ namespace MicroscopeGUI.IDSPeak
         }
 
         public static void LoadFromFile(string path)
-        {
-            
-        }
+        { }
 
         public static void SaveToFile(string path)
             => NodeMap.StoreToFile(path);

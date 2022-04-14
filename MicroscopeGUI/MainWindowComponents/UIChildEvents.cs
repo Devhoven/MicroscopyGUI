@@ -15,8 +15,9 @@ namespace MicroscopeGUI
     // Class for all of the ui element events
     public partial class UI : Window
     {
+
         // Used for key bindings
-        private void UIKeyDown(object sender, KeyEventArgs e)
+        protected override void OnPreviewKeyDown(KeyEventArgs e)
         {
             if (e.Key == System.Windows.Input.Key.F5)
                 ReloadCamera();
@@ -154,7 +155,7 @@ namespace MicroscopeGUI
             => ToggleItemVisibillity((MenuItem)sender, ImgGalleryCon, "ImgGalleryActivated");
 
         // Toggles the visibillity of a UI Elements and with it the color of the specified MenuItem
-        void ToggleItemVisibillity(MenuItem Sender, UIElement Element, string ValName)
+        static void ToggleItemVisibillity(MenuItem Sender, UIElement Element, string ValName)
         {
             if (Element.Visibility == Visibility.Visible)
             {

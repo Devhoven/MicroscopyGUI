@@ -36,9 +36,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls
         }
 
         public ControlCon(NodeMap nodeMap)
-        {
-            AddControls(nodeMap);
-        } 
+            => AddControls(nodeMap);
 
         void AddControls(NodeMap nodeMap)
         {

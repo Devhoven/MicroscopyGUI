@@ -145,9 +145,23 @@ namespace MicroscopeGUI.IDSPeak
 
                     Debug.WriteLine("--- [AquisitionWorker] " + e.Message);
 
+                    // If more than 30 consecutive errors have been thrown the acqusition will be stopped
+                    if (errorCounter > 30)
+                    {
+                        UI.CurrentDispatcher.BeginInvoke(() =>
+                            {
+                                UserInfo.SetErrorInfo("The camera failed to send more than 30 consecutive frames, stopping the acquisition");
+                                Stop();
+                            },
+                            DispatcherPriority.Background);
+                    }
                     // If more than 10 consecutive errors have been thrown a message is going to be shown to the user
-                    if (errorCounter > 10)
-                        UserInfo.SetErrorInfo("The camera failed to send more than 10 consecutive frames");
+                    else if (errorCounter > 10)
+                    {
+                        UI.CurrentDispatcher.BeginInvoke(()
+                            => UserInfo.SetErrorInfo("The camera failed to send more than 10 consecutive frames"),
+                            DispatcherPriority.Background);
+                    }
                 }
             }
 

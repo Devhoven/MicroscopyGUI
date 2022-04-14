@@ -180,6 +180,9 @@ namespace MicroscopeGUI.IDSPeak
             {
                 // Unlock parameters after acquisition stop
                 deviceInfo.NodeMap.FindNode<IntegerNode>("TLParamsLocked").SetValue(0);
+
+                // Freeing the resources 
+                deviceInfo.Device.Dispose();
             }
             catch (Exception e)
             {
@@ -188,11 +191,6 @@ namespace MicroscopeGUI.IDSPeak
 
             // Close peak library
             Library.Close();
-        }
-
-        static void StopAcquisition()
-        {
-
         }
     }
 }

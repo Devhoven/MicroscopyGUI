@@ -9,6 +9,7 @@ using Image = System.Windows.Controls.Image;
 using Brushes = System.Windows.Media.Brushes;
 using MicroscopeGUI.MetadataWindowComponents;
 using MicroscopeGUI.IDSPeak;
+using System.Windows.Input;
 
 namespace MicroscopeGUI
 {
@@ -30,36 +31,24 @@ namespace MicroscopeGUI
         {
             InitializeComponent();
 
-            InitializeUIComponents();
-
             CurrentFrame = CurrentFrameCon;
             CurrentDispatcher = Dispatcher;
             FrameEffects = EffectShader;
             CurrentGallery = ImgGallery;
 
-            PreviewKeyDown += UIKeyDown;
-            Closing += GUIClosing;
-
-            CamControl.ImageReceived += CamImageReceived;
-            CamControl.Start();
-
             BmpMemory = new MemoryStream();
 
-            ConfigCon.Children.Add(CamControl.GetControlCon());
-        }
+            CamControl.ImageReceived += CamImageReceived;
+            if (CamControl.Start())
+            {
+                ConfigCon.Children.Add(CamControl.GetControlCon());
+            }
+            else
+            {
+                UserInfo.SetErrorInfo("Could not start the cam");
+            }
 
-        private void CamImageReceived(Bitmap bitmap)
-        {
-            bitmap.Save(BmpMemory, ImageFormat.Bmp);
-            BmpMemory.Position = 0;
-            BitmapImage bitmapimage = new BitmapImage();
-            bitmapimage.BeginInit();
-            bitmapimage.StreamSource = BmpMemory;
-            bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
-            bitmapimage.EndInit();
-            bitmapimage.Freeze();
-
-            CurrentFrame.Dispatcher.BeginInvoke(new Action<UI>(delegate { CurrentFrame.Source = bitmapimage; }), new object[] { this });
+            InitUIComponents();
         }
 
         // Restarts the camera and reloads the UI controls for the camera
@@ -69,15 +58,21 @@ namespace MicroscopeGUI
 
             ConfigCon.Children.Clear();
 
-            CamControl.Stop();
+            if (CamControl.IsActive)
+                CamControl.Stop();
 
-            CamControl.Initialize();
-            CamControl.Start();
+            if (!CamControl.Start())
+            {
+                UserInfo.SetErrorInfo("Could not reload the cam");
+                return;
+            }
+
+            UserInfo.SetInfo("Finished reloading the cam");
 
             ConfigCon.Children.Add(CamControl.GetControlCon());
         }
 
-        void InitializeUIComponents()
+        void InitUIComponents()
         {
             HistogramControl = new HistogramControl(HistogramPlot);
 
@@ -96,11 +91,26 @@ namespace MicroscopeGUI
             }
         }
 
-        void GUIClosing(object sender, System.ComponentModel.CancelEventArgs e)
+
+        private void CamImageReceived(Bitmap bitmap)
         {
-            if (!(MetadataPopup is null))
+            bitmap.Save(BmpMemory, ImageFormat.Bmp);
+            BmpMemory.Position = 0;
+            BitmapImage bitmapimage = new BitmapImage();
+            bitmapimage.BeginInit();
+            bitmapimage.StreamSource = BmpMemory;
+            bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+            bitmapimage.EndInit();
+            bitmapimage.Freeze();
+
+            CurrentFrame.Dispatcher.BeginInvoke(new Action<UI>(delegate { CurrentFrame.Source = bitmapimage; }), new object[] { this });
+        }
+
+        protected override void OnClosed(EventArgs e)
+        {
+            if (MetadataPopup is not null)
                 MetadataPopup.Close();
-            if (!(KeybindPopup is null))
+            if (KeybindPopup is not null)
                 KeybindPopup.Close();
 
             CamControl.Stop();
