@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Text;
 using System.Collections.Generic;
 using MicroscopeGUI.MainWindowComponents.Controls;
+using MicroscopeGUI.MainWindowComponents.Controls.NodeControls;
 
 namespace MicroscopeGUI.IDSPeak
 {
@@ -92,6 +93,7 @@ namespace MicroscopeGUI.IDSPeak
             AcqWorker.Start();
 
             IsActive = true;
+
             return true;
         }
 
@@ -104,8 +106,8 @@ namespace MicroscopeGUI.IDSPeak
 
             try
             {
-                AcquisitionStopNode.Execute();
-                AcquisitionStopNode.WaitUntilDone();
+                AcquisitionStopNode?.Execute();
+                AcquisitionStopNode?.WaitUntilDone();
             }
             catch (Exception e)
             {
@@ -148,6 +150,7 @@ namespace MicroscopeGUI.IDSPeak
             }
         }
 
+        // **TODO**
         public static void LoadFromFile(string path)
         { }
 

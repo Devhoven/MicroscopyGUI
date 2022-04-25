@@ -67,7 +67,7 @@ namespace MicroscopeGUI.IDSPeak
         {
             Device result = null;
 
-            // Create instance of the device manager
+            // Get the instance of the device manager
             DeviceManager deviceManager = DeviceManager.Instance();
 
             // Update the device manager
@@ -93,12 +93,7 @@ namespace MicroscopeGUI.IDSPeak
                     break;
                 }
             }
-
-            //deviceManager.DeviceLostEvent += (o, e) =>
-            //{
-            //    Console.WriteLine();
-            //};
-
+            
             return result;
         }
 

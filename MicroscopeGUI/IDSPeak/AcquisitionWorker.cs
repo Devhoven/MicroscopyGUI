@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Windows.Threading;
 using Image = peak.ipl.Image;
 using Buffer = peak.core.Buffer;
+using System.Drawing.Imaging;
 
 namespace MicroscopeGUI.IDSPeak
 {
@@ -109,15 +110,14 @@ namespace MicroscopeGUI.IDSPeak
 
             try
             {
-                DataStream.KillWait();
+                DataStream?.KillWait();
             }
             catch (Exception e)
             {
                 Debug.WriteLine("--- [AquisitionWorker] " + e.Message);
             }
 
-            if (AcqThread is not null)
-                AcqThread.Join();
+            AcqThread?.Join();
         }
 
         void Loop()
@@ -226,7 +226,7 @@ namespace MicroscopeGUI.IDSPeak
                 SaveFrame = false;
 
                 // Saving the bitmap at the given path
-                CurrentFrameBitmap.Save(SavePath);
+                CurrentFrameBitmap.Save(SavePath, ImageFormat.Png);
 
                 // Informing the UI
                 UI.CurrentDispatcher.BeginInvoke(() => SavedFrame.Invoke(), DispatcherPriority.Normal);

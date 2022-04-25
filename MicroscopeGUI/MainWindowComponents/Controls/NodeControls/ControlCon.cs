@@ -10,7 +10,7 @@ using MicroscopeGUI.MainWindowComponents.Controls;
 using MicroscopeGUI.MainWindowComponents.Controls.NodeControls;
 using MicroscopeGUI.IDSPeak;
 
-namespace MicroscopeGUI.MainWindowComponents.Controls
+namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
 {
     class ControlCon : StackPanel
     {
