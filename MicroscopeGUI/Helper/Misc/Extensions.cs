@@ -23,7 +23,7 @@ namespace MicroscopeGUI
         public static extern void CopyMemory(IntPtr Destination, IntPtr Source, int Length);
         public static WriteableBitmap GetWriteableBitmap(this Bitmap BMP)
         {
-            // So the program will still run with every cam / resolution
+            // So the program will still run with every camera / resolution
             if (BMP.Width != FrameSource.PixelWidth || BMP.Height != FrameSource.PixelHeight)
                 FrameSource = new WriteableBitmap(BMP.Width, BMP.Height, 100, 100, PixelFormats.Bgr24, BitmapPalettes.WebPalette);
 

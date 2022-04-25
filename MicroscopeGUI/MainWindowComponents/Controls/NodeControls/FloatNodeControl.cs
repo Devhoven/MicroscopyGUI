@@ -8,6 +8,7 @@ using System.Windows.Controls.Primitives;
 using MicroscopeGUI.Helper.UIInteraction;
 using MicroscopeGUI.MainWindowComponents.Controls;
 using MicroscopeGUI.IDSPeak;
+using System.Threading.Tasks;
 
 namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
 {
@@ -21,7 +22,7 @@ namespace MicroscopeGUI.MainWindowComponents.Controls.NodeControls
         // Delays the frequency of accesses to the camera when the slider values changes
         Stopwatch DelayTimer = Stopwatch.StartNew();
         // A new value can only be set after a delay of MIN_ELAPSED_MS in ms
-        const int MIN_ELAPSED_MS = 150;
+        const int MIN_ELAPSED_MS = 50;
 
         public override bool Enable
         {

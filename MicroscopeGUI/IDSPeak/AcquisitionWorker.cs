@@ -9,6 +9,7 @@ using Buffer = peak.core.Buffer;
 using System.Threading;
 using System.Windows.Threading;
 using std;
+using System.Collections.Generic;
 
 namespace MicroscopeGUI.IDSPeak
 {
@@ -57,6 +58,9 @@ namespace MicroscopeGUI.IDSPeak
 
                 // Start acquisition
                 DataStream.StartAcquisition();
+
+                // Retreiving the start and stop command nodes
+
                 NodeMap.FindNode<CommandNode>("AcquisitionStart").Execute();
                 NodeMap.FindNode<CommandNode>("AcquisitionStart").WaitUntilDone();
             }
@@ -87,6 +91,7 @@ namespace MicroscopeGUI.IDSPeak
                 var colorCorrectionFactors = new ColorCorrectionFactors(GetGain("Gain00"), GetGain("Gain01"), GetGain("Gain02"),
                                                                         GetGain("Gain10"), GetGain("Gain11"), GetGain("Gain12"),
                                                                         GetGain("Gain20"), GetGain("Gain21"), GetGain("Gain22"));
+
                 float GetGain(string name)
                 {
                     valueSelectorNode.SetCurrentEntry(name);
@@ -105,7 +110,7 @@ namespace MicroscopeGUI.IDSPeak
         {
             Running = false;
 
-            if (AcqThread.IsAlive)
+            if (AcqThread is not null)
                 AcqThread.Join();
         }
 
@@ -117,6 +122,7 @@ namespace MicroscopeGUI.IDSPeak
 
             Image iplImg = null;
             Buffer buffer = null;
+            Point2DCollection hotpixelVec = null;
 
             Running = true;
             while (Running)
@@ -153,7 +159,7 @@ namespace MicroscopeGUI.IDSPeak
                                 UserInfo.SetErrorInfo("The camera failed to send more than 30 consecutive frames, stopping the acquisition");
                                 Stop();
                             },
-                            DispatcherPriority.Background);
+                            DispatcherPriority.Render);
                         errorCounter = 0;
                         break;
                     }
@@ -162,7 +168,7 @@ namespace MicroscopeGUI.IDSPeak
                     {
                         UI.CurrentDispatcher.BeginInvoke(()
                             => UserInfo.SetErrorInfo("The camera failed to send more than 10 consecutive frames"),
-                            DispatcherPriority.Background);
+                            DispatcherPriority.Render);
                     }
                 }
             }
@@ -170,12 +176,12 @@ namespace MicroscopeGUI.IDSPeak
             void GetIPLImg(Buffer buffer)
             {
                 // Get buffer from device's datastream
-                buffer = DataStream.WaitForFinishedBuffer(1000);
+                buffer = DataStream.WaitForFinishedBuffer(100);
 
                 // Create IDS peak IPL Image
                 iplImg = new Image((PixelFormatName)buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), buffer.Width(), buffer.Height());
 
-                Point2DCollection hotpixelVec = HotpixelCorrector.Detect(iplImg);
+                hotpixelVec = HotpixelCorrector.Detect(iplImg);
                 iplImg = HotpixelCorrector.Correct(iplImg, hotpixelVec);
 
                 // Debayering and converting IDS peak IPL Image to RGBa8 format

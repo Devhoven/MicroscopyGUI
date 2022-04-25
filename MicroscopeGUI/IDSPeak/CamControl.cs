@@ -68,7 +68,7 @@ namespace MicroscopeGUI.IDSPeak
 
         public static bool Start()
         {
-            IDSDeviceManager.DeviceInfo? result = IDSDeviceManager.OpenDevice();
+            DeviceSelector.DeviceInfo? result = DeviceSelector.OpenDevice();
 
             if (result is null 
                 || result.Value.Device is null 
@@ -81,8 +81,8 @@ namespace MicroscopeGUI.IDSPeak
             DataStream = result.Value.DataStream;
 
             // Configure worker
-            AcqWorker.SetDataStream(DataStream);
             AcqWorker.SetNodeMap(NodeMap);
+            AcqWorker.SetDataStream(DataStream);
 
             // Retreiving the start and stop command nodes
             AcquisitionStartNode = NodeMap.FindNode<CommandNode>("AcquisitionStart");
@@ -95,20 +95,10 @@ namespace MicroscopeGUI.IDSPeak
             return true;
         }
 
-        public static void Freeze()
-        {
-            AcqWorker.Freeze = true;
-            Stop();
-        }
-
-        public static void Unfreeze()
-        {
-            AcqWorker.Freeze = false;
-            Start();
-        }
-
         public static void Stop()
         {
+            Debug.WriteLine("--- [BackEnd] Closing device");
+
             IsActive = false;
             AcqWorker.Stop();
 
@@ -124,12 +114,24 @@ namespace MicroscopeGUI.IDSPeak
 
             try
             {
-                IDSDeviceManager.CloseDevice(new IDSDeviceManager.DeviceInfo(Device, NodeMap, DataStream));
+                DeviceSelector.CloseDevice(new DeviceSelector.DeviceInfo(Device, NodeMap, DataStream));
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.StackTrace);
             }
+        }
+
+        public static void Freeze()
+        {
+            AcqWorker.Freeze = true;
+            Stop();
+        }
+
+        public static void Unfreeze()
+        {
+            AcqWorker.Freeze = false;
+            Start();
         }
 
         public static void SetNodeValue(Action action)

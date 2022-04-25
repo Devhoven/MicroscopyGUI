@@ -45,7 +45,7 @@ namespace MicroscopeGUI
             }
             else
             {
-                UserInfo.SetErrorInfo("Could not start the cam");
+                UserInfo.SetErrorInfo("Could not start the camera");
             }
 
             InitUIComponents();
@@ -54,7 +54,7 @@ namespace MicroscopeGUI
         // Restarts the camera and reloads the UI controls for the camera
         void ReloadCamera()
         {
-            UserInfo.SetInfo("Reloading the cam...");
+            UserInfo.SetInfo("Reloading the camera...");
 
             ConfigCon.Children.Clear();
 
@@ -63,11 +63,11 @@ namespace MicroscopeGUI
 
             if (!CamControl.Start())
             {
-                UserInfo.SetErrorInfo("Could not reload the cam");
+                UserInfo.SetErrorInfo("Could not reload the camera");
                 return;
             }
 
-            UserInfo.SetInfo("Finished reloading the cam");
+            UserInfo.SetInfo("Finished reloading the camera");
 
             ConfigCon.Children.Add(CamControl.GetControlCon());
         }

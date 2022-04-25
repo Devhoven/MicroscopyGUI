@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MicroscopeGUI.IDSPeak
 {
-    static class IDSDeviceManager
+    static class DeviceSelector
     {
         public struct DeviceInfo
         {
@@ -37,7 +37,7 @@ namespace MicroscopeGUI.IDSPeak
             Debug.WriteLine("--- [BackEnd] Open device");
             try
             {
-                result.Device = OpenFirstDevice();
+                result.Device = SelectFirstDevice();
 
                 if (result.Device == null)
                 {
@@ -48,8 +48,9 @@ namespace MicroscopeGUI.IDSPeak
                 result.DataStream = OpenDataStream(result.Device);
 
                 result.NodeMap = OpenNodeMap(result.Device);
+
                 InitializeNodeMap(result.NodeMap);
-                
+
                 InitializeDataStream(result.DataStream, result.NodeMap);
             }
             catch (Exception e)
@@ -62,7 +63,7 @@ namespace MicroscopeGUI.IDSPeak
             return result;
         }
 
-        static Device OpenFirstDevice()
+        static Device SelectFirstDevice()
         {
             Device result = null;
 
@@ -92,6 +93,11 @@ namespace MicroscopeGUI.IDSPeak
                     break;
                 }
             }
+
+            //deviceManager.DeviceLostEvent += (o, e) =>
+            //{
+            //    Console.WriteLine();
+            //};
 
             return result;
         }
@@ -155,8 +161,15 @@ namespace MicroscopeGUI.IDSPeak
                 try
                 {
                     deviceInfo.DataStream.KillWait();
-                    deviceInfo.DataStream.StopAcquisition(AcquisitionStopMode.Default);
-                    deviceInfo.DataStream.Flush(DataStreamFlushMode.DiscardAll);
+                    try
+                    {
+                        deviceInfo.DataStream.StopAcquisition(AcquisitionStopMode.Default);
+                        deviceInfo.DataStream.Flush(DataStreamFlushMode.DiscardAll);
+                    }
+                    catch (Exception e) 
+                    {
+                        Debug.WriteLine("-- [BackEnd] Exception: " + e.Message);
+                    }
 
                     foreach (var buffer in deviceInfo.DataStream.AnnouncedBuffers())
                     {
@@ -172,16 +185,13 @@ namespace MicroscopeGUI.IDSPeak
             try
             {
                 // Unlock parameters after acquisition stop
-                deviceInfo.NodeMap.FindNode<IntegerNode>("TLParamsLocked").SetValue(0);
-
-                // Freeing the resources 
-                deviceInfo.Device.Dispose();
+                deviceInfo.NodeMap?.FindNode<IntegerNode>("TLParamsLocked").SetValue(0);
             }
             catch (Exception e)
             {
                 Debug.WriteLine("--- [BackEnd] Exception: " + e.Message);
             }
-
+            
             // Close peak library
             Library.Close();
         }
