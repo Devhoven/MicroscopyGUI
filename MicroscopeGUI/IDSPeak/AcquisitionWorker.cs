@@ -1,15 +1,14 @@
-﻿using System;
+﻿using std;
+using System;
 using peak.ipl;
 using peak.core;
-using peak.core.nodes;
 using System.Drawing;
+using peak.core.nodes;
+using System.Threading;
 using System.Diagnostics;
+using System.Windows.Threading;
 using Image = peak.ipl.Image;
 using Buffer = peak.core.Buffer;
-using System.Threading;
-using System.Windows.Threading;
-using std;
-using System.Collections.Generic;
 
 namespace MicroscopeGUI.IDSPeak
 {
@@ -59,8 +58,6 @@ namespace MicroscopeGUI.IDSPeak
                 // Start acquisition
                 DataStream.StartAcquisition();
 
-                // Retreiving the start and stop command nodes
-
                 NodeMap.FindNode<CommandNode>("AcquisitionStart").Execute();
                 NodeMap.FindNode<CommandNode>("AcquisitionStart").WaitUntilDone();
             }
@@ -109,6 +106,15 @@ namespace MicroscopeGUI.IDSPeak
         public void Stop()
         {
             Running = false;
+
+            try
+            {
+                DataStream.KillWait();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("--- [AquisitionWorker] " + e.Message);
+            }
 
             if (AcqThread is not null)
                 AcqThread.Join();
@@ -176,7 +182,7 @@ namespace MicroscopeGUI.IDSPeak
             void GetIPLImg(Buffer buffer)
             {
                 // Get buffer from device's datastream
-                buffer = DataStream.WaitForFinishedBuffer(100);
+                buffer = DataStream.WaitForFinishedBuffer(100000);
 
                 // Create IDS peak IPL Image
                 iplImg = new Image((PixelFormatName)buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), buffer.Width(), buffer.Height());

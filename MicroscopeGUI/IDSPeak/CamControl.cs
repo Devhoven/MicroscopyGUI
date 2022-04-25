@@ -62,7 +62,7 @@ namespace MicroscopeGUI.IDSPeak
             catch (Exception e)
             {
                 UserInfo.SetErrorInfo("The camera failed to initialize");
-                Debug.WriteLine("--- [BackEnd] Exception: " + e.Message);
+                Debug.WriteLine("--- [CamControl] Exception: " + e.Message);
             }
         }
 
@@ -97,7 +97,7 @@ namespace MicroscopeGUI.IDSPeak
 
         public static void Stop()
         {
-            Debug.WriteLine("--- [BackEnd] Closing device");
+            Debug.WriteLine("--- [CamControl] Closing device");
 
             IsActive = false;
             AcqWorker.Stop();
@@ -136,9 +136,16 @@ namespace MicroscopeGUI.IDSPeak
 
         public static void SetNodeValue(Action action)
         {
-            AcquisitionStopNode.Execute();
-            action();
-            AcquisitionStartNode.Execute();
+            try
+            {
+                AcquisitionStopNode.Execute();
+                action();
+                AcquisitionStartNode.Execute();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("---- [CamControl] " + e.Message);
+            }
         }
 
         public static void LoadFromFile(string path)
