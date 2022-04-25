@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Windows.Threading;
 using Image = peak.ipl.Image;
 using Buffer = peak.core.Buffer;
+using System.Drawing.Imaging;
 
 namespace MicroscopeGUI.IDSPeak
 {
@@ -226,11 +227,55 @@ namespace MicroscopeGUI.IDSPeak
                 SaveFrame = false;
 
                 // Saving the bitmap at the given path
+                CurrentFrameBitmap = ApplyPostProcessing();
                 CurrentFrameBitmap.Save(SavePath);
 
                 // Informing the UI
                 UI.CurrentDispatcher.BeginInvoke(() => SavedFrame.Invoke(), DispatcherPriority.Normal);
             }
+        }
+
+        public Bitmap ApplyPostProcessing()
+        {
+            Bitmap bmp = CurrentFrameBitmap;
+            float b = UI.CurrentDispatcher.Invoke(() => UI.FrameEffects.Brightness);
+            float c = UI.CurrentDispatcher.Invoke(() => UI.FrameEffects.Contrast);
+            float red = UI.CurrentDispatcher.Invoke(() => UI.FrameEffects.AmountR);
+            float green = UI.CurrentDispatcher.Invoke(() => UI.FrameEffects.AmountG);
+            float blue = UI.CurrentDispatcher.Invoke(() => UI.FrameEffects.AmountB);
+
+            (float a, float h) = UI.CurrentDispatcher.Invoke(() => (UI.FrameEffects.AmountB, UI.FrameEffects.AmountR));
+
+            float t = (1.0f - c) / 2.0f;
+
+            // correcting brightness additively, contrast multiplicatively
+            ColorMatrix cm = new ColorMatrix(new float[][]
+            {
+                new float[] {red * c, 0, 0, 0, 0},
+                new float[] {0, green * c, 0, 0, 0},
+                new float[] {0, 0, blue * c, 0, 0},
+                new float[] {0, 0, 0, 1, 0},
+                new float[] {b+t, b+t, b+t, 0, 0},
+            });
+
+            ImageAttributes attributes = new ImageAttributes();
+            attributes.SetColorMatrix(cm);
+
+            using (Graphics gr = Graphics.FromImage(bmp))
+            {
+                gr.DrawImage(bmp,
+                           new Rectangle(0, 0, bmp.Width, bmp.Height),
+                           0, 0,
+                           bmp.Width,
+                           bmp.Height,
+                           GraphicsUnit.Pixel,
+                           attributes);
+
+                gr.Dispose();
+            }
+            attributes.Dispose();
+
+            return bmp;
         }
 
         public void SetDataStream(DataStream dataStream)
