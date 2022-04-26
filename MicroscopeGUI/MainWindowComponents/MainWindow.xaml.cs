@@ -101,7 +101,8 @@ namespace MicroscopeGUI
             bitmapimage.Freeze();
 
             // Calling the dispatcher here, since this method is always going to be called from another thread
-            CurrentFrame.Dispatcher.BeginInvoke(() => CurrentFrame.Source = bitmapimage);
+            if (!CamControl.IsFrozen)
+                CurrentFrame.Dispatcher.BeginInvoke(() => CurrentFrame.Source = bitmapimage);
         }
 
         protected override void OnClosed(EventArgs e)

@@ -43,8 +43,8 @@ namespace MicroscopeGUI.IDSPeak
         ColorCorrector ColorCorrector;
         HotpixelCorrection HotpixelCorrector;
 
-        public bool Freeze = false;
-        bool Running = false;
+        public bool IsFrozen = false;
+        bool IsRunning = false;
 
         Thread AcqThread;
 
@@ -79,7 +79,7 @@ namespace MicroscopeGUI.IDSPeak
 
             HotpixelCorrector = new HotpixelCorrection();
 
-            Freeze = false;
+            IsFrozen = false;
 
             // Create acquisition worker thread that waits for new images from the camera
             AcqThread = new Thread(new ThreadStart(Loop));
@@ -88,7 +88,7 @@ namespace MicroscopeGUI.IDSPeak
 
         public void Stop()
         {
-            Running = false;
+            IsRunning = false;
 
             try
             {
@@ -119,8 +119,8 @@ namespace MicroscopeGUI.IDSPeak
             Bitmap currentFrameBitmap = null;
             Point2DCollection hotpixelVec = null;
 
-            Running = true;
-            while (Running)
+            IsRunning = true;
+            while (IsRunning)
             {
                 try
                 {
@@ -136,9 +136,9 @@ namespace MicroscopeGUI.IDSPeak
 
                     CheckSaveFrame();
 
-                    if (!Freeze)
+                    // Disposing the images
+                    if (!IsFrozen)
                     {
-                        // Disposing the images
                         currentFrameBitmap.Dispose();
                         iplImg.Dispose();
                     }
@@ -156,7 +156,7 @@ namespace MicroscopeGUI.IDSPeak
 
             void ProcessIPLImage()
             {
-                if (Freeze)
+                if (IsFrozen)
                     return;
 
                 // Create IDS peak IPL Image
@@ -178,7 +178,7 @@ namespace MicroscopeGUI.IDSPeak
 
             void GetFrameBitmap()
             {
-                if (Freeze)
+                if (IsFrozen)
                     return;
 
                 // Getting dimensions of the IDS peak IPL Image 
@@ -227,7 +227,7 @@ namespace MicroscopeGUI.IDSPeak
                     },
                         DispatcherPriority.Render);
                     errorCounter = 0;
-                    Running = false;
+                    IsRunning = false;
                 }
                 // If more than 10 consecutive errors have been thrown a message is going to be shown to the user
                 else if (errorCounter > 10)

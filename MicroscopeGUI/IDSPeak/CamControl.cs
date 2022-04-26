@@ -26,6 +26,8 @@ namespace MicroscopeGUI.IDSPeak
 
         public static event Action SavedFrame;
 
+        public static bool IsFrozen => AcqWorker.IsFrozen;
+
         public static int ImgWidth => AcqWorker.ImgWidth;
 
         public static bool UseColorCorrection
@@ -134,10 +136,10 @@ namespace MicroscopeGUI.IDSPeak
         }
 
         public static void Freeze()
-            => AcqWorker.Freeze = true;
+            => AcqWorker.IsFrozen = true;
 
         public static void Unfreeze()
-            => AcqWorker.Freeze = false;
+            => AcqWorker.IsFrozen = false;
 
         public static void SetNodeValue(Action action)
         {

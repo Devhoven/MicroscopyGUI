@@ -186,7 +186,6 @@ namespace MicroscopeGUI.IDSPeak
             {
                 Debug.WriteLine("--- [BackEnd] Exception: " + e.Message);
             }
-
         }
 
         public static void InitializeLibrary()
