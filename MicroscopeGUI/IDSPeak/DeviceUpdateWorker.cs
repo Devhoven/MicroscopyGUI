@@ -9,6 +9,7 @@ using System.Windows.Threading;
 
 namespace MicroscopeGUI.IDSPeak
 {
+    [Obsolete ("This class can't be used yet, since there are still a few bugs in the IDS Peak Library")]
     internal class DeviceUpdateWorker
     {
         bool Running = false;

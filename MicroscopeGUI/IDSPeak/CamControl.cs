@@ -46,12 +46,12 @@ namespace MicroscopeGUI.IDSPeak
         static CommandNode AcquisitionStopNode;
 
         static readonly AcquisitionWorker AcqWorker;
-        static readonly DeviceUpdateWorker DeviceUpdateWorker;
+        //static readonly DeviceUpdateWorker DeviceUpdateWorker;
 
         static CamControl()
         {
             AcqWorker = new AcquisitionWorker();
-            DeviceUpdateWorker = new DeviceUpdateWorker();
+            //DeviceUpdateWorker = new DeviceUpdateWorker();
 
             Initialize();
         }
@@ -84,6 +84,8 @@ namespace MicroscopeGUI.IDSPeak
                 || result.Value.DataStream is null)
                 return false;
 
+            IsActive = true;
+
             Device = result.Value.Device;
             NodeMap = result.Value.NodeMap;
             DataStream = result.Value.DataStream;
@@ -97,9 +99,7 @@ namespace MicroscopeGUI.IDSPeak
 
             // Starting the acquisition
             AcqWorker.Start();
-            DeviceUpdateWorker.Start();
-
-            IsActive = true;
+            //DeviceUpdateWorker.Start();
 
             return true;
         }
@@ -113,7 +113,7 @@ namespace MicroscopeGUI.IDSPeak
 
             IsActive = false;
             AcqWorker.Stop();
-            DeviceUpdateWorker.Stop();
+            //DeviceUpdateWorker.Stop();
 
             try
             {

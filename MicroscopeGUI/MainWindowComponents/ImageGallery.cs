@@ -231,7 +231,6 @@ namespace MicroscopeGUI
                 BmpImg.UriSource = new Uri(Settings.ImgGalleryPath + "\\" + (o as Image).ToolTip);
                 BmpImg.EndInit();
 
-
                 UI.CurrentFrame.Source = BmpImg;
                 RenderOptions.SetBitmapScalingMode(UI.CurrentFrame, BitmapScalingMode.HighQuality);
                 UserInfo.SetInfo("Opened " + Path.GetFileName(BmpImg.UriSource.LocalPath));

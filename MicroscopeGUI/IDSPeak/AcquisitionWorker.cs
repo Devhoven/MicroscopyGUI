@@ -236,6 +236,8 @@ namespace MicroscopeGUI.IDSPeak
                         => UserInfo.SetErrorInfo("The camera failed to send more than 10 consecutive frames"),
                         DispatcherPriority.Render);
                 }
+
+                Thread.Sleep(50);
             }
         }
 
