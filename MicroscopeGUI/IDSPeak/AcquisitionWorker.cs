@@ -39,13 +39,11 @@ namespace MicroscopeGUI.IDSPeak
         // Specifies the path where the frame should be saved
         string SavePath;
 
-        Bitmap CurrentFrameBitmap;
-
         public bool UseColorCorrection = true;
         ColorCorrector ColorCorrector;
         HotpixelCorrection HotpixelCorrector;
 
-        public bool Freeze = true;
+        public bool Freeze = false;
         bool Running = false;
 
         Thread AcqThread;
@@ -81,6 +79,8 @@ namespace MicroscopeGUI.IDSPeak
 
             HotpixelCorrector = new HotpixelCorrection();
 
+            Freeze = false;
+
             // Create acquisition worker thread that waits for new images from the camera
             AcqThread = new Thread(new ThreadStart(Loop));
             AcqThread.Start();
@@ -114,8 +114,9 @@ namespace MicroscopeGUI.IDSPeak
 
             uint errorCounter = 0;
 
-            Image iplImg = null;
             Buffer buffer = null;
+            Image iplImg = null;
+            Bitmap currentFrameBitmap = null;
             Point2DCollection hotpixelVec = null;
 
             Running = true;
@@ -126,7 +127,7 @@ namespace MicroscopeGUI.IDSPeak
                     // Get buffer from device's datastream
                     buffer = DataStream.WaitForFinishedBuffer(1000);
 
-                    ProcessIPLImage(buffer);
+                    ProcessIPLImage();
 
                     // Queue buffer so that it can be used again 
                     DataStream.QueueBuffer(buffer);
@@ -134,6 +135,13 @@ namespace MicroscopeGUI.IDSPeak
                     GetFrameBitmap();
 
                     CheckSaveFrame();
+
+                    if (!Freeze)
+                    {
+                        // Disposing the images
+                        currentFrameBitmap.Dispose();
+                        iplImg.Dispose();
+                    }
 
                     // Resetting it to 0, since the current frame got sent successfully
                     errorCounter = 0;
@@ -146,7 +154,7 @@ namespace MicroscopeGUI.IDSPeak
                 }
             }
 
-            void ProcessIPLImage(Buffer buffer)
+            void ProcessIPLImage()
             {
                 if (Freeze)
                     return;
@@ -177,14 +185,10 @@ namespace MicroscopeGUI.IDSPeak
                 stride = (int)iplImg.PixelFormat().CalculateStorageSizeOfPixels(iplImg.Width());
 
                 // Creating Bitmap from the IDS peak IPL Image
-                CurrentFrameBitmap = new Bitmap(ImgWidth, ImgHeight, stride, System.Drawing.Imaging.PixelFormat.Format32bppArgb, iplImg.Data());
+                currentFrameBitmap = new Bitmap(ImgWidth, ImgHeight, stride, System.Drawing.Imaging.PixelFormat.Format32bppArgb, iplImg.Data());
 
                 // Informing the UI 
-                ImageReceived?.Invoke(CurrentFrameBitmap);
-
-                // Disposing the images
-                CurrentFrameBitmap.Dispose();
-                iplImg.Dispose();
+                ImageReceived?.Invoke(currentFrameBitmap);
             }
 
             void CheckSaveFrame()
@@ -193,12 +197,17 @@ namespace MicroscopeGUI.IDSPeak
                 if (!SaveFrame)
                     return;
 
+                if (currentFrameBitmap is null)
+                {
+                    UI.CurrentDispatcher.BeginInvoke(() => UserInfo.SetErrorInfo("You haven't captured a frame"), DispatcherPriority.Background);
+                    return;
+                }
+
                 // Setting it to false, so only a single frame gets saved
                 SaveFrame = false;
 
                 // Saving the bitmap at the given path
-                CurrentFrameBitmap = ApplyPostProcessing();
-                CurrentFrameBitmap.Save(SavePath);
+                ApplyPostProcessing(currentFrameBitmap).Save(SavePath);
 
                 // Informing the UI
                 UI.CurrentDispatcher.BeginInvoke(() => SavedFrame.Invoke(), DispatcherPriority.Normal);
@@ -257,10 +266,8 @@ namespace MicroscopeGUI.IDSPeak
             }
         }
 
-        Bitmap ApplyPostProcessing()
+        Bitmap ApplyPostProcessing(Bitmap frame)
         {
-            Bitmap bmp = CurrentFrameBitmap;
-
             // Extracting the brightness, contrast and RGB values (all values from 0 to 1) from the shader
             // Did this with a tuple, in order to r educe the Dispatcher calls
             (float b, float c, float red, float green, float blue)
@@ -282,13 +289,13 @@ namespace MicroscopeGUI.IDSPeak
             ImageAttributes attributes = new ImageAttributes();
             attributes.SetColorMatrix(cm);
 
-            using (Graphics gr = Graphics.FromImage(bmp))
+            using (Graphics gr = Graphics.FromImage(frame))
             {
-                gr.DrawImage(bmp,
-                           new Rectangle(0, 0, bmp.Width, bmp.Height),
+                gr.DrawImage(frame,
+                           new Rectangle(0, 0, frame.Width, frame.Height),
                            0, 0,
-                           bmp.Width,
-                           bmp.Height,
+                           frame.Width,
+                           frame.Height,
                            GraphicsUnit.Pixel,
                            attributes);
 
@@ -296,7 +303,7 @@ namespace MicroscopeGUI.IDSPeak
             }
             attributes.Dispose();
 
-            return bmp;
+            return frame;
         }
     }
 }
