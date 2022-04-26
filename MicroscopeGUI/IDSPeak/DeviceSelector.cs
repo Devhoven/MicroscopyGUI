@@ -3,11 +3,8 @@ using peak.core;
 using peak.core.nodes;
 using std;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MicroscopeGUI.IDSPeak
 {
@@ -27,11 +24,14 @@ namespace MicroscopeGUI.IDSPeak
             }
         }
 
-        public static DeviceInfo? OpenDevice()
+        static DeviceSelector()
         {
             // Initialize peak library
             Library.Initialize();
+        }
 
+        public static DeviceInfo? OpenDevice()
+        {
             DeviceInfo result = new DeviceInfo();
 
             Debug.WriteLine("--- [BackEnd] Open device");
@@ -93,7 +93,7 @@ namespace MicroscopeGUI.IDSPeak
                     break;
                 }
             }
-            
+
             return result;
         }
 
@@ -151,7 +151,7 @@ namespace MicroscopeGUI.IDSPeak
         public static void CloseDevice(DeviceInfo deviceInfo)
         {
             // If data stream was opened, try to stop it and revoke its image buffers
-            if (deviceInfo.DataStream != null)
+            if (deviceInfo.DataStream is not null)
             {
                 try
                 {
@@ -161,7 +161,7 @@ namespace MicroscopeGUI.IDSPeak
                         deviceInfo.DataStream.StopAcquisition(AcquisitionStopMode.Default);
                         deviceInfo.DataStream.Flush(DataStreamFlushMode.DiscardAll);
                     }
-                    catch (Exception e) 
+                    catch (Exception e)
                     {
                         Debug.WriteLine("-- [BackEnd] Exception: " + e.Message);
                     }
@@ -186,9 +186,13 @@ namespace MicroscopeGUI.IDSPeak
             {
                 Debug.WriteLine("--- [BackEnd] Exception: " + e.Message);
             }
-            
-            // Close peak library
-            Library.Close();
+
         }
+
+        public static void InitializeLibrary()
+            => Library.Initialize();
+
+        public static void CloseLibrary()
+            => Library.Close();
     }
 }

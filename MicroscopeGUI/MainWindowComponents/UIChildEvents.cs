@@ -132,7 +132,7 @@ namespace MicroscopeGUI
             LiveFeedBtn.Background = Brushes.Transparent;
             FreezeCamBtn.Background = Brushes.LightSkyBlue;
 
-            UserInfo.SetInfo("Freezed the camera");
+            UserInfo.SetInfo("Froze the camera");
 
             CamControl.Freeze();
         }

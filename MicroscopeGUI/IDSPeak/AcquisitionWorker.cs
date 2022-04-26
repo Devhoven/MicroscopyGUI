@@ -10,6 +10,7 @@ using System.Windows.Threading;
 using Image = peak.ipl.Image;
 using Buffer = peak.core.Buffer;
 using System.Drawing.Imaging;
+using System.IO;
 
 namespace MicroscopeGUI.IDSPeak
 {
@@ -23,7 +24,7 @@ namespace MicroscopeGUI.IDSPeak
         public event HistogramUpdatedEventHandler HistogramUpdated;
 
         // Contain the widht and height of the current image
-        public int Width, Height;
+        public int ImgWidth, ImgHeight;
 
         DataStream DataStream;
         NodeMap NodeMap;
@@ -44,10 +45,19 @@ namespace MicroscopeGUI.IDSPeak
         ColorCorrector ColorCorrector;
         HotpixelCorrection HotpixelCorrector;
 
-        public bool Freeze = false;
+        public bool Freeze = true;
         bool Running = false;
 
         Thread AcqThread;
+
+        public void SetDataStream(DataStream dataStream)
+        {
+            DataStream = dataStream;
+            NodeMap = DataStream.ParentDevice().RemoteDevice().NodeMaps()[0];
+
+            ImgWidth = (int)NodeMap.FindNode<IntegerNode>("Width").Value();
+            ImgHeight = (int)NodeMap.FindNode<IntegerNode>("Height").Value();
+        }
 
         public void Start()
         {
@@ -58,7 +68,6 @@ namespace MicroscopeGUI.IDSPeak
 
                 // Start acquisition
                 DataStream.StartAcquisition();
-
                 NodeMap.FindNode<CommandNode>("AcquisitionStart").Execute();
                 NodeMap.FindNode<CommandNode>("AcquisitionStart").WaitUntilDone();
             }
@@ -75,6 +84,150 @@ namespace MicroscopeGUI.IDSPeak
             // Create acquisition worker thread that waits for new images from the camera
             AcqThread = new Thread(new ThreadStart(Loop));
             AcqThread.Start();
+        }
+
+        public void Stop()
+        {
+            Running = false;
+
+            try
+            {
+                DataStream?.KillWait();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("--- [AquisitionWorker] " + e.Message);
+            }
+
+            AcqThread?.Join();
+        }
+
+        public void SaveFrameTo(string path)
+        {
+            SavePath = path;
+            SaveFrame = true;
+        }
+
+        void Loop()
+        {
+            int stride;
+
+            uint errorCounter = 0;
+
+            Image iplImg = null;
+            Buffer buffer = null;
+            Point2DCollection hotpixelVec = null;
+
+            Running = true;
+            while (Running)
+            {
+                try
+                {
+                    // Get buffer from device's datastream
+                    buffer = DataStream.WaitForFinishedBuffer(1000);
+
+                    ProcessIPLImage(buffer);
+
+                    // Queue buffer so that it can be used again 
+                    DataStream.QueueBuffer(buffer);
+
+                    GetFrameBitmap();
+
+                    CheckSaveFrame();
+
+                    // Resetting it to 0, since the current frame got sent successfully
+                    errorCounter = 0;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine("--- [AquisitionWorker] " + e.Message);
+
+                    ErrorHandling();
+                }
+            }
+
+            void ProcessIPLImage(Buffer buffer)
+            {
+                if (Freeze)
+                    return;
+
+                // Create IDS peak IPL Image
+                iplImg = new Image((PixelFormatName)buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), (uint)ImgWidth, (uint)ImgHeight);
+
+                hotpixelVec = HotpixelCorrector.Detect(iplImg);
+                iplImg = HotpixelCorrector.Correct(iplImg, hotpixelVec);
+
+                // Debayering and converting IDS peak IPL Image to RGBa8 format
+                iplImg = iplImg.ConvertTo(PixelFormatName.BGRa8, ConversionMode.Classic);
+
+                // Applying the HQ matrix
+                if (UseColorCorrection)
+                    ColorCorrector.ProcessInPlace(iplImg);
+
+                // Fire the histogram updated event with the new data
+                HistogramUpdated(new Histogram(iplImg));
+            }
+
+            void GetFrameBitmap()
+            {
+                if (Freeze)
+                    return;
+
+                // Getting dimensions of the IDS peak IPL Image 
+                stride = (int)iplImg.PixelFormat().CalculateStorageSizeOfPixels(iplImg.Width());
+
+                // Creating Bitmap from the IDS peak IPL Image
+                CurrentFrameBitmap = new Bitmap(ImgWidth, ImgHeight, stride, System.Drawing.Imaging.PixelFormat.Format32bppArgb, iplImg.Data());
+
+                // Informing the UI 
+                ImageReceived?.Invoke(CurrentFrameBitmap);
+
+                // Disposing the images
+                CurrentFrameBitmap.Dispose();
+                iplImg.Dispose();
+            }
+
+            void CheckSaveFrame()
+            {
+                // If the user wants so save the current frame, this bool is set
+                if (!SaveFrame)
+                    return;
+
+                // Setting it to false, so only a single frame gets saved
+                SaveFrame = false;
+
+                // Saving the bitmap at the given path
+                CurrentFrameBitmap = ApplyPostProcessing();
+                CurrentFrameBitmap.Save(SavePath);
+
+                // Informing the UI
+                UI.CurrentDispatcher.BeginInvoke(() => SavedFrame.Invoke(), DispatcherPriority.Normal);
+            }
+        
+            void ErrorHandling()
+            {
+                errorCounter++;
+
+                // If more than 30 consecutive errors have been thrown the acqusition will be stopped
+                if (errorCounter > 30)
+                {
+                    UI.CurrentDispatcher.BeginInvoke(() =>
+                    {
+                        UserInfo.SetErrorInfo("The camera failed to send more than 30 consecutive frames, stopping the acquisition");
+                        Stop();
+                    },
+                        DispatcherPriority.Render);
+                    errorCounter = 0;
+                    Running = false;
+                }
+                // If more than 10 consecutive errors have been thrown a message is going to be shown to the user
+                else if (errorCounter > 10)
+                {
+                    UI.CurrentDispatcher.BeginInvoke(()
+                        => UserInfo.SetErrorInfo("The camera failed to send more than 10 consecutive frames"),
+                        DispatcherPriority.Render);
+                }
+            }
         }
 
         void InitColorCorrector()
@@ -104,146 +257,15 @@ namespace MicroscopeGUI.IDSPeak
             }
         }
 
-        public void Stop()
-        {
-            Running = false;
-
-            try
-            {
-                DataStream?.KillWait();
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("--- [AquisitionWorker] " + e.Message);
-            }
-
-            AcqThread?.Join();
-        }
-
-        void Loop()
-        {
-            int stride;
-
-            uint errorCounter = 0;
-
-            Image iplImg = null;
-            Buffer buffer = null;
-            Point2DCollection hotpixelVec = null;
-
-            Running = true;
-            while (Running)
-            {
-                try
-                {
-                    GetIPLImg(buffer);
-
-                    // Fire the histogram updated event with the new data
-                    if (!Freeze)
-                        HistogramUpdated(new Histogram(iplImg));
-
-                    GetFrameBitmap();
-
-                    CheckSaveFrame();
-
-                    CurrentFrameBitmap.Dispose();
-                    iplImg.Dispose();
-
-                    // Resetting it to 0, since the current frame got sent successfully
-                    errorCounter = 0;
-                }
-                catch (Exception e)
-                {
-                    errorCounter++;
-
-                    Debug.WriteLine("--- [AquisitionWorker] " + e.Message);
-
-                    // If more than 30 consecutive errors have been thrown the acqusition will be stopped
-                    if (errorCounter > 30)
-                    {
-                        UI.CurrentDispatcher.BeginInvoke(() =>
-                            {
-                                UserInfo.SetErrorInfo("The camera failed to send more than 30 consecutive frames, stopping the acquisition");
-                                Stop();
-                            },
-                            DispatcherPriority.Render);
-                        errorCounter = 0;
-                        break;
-                    }
-                    // If more than 10 consecutive errors have been thrown a message is going to be shown to the user
-                    else if (errorCounter > 10)
-                    {
-                        UI.CurrentDispatcher.BeginInvoke(()
-                            => UserInfo.SetErrorInfo("The camera failed to send more than 10 consecutive frames"),
-                            DispatcherPriority.Render);
-                    }
-                }
-            }
-
-            void GetIPLImg(Buffer buffer)
-            {
-                // Get buffer from device's datastream
-                buffer = DataStream.WaitForFinishedBuffer(100000);
-
-                // Create IDS peak IPL Image
-                iplImg = new Image((PixelFormatName)buffer.PixelFormat(), buffer.BasePtr(), buffer.Size(), buffer.Width(), buffer.Height());
-
-                hotpixelVec = HotpixelCorrector.Detect(iplImg);
-                iplImg = HotpixelCorrector.Correct(iplImg, hotpixelVec);
-
-                // Debayering and converting IDS peak IPL Image to RGBa8 format
-                iplImg = iplImg.ConvertTo(PixelFormatName.BGRa8, ConversionMode.Classic);
-
-                // Queue buffer so that it can be used again 
-                DataStream.QueueBuffer(buffer);
-
-                // Applying the HQ matrix
-                if (UseColorCorrection)
-                    ColorCorrector.ProcessInPlace(iplImg);
-            }
-
-            void GetFrameBitmap()
-            {
-                // Getting dimensions of the IDS peak IPL Image 
-                Width = (int)iplImg.Width();
-                Height = (int)iplImg.Height();
-                stride = (int)iplImg.PixelFormat().CalculateStorageSizeOfPixels(iplImg.Width());
-
-                // Creating Bitmap from the IDS peak IPL Image
-                CurrentFrameBitmap = new Bitmap(Width, Height, stride, System.Drawing.Imaging.PixelFormat.Format32bppArgb, iplImg.Data());
-
-                // Would be null if nothing subscribed to the event
-                if (ImageReceived != null && !Freeze)
-                    ImageReceived(CurrentFrameBitmap);
-            }
-
-            void CheckSaveFrame()
-            {
-                // If the user wants so save the current frame, this bool is set
-                if (!SaveFrame)
-                    return;
-
-                // Setting it to false, so only a single frame gets saved
-                SaveFrame = false;
-
-                // Saving the bitmap at the given path
-                CurrentFrameBitmap = ApplyPostProcessing();
-                CurrentFrameBitmap.Save(SavePath);
-
-                // Informing the UI
-                UI.CurrentDispatcher.BeginInvoke(() => SavedFrame.Invoke(), DispatcherPriority.Normal);
-            }
-        }
-
-        public Bitmap ApplyPostProcessing()
+        Bitmap ApplyPostProcessing()
         {
             Bitmap bmp = CurrentFrameBitmap;
-            float b = UI.CurrentDispatcher.Invoke(() => UI.FrameEffects.Brightness);
-            float c = UI.CurrentDispatcher.Invoke(() => UI.FrameEffects.Contrast);
-            float red = UI.CurrentDispatcher.Invoke(() => UI.FrameEffects.AmountR);
-            float green = UI.CurrentDispatcher.Invoke(() => UI.FrameEffects.AmountG);
-            float blue = UI.CurrentDispatcher.Invoke(() => UI.FrameEffects.AmountB);
 
-            (float a, float h) = UI.CurrentDispatcher.Invoke(() => (UI.FrameEffects.AmountB, UI.FrameEffects.AmountR));
+            // Extracting the brightness, contrast and RGB values (all values from 0 to 1) from the shader
+            // Did this with a tuple, in order to r educe the Dispatcher calls
+            (float b, float c, float red, float green, float blue)
+                = UI.CurrentDispatcher.Invoke(() =>
+                    (UI.FrameEffects.Brightness, UI.FrameEffects.Contrast, UI.FrameEffects.AmountR, UI.FrameEffects.AmountG, UI.FrameEffects.AmountB));
 
             float t = (1.0f - c) / 2.0f;
 
@@ -275,18 +297,6 @@ namespace MicroscopeGUI.IDSPeak
             attributes.Dispose();
 
             return bmp;
-        }
-
-        public void SetDataStream(DataStream dataStream)
-            => DataStream = dataStream;
-
-        public void SetNodeMap(NodeMap nodeMap)
-            => NodeMap = nodeMap;
-
-        public void SaveFrameTo(string path)
-        {
-            SavePath = path;
-            SaveFrame = true;
         }
     }
 }

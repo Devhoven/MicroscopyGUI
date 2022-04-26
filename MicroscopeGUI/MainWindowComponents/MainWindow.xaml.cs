@@ -38,15 +38,7 @@ namespace MicroscopeGUI
 
             BmpMemory = new MemoryStream();
 
-            CamControl.ImageReceived += CamImageReceived;
-            if (CamControl.Start())
-            {
-                ConfigCon.Children.Add(CamControl.GetControlCon());
-            }
-            else
-            {
-                UserInfo.SetErrorInfo("Could not start the camera");
-            }
+            DeviceSelector.InitializeLibrary();
 
             InitUIComponents();
         }
@@ -58,8 +50,7 @@ namespace MicroscopeGUI
 
             ConfigCon.Children.Clear();
 
-            if (CamControl.IsActive)
-                CamControl.Stop();
+            CamControl.Stop();
 
             if (!CamControl.Start())
             {
@@ -89,10 +80,17 @@ namespace MicroscopeGUI
                 ImgGalleryCon.Visibility = Visibility.Collapsed;
                 ImgGalleryToggleBtn.Background = Brushes.Transparent;
             }
+
+            CamControl.ImageReceived += CamImageReceived;
+            if (CamControl.Start())
+                ConfigCon.Children.Add(CamControl.GetControlCon());
+            else
+                UserInfo.SetErrorInfo("Could not start the camera");
         }
 
         private void CamImageReceived(Bitmap bitmap)
         {
+            // Conversion from a Bitmap into an ImageSource
             bitmap.Save(BmpMemory, ImageFormat.Bmp);
             BmpMemory.Position = 0;
             BitmapImage bitmapimage = new BitmapImage();
@@ -102,17 +100,17 @@ namespace MicroscopeGUI
             bitmapimage.EndInit();
             bitmapimage.Freeze();
 
-            CurrentFrame.Dispatcher.BeginInvoke(new Action<UI>(delegate { CurrentFrame.Source = bitmapimage; }), new object[] { this });
+            // Calling the dispatcher here, since this method is always going to be called from another thread
+            CurrentFrame.Dispatcher.BeginInvoke(() => CurrentFrame.Source = bitmapimage);
         }
 
         protected override void OnClosed(EventArgs e)
         {
-            if (MetadataPopup is not null)
-                MetadataPopup.Close();
-            if (KeybindPopup is not null)
-                KeybindPopup.Close();
+            MetadataPopup?.Close();
+            KeybindPopup?.Close();
 
             CamControl.Stop();
+            DeviceSelector.CloseLibrary();
         }
     }
 }

@@ -222,8 +222,7 @@ namespace MicroscopeGUI
             if (e.ClickCount == 2)
             {
                 // Freezing the image
-                if (CamControl.IsActive)
-                    CamControl.Freeze();
+                CamControl.Freeze();
 
                 // Loading the image from the file, since the one in the image gallery is downsized
                 BitmapImage BmpImg = new BitmapImage();

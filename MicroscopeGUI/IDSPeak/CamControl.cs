@@ -26,15 +26,15 @@ namespace MicroscopeGUI.IDSPeak
 
         public static event Action SavedFrame;
 
-        public static bool IsActive;
-
-        public static int Width => AcqWorker.Width;
+        public static int ImgWidth => AcqWorker.ImgWidth;
 
         public static bool UseColorCorrection
         {
             get => AcqWorker.UseColorCorrection;
             set => AcqWorker.UseColorCorrection = value;
         }
+
+        static bool IsActive;
 
         static Device Device;
         static DataStream DataStream;
@@ -44,10 +44,12 @@ namespace MicroscopeGUI.IDSPeak
         static CommandNode AcquisitionStopNode;
 
         static readonly AcquisitionWorker AcqWorker;
+        static readonly DeviceUpdateWorker DeviceUpdateWorker;
 
         static CamControl()
         {
             AcqWorker = new AcquisitionWorker();
+            DeviceUpdateWorker = new DeviceUpdateWorker();
 
             Initialize();
         }
@@ -69,6 +71,9 @@ namespace MicroscopeGUI.IDSPeak
 
         public static bool Start()
         {
+            if (IsActive)
+                return true;
+
             DeviceSelector.DeviceInfo? result = DeviceSelector.OpenDevice();
 
             if (result is null 
@@ -82,7 +87,6 @@ namespace MicroscopeGUI.IDSPeak
             DataStream = result.Value.DataStream;
 
             // Configure worker
-            AcqWorker.SetNodeMap(NodeMap);
             AcqWorker.SetDataStream(DataStream);
 
             // Retreiving the start and stop command nodes
@@ -91,6 +95,7 @@ namespace MicroscopeGUI.IDSPeak
 
             // Starting the acquisition
             AcqWorker.Start();
+            DeviceUpdateWorker.Start();
 
             IsActive = true;
 
@@ -99,10 +104,14 @@ namespace MicroscopeGUI.IDSPeak
 
         public static void Stop()
         {
+            if (!IsActive)
+                return;
+
             Debug.WriteLine("--- [CamControl] Closing device");
 
             IsActive = false;
             AcqWorker.Stop();
+            DeviceUpdateWorker.Stop();
 
             try
             {
@@ -125,16 +134,10 @@ namespace MicroscopeGUI.IDSPeak
         }
 
         public static void Freeze()
-        {
-            AcqWorker.Freeze = true;
-            Stop();
-        }
+            => AcqWorker.Freeze = true;
 
         public static void Unfreeze()
-        {
-            AcqWorker.Freeze = false;
-            Start();
-        }
+            => AcqWorker.Freeze = false;
 
         public static void SetNodeValue(Action action)
         {
